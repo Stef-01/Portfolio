@@ -470,6 +470,40 @@
         </table>
         <p class="note" style="margin-top:10px">All figures indicative and rounded; the trial exists precisely to replace them with measured ones.</p>
       </div>
+
+      <div class="card" id="model" style="margin-top:28px">
+        <h3>Stress-test the model yourself</h3>
+        <p class="note" style="margin:2px 0 0">Drag the assumptions — the whole ledger recomputes. Defaults reproduce the figures above. Everything stays indicative; the trial replaces it with measurement.</p>
+        <div class="msplit">
+          <div>
+            <div class="mrow">
+              <div class="mtop"><label for="mShare">Pipeline share of the specialist book</label><output id="oShare">20%</output></div>
+              <input type="range" id="mShare" min="10" max="30" step="1" value="20">
+            </div>
+            <div class="mrow">
+              <div class="mtop"><label for="mAppts">Appointments per specialist FTE / yr</label><output id="oAppts">2,000</output></div>
+              <input type="range" id="mAppts" min="1600" max="2400" step="50" value="2000">
+            </div>
+            <div class="mrow">
+              <div class="mtop"><label for="mFee">eConsult fee paid to the specialist</label><output id="oFee">$65</output></div>
+              <input type="range" id="mFee" min="40" max="100" step="5" value="65">
+            </div>
+            <div class="mrow">
+              <div class="mtop"><label for="mFte">Specialist FTEs in the department</label><output id="oFte">6</output></div>
+              <input type="range" id="mFte" min="4" max="10" step="1" value="6">
+            </div>
+            <button class="mreset" id="mReset" type="button">Reset to defaults</button>
+          </div>
+          <div class="mouts" aria-live="polite">
+            <div class="tile"><p class="tlabel">Specialist consulting uplift, per FTE per year</p><p class="tvalue" id="rSpec">+$35k</p></div>
+            <div class="tile"><p class="tlabel">Per participating GP per year (<span id="rGpN">23</span> GPs across the catchment)</p><p class="tvalue" id="rGp">+$15k</p></div>
+            <div class="tile"><p class="tlabel">Network benefit per year (setting shift + avoided acute care)</p><p class="tvalue" id="rNet">$696k</p></div>
+            <div class="tile"><p class="tlabel">Payback on the $460k trial</p><p class="tvalue" id="rPay">≈ 8 months</p></div>
+            <div class="tile"><p class="tlabel">New Medicare outlay per year — stated, not hidden</p><p class="tvalue" id="rMbs">$556k</p></div>
+            <div class="tile"><p class="tlabel">Median wait for a new referral</p><p class="tvalue" id="rWait">127 → 55 days</p></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -726,6 +760,63 @@
       { key: 'moved', colorGroups: [0, 1], dim: { keep: [], to: 0.15 } }
     ]
   });
+})();
+
+/* Live scenario model — same arithmetic as the cards above, in the reader's hands.
+   Constants (indicative, MBS-rounded): specialist review $92, new complex $170;
+   freed slots refill 60% new complex / 40% complex review; 3.1 visits per
+   pipeline patient/yr; 1.9 eConsults per pipeline patient/yr; GP incremental
+   $449/patient/yr; ~33 pipeline patients per participating GP; episode cost
+   $290 hospital vs $130 GP; avoided acute care $312k at the 2,400-visit
+   baseline; trial cost $460k; baseline wait 127 days at −57% for 240 extra
+   new-complex patients per FTE. */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var ins = { share: $('mShare'), appts: $('mAppts'), fee: $('mFee'), fte: $('mFte') };
+  if (!ins.share) return;
+  var defaults = { share: 20, appts: 2000, fee: 65, fte: 6 };
+  function money(v) {
+    if (Math.abs(v) >= 995000) return '$' + (v / 1e6).toFixed(2).replace(/0$/, '') + 'M';
+    return '$' + Math.round(v / 1000) + 'k';
+  }
+  function recompute() {
+    var s = +ins.share.value / 100, A = +ins.appts.value, f = +ins.fee.value, n = +ins.fte.value;
+    var F = s * A;                       // freed slots per FTE
+    var P = F / 3.1;                     // pipeline patients per FTE
+    var E = 1.9 * P;                     // eConsults per FTE
+    var before = F * 92;
+    var after = 0.6 * F * 170 + 0.4 * F * 92 + E * f;
+    var uplift = after - before;
+    var gpTotalPts = P * n;
+    var gpN = Math.max(1, Math.round(gpTotalPts / 33));
+    var perGp = (gpTotalPts / gpN) * 449;
+    var shift = F * n * (290 - 130);
+    var acute = 312000 * (F * n) / 2400;
+    var net = shift + acute;
+    var payback = 460000 / (net / 12);
+    var mbs = gpTotalPts * 449 + uplift * n;
+    var drop = Math.min(70, 57 * (0.6 * F) / 240);
+    var wait = Math.round(127 * (1 - drop / 100));
+
+    $('oShare').textContent = Math.round(s * 100) + '%';
+    $('oAppts').textContent = A.toLocaleString('en-AU');
+    $('oFee').textContent = '$' + f;
+    $('oFte').textContent = n;
+    $('rSpec').textContent = '+' + money(uplift);
+    $('rGp').textContent = '+' + money(perGp);
+    $('rGpN').textContent = gpN;
+    $('rNet').textContent = money(net);
+    $('rPay').textContent = payback <= 24 ? '≈ ' + Math.round(payback) + ' months' : '≈ ' + (payback / 12).toFixed(1) + ' years';
+    $('rMbs').textContent = money(mbs);
+    $('rWait').textContent = '127 → ' + wait + ' days';
+  }
+  Object.keys(ins).forEach(function (k) { ins[k].addEventListener('input', recompute); });
+  $('mReset').addEventListener('click', function () {
+    ins.share.value = defaults.share; ins.appts.value = defaults.appts;
+    ins.fee.value = defaults.fee; ins.fte.value = defaults.fte;
+    recompute();
+  });
+  recompute();
 })();
 </script>
 </body>

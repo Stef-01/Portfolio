@@ -151,8 +151,16 @@ Deploy `care-personas/` as a static-site root (Vercel/Netlify/GitHub Pages). Onl
 dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialty-visual-
 (product at repo root); the Portfolio repo carries a mirror under `care-personas/`.
 
+## Shipped since v1
+
+- **Live scenario model (Explainer 01, §04):** four sliders (pipeline share 10–30%, appointments
+  per FTE 1,600–2,400, eConsult fee $40–100, department FTEs 4–10) recompute the full ledger —
+  specialist uplift, per-GP gain and GP headcount, network benefit, trial payback, new Medicare
+  outlay, median wait — using exactly the arithmetic of the static cards; defaults reproduce the
+  canonical figures. Keyboard-accessible ranges, `aria-live` outputs, reset button.
+
 ## Roadmap (v2)
 
-Specialty switcher and scenario sliders recomputing the ledgers live · real MBS item lookups ·
+Specialty switcher (cardiology ⇄ endocrine ⇄ respiratory presets) · real MBS item lookups ·
 per-1M-population state scaling · printable one-page executive summaries · a "which persona are
 you?" patient-facing quiz for Explainer 02.
