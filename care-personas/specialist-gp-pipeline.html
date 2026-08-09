@@ -636,6 +636,10 @@
           { x: P.sp[0], y: P.sp[1] - rSp - 30, text: "ONE CARDIOLOGIST'S POOL", big: true },
           { x: P.sp[0], y: P.sp[1] - rSp - 12, text: 'referred for complexity', muted: true }
         ],
+        clinicians: [
+          { x: P.gp[0] - rGp - c.U * 2.8, y: P.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' },
+          { x: P.sp[0] + rSp + c.U * 2.8, y: P.sp[1] - c.U, skin: 1, hair: 6, label: 'the cardiologist' }
+        ],
         zones: [
           { x: P.gp[0], y: P.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 },
           { x: P.sp[0], y: P.sp[1], r: rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }
@@ -664,6 +668,10 @@
           { x: P.sp[0], y: gy - 14, text: 'most complex at the top', muted: true },
           { x: P.sp[0], y: gy + rows * ch + 22, text: 'stable & protocol-driven at the bottom', muted: true }
         ],
+        clinicians: [
+          { x: P.gp[0] - rGp - c.U * 2.8, y: P.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' },
+          { x: gx + cols * cw + c.U * 2.6, y: gy + ch * 1.1, skin: 1, hair: 6, label: 'the cardiologist' }
+        ],
         zones: [
           { x: P.gp[0], y: P.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 },
           { x: P.sp[0], y: P.sp[1], r: Math.max(cols * cw, rows * ch) * 0.62 + c.U * 2, color: '#1c5cab', alpha: 0.05 }
@@ -676,6 +684,8 @@
       var gpMembers = membersOf(c, [5]).concat(membersOf(c, [0, 1]));
       var rGp = packInto(c, pos, P.gp, gpMembers, 0);
       var rSp = packInto(c, pos, P.sp, membersOf(c, [2, 3, 4]), 5);
+      var gpClin = [P.gp[0] - rGp - c.U * 2.8, P.gp[1] - c.U];
+      var spClin = [P.sp[0] + rSp + c.U * 2.8, P.sp[1] - c.U];
       return { pos: pos, meta: {
         labels: [
           { x: P.gp[0], y: P.gp[1] - rGp - 30, text: "THE GP'S BOOK — GROWN", big: true },
@@ -683,11 +693,15 @@
           { x: P.sp[0], y: P.sp[1] - rSp - 30, text: "THE SPECIALIST'S POOL — CONCENTRATED", big: true },
           { x: P.sp[0], y: P.sp[1] - rSp - 12, text: 'complex & procedural work only', muted: true }
         ],
+        clinicians: [
+          { x: gpClin[0], y: gpClin[1], skin: 3, hair: 1, label: 'the GP' },
+          { x: spClin[0], y: spClin[1], skin: 1, hair: 6, label: 'the cardiologist' }
+        ],
         zones: [
           { x: P.gp[0], y: P.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 },
           { x: P.sp[0], y: P.sp[1], r: rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }
         ],
-        link: { a: [P.gp[0] + (c.narrow ? 0 : rGp * 0.5), P.gp[1] - rGp - 6], b: [P.sp[0] - (c.narrow ? 0 : rSp * 0.5), P.sp[1] + (c.narrow ? rSp + 6 : -rSp - 6)] }
+        link: { a: [gpClin[0], gpClin[1] - c.U * 1.2], b: [spClin[0], spClin[1] - c.U * 1.2] }
       } };
     }
   };

@@ -247,6 +247,8 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 
 /* ---------- hub cards ---------- */
 .hub{grid-template-columns:repeat(auto-fit,minmax(310px,1fr));margin-top:30px}
+.hubcard .avarow{margin:0}
+.hubcard .avarow .av{width:46px;height:46px;margin-right:-11px;border-width:3px}
 .hubcard{display:flex;flex-direction:column;gap:14px;text-decoration:none;color:var(--ink);transition:transform .18s ease, box-shadow .18s ease}
 .hubcard:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(15,24,52,.14)}
 .hubcard .num{font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.16em;color:var(--accent)}

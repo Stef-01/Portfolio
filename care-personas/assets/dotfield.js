@@ -234,6 +234,54 @@
       }
     }
 
+    /* ---------- clinician figure (bigger, pale coat, stethoscope, always a face) ---------- */
+    function drawClinician(x, y, s, spec, alpha) {
+      ctx.globalAlpha = alpha;
+      var sk = SKINS[spec.skin % SKINS.length], hr = HAIRS[spec.hair % HAIRS.length];
+      // coat
+      ctx.fillStyle = '#f4f7fb';
+      ctx.strokeStyle = 'rgba(27,40,70,.38)';
+      ctx.lineWidth = Math.max(1, 0.05 * s);
+      ctx.beginPath();
+      ctx.arc(x, y + 0.62 * s, 0.52 * s, Math.PI, 0);
+      ctx.lineTo(x + 0.52 * s, y + 1.08 * s);
+      ctx.lineTo(x - 0.52 * s, y + 1.08 * s);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // stethoscope
+      ctx.strokeStyle = '#16244a'; ctx.lineWidth = Math.max(1, 0.055 * s); ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.arc(x, y + 0.52 * s, 0.30 * s, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
+      ctx.fillStyle = '#16244a';
+      ctx.beginPath(); ctx.arc(x - 0.24 * s, y + 0.74 * s, 0.075 * s, 0, 6.2832); ctx.fill();
+      // head + hair + face
+      ctx.fillStyle = css(sk);
+      ctx.beginPath(); ctx.arc(x, y - 0.14 * s, 0.36 * s, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = css(hr);
+      ctx.beginPath();
+      ctx.arc(x, y - 0.14 * s, 0.37 * s, Math.PI, 0);
+      ctx.arc(x, y - 0.06 * s, 0.29 * s, 0, Math.PI, true);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#201209';
+      ctx.beginPath(); ctx.arc(x - 0.12 * s, y - 0.15 * s, 0.05 * s, 0, 6.2832); ctx.fill();
+      ctx.beginPath(); ctx.arc(x + 0.12 * s, y - 0.15 * s, 0.05 * s, 0, 6.2832); ctx.fill();
+      ctx.strokeStyle = '#201209'; ctx.lineWidth = Math.max(1, 0.04 * s);
+      ctx.beginPath(); ctx.arc(x, y - 0.06 * s, 0.13 * s, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
+      if (spec.label) {
+        ctx.fillStyle = ink2; ctx.textAlign = 'center';
+        ctx.font = '700 ' + Math.max(10, Math.round(0.5 * s)) + 'px Poppins, Inter, system-ui, sans-serif';
+        ctx.fillText(spec.label, x, y + 1.5 * s);
+      }
+    }
+    function drawClinicians(scene, alpha, cam) {
+      if (!scene || alpha <= 0.02) return;
+      var C = (meta[scene.key] || {}).clinicians || [];
+      for (var i = 0; i < C.length; i++) {
+        var p = project([C[i].x, C[i].y], cam);
+        if (p[0] < -60 || p[0] > W + 60 || p[1] < -60 || p[1] > H + 60) continue;
+        drawClinician(p[0], p[1], U * 2.1 * cam[0], C[i], alpha);
+      }
+      ctx.globalAlpha = 1;
+    }
+
     /* ---------- zones (soft pool backdrops) ---------- */
     function drawZones(scene, alpha, cam) {
       if (!scene || alpha <= 0.02) return;
@@ -301,25 +349,19 @@
         var hx = (1 - u2) * (1 - u2) * start[0] + 2 * (1 - u2) * u2 * qx2 + u2 * u2 * D[0];
         var hy = (1 - u2) * (1 - u2) * start[1] + 2 * (1 - u2) * u2 * qy2 + u2 * u2 * D[1];
         var Dp = P(D[0], D[1]), hp = P(hx, hy);
-        ctx.strokeStyle = 'rgba(138,147,168,.8)'; ctx.lineWidth = 2 * z;
-        ctx.beginPath(); ctx.arc(Dp[0], Dp[1], 24 * z, 0, 6.2832); ctx.stroke();
-        ctx.fillStyle = ink2; ctx.font = '700 11px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText('GP', Dp[0], Dp[1] + 4);
+        drawClinician(Dp[0], Dp[1], U * 2.1 * z, { skin: 4, hair: 0, label: 'their GP' }, alpha);
         drawPerson(hp[0], hp[1], lerp(U, U * 2.2, u2) * z, groupColors[0] || neutral, 0, 1);
         if (u2 > 0.96) {
           ctx.strokeStyle = accent; ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.arc(Dp[0], Dp[1], 32 * z, 0, 6.2832); ctx.stroke();
+          ctx.beginPath(); ctx.arc(Dp[0], Dp[1], U * 3.2 * z, 0, 6.2832); ctx.stroke();
         }
       }
       if (scene.extra === 'outbound' && M.doc) {
         var D2 = M.doc, Dq = P(D2[0], D2[1]);
-        ctx.strokeStyle = 'rgba(138,147,168,.8)'; ctx.lineWidth = 2 * z;
-        ctx.beginPath(); ctx.arc(Dq[0], Dq[1], 24 * z, 0, 6.2832); ctx.stroke();
-        ctx.fillStyle = ink2; ctx.font = '700 11px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText('GP', Dq[0], Dq[1] + 4);
+        drawClinician(Dq[0], Dq[1], U * 2.1 * z, { skin: 4, hair: 0, label: 'their GP' }, alpha);
         for (var ri = 0; ri < 3; ri++) {
           var pt = (tt * 1.2 + ri / 3) % 1;
-          var rad = (28 + pt * Math.min(W, H) * 0.28) * z;
+          var rad = (U * 3 + pt * Math.min(W, H) * 0.28) * z;
           ctx.strokeStyle = 'rgba(235,104,52,' + (0.5 * (1 - pt)).toFixed(3) + ')';
           ctx.lineWidth = 2;
           ctx.beginPath(); ctx.arc(Dq[0], Dq[1], rad, 0, 6.2832); ctx.stroke();
@@ -359,6 +401,7 @@
         drawPerson(q[0], q[1], s, col, d, al);
       }
       ctx.globalAlpha = 1;
+      drawClinicians(A, 1 - m, cam); drawClinicians(B, m, cam);
       drawLabels(A, 1 - m, cam); drawLabels(B, m, cam);
       drawExtras(A, tt, 1 - m, cam); drawExtras(B, 0, m, cam);
 
