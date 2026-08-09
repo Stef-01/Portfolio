@@ -255,6 +255,35 @@ footer p{max-width:82ch}
 footer a{color:#ffd84d}
 footer .fbrand{font-family:var(--disp);font-weight:800;letter-spacing:.14em;color:#fff;font-size:14px;margin:0 0 14px}
 
+/* ---------- dot-field theatre (scroll-driven; JS-only, duplicated as static content below it) ---------- */
+.theatre{display:none}
+.js .theatre{display:block;position:relative}
+.df-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--paper)}
+.df-stage canvas{position:absolute;inset:0;display:block}
+.df-step{
+  position:absolute;left:6%;bottom:9%;max-width:540px;opacity:0;pointer-events:none;
+  transition:opacity .15s linear
+}
+.df-step .eyebrow{margin-bottom:8px}
+.df-step h3{font-family:var(--disp);font-weight:800;color:var(--navy);
+  font-size:clamp(24px,3.6vw,42px);line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
+.df-step p{font-size:15.5px;color:var(--ink-2);margin:0;max-width:46ch}
+.df-hint{position:absolute;left:50%;bottom:3.5%;transform:translateX(-50%);
+  font-family:var(--disp);font-size:12px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--mut);pointer-events:none}
+.df-stats{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  gap:clamp(20px,4vw,54px);opacity:0;pointer-events:none;flex-wrap:wrap;padding:0 6%
+}
+.df-stat{text-align:center;max-width:240px}
+.df-stat .v{font-family:var(--disp);font-weight:800;font-size:clamp(34px,5vw,58px);color:var(--navy);line-height:1.05}
+.df-stat .l{font-size:13px;color:var(--ink-2);margin-top:6px}
+.theatre.df-static{height:100vh}
+@media (max-width:680px){
+  .df-step{left:7%;right:7%;bottom:12%}
+}
+@media print{ .theatre{display:none} }
+
 /* ---------- reveal (hidden state only when JS is running — no-JS and print see everything) ---------- */
 .js .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
 .js .reveal.in{opacity:1;transform:none}

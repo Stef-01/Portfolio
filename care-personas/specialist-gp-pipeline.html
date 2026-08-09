@@ -89,6 +89,27 @@
     </div>
   </section>
 
+  <!-- DOT THEATRE — scroll-driven story (content duplicated in the sections below) -->
+  <section class="theatre" id="story" aria-hidden="true">
+    <div class="df-stage">
+      <canvas id="df1"></canvas>
+      <div class="df-step"><p class="eyebrow">The caseload</p><h3>One cardiologist. 2,000 appointments.</h3><p>Every dot is ten visits in one year of clinic.</p></div>
+      <div class="df-step"><p class="eyebrow">Today</p><h3>The queue treats them all the same.</h3><p>First referred, first seen — complexity never enters into it.</p></div>
+      <div class="df-step"><p class="eyebrow">The screen</p><h3>Run the complexity screen.</h3><p>Six questions, scored 0–100, for every referral and follow-up.</p></div>
+      <div class="df-step"><p class="eyebrow">The reveal</p><h3>Five personas emerge.</h3><p>Not one caseload — five, each needing a different clinician.</p></div>
+      <div class="df-step"><p class="eyebrow">The map</p><h3>The whole book, in one bar.</h3><p>Two segments — one fifth of the book — sit in the bottom quintile.</p></div>
+      <div class="df-step"><p class="eyebrow">Zoom in</p><h3>Look closer at that 20%.</h3><p>Stable, protocol-driven care that doesn't need a decade of training.</p></div>
+      <div class="df-step"><p class="eyebrow">The pipeline</p><h3>Hand it to accredited GPs.</h3><p>With a named specialist 72 hours away — not four months.</p></div>
+      <div class="df-step"><p class="eyebrow">The result</p><h3>Everyone bills better.</h3><p></p></div>
+      <div class="df-stats">
+        <div class="df-stat"><div class="v"><span data-countup="35" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">specialist consulting per FTE, per year, on the same clinic hours</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="449" data-pre="+$">+$0</span></div><div class="l">GP billings per pipeline patient, per year</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="57" data-pre="−" data-suf="%">−0%</span></div><div class="l">median wait for a new specialist referral</div></div>
+      </div>
+      <div class="df-hint">Scroll</div>
+    </div>
+  </section>
+
   <!-- 01 PROBLEM -->
   <section id="problem" class="tintband">
     <div class="wrap reveal">
@@ -581,5 +602,27 @@
 
 <div id="tip" role="status" aria-hidden="true"></div>
 <script src="assets/site.js"></script>
+<script src="assets/dotfield.js"></script>
+<script>
+DotField({
+  theatre: '#story', canvas: '#df1',
+  count: 200, shares: [12, 8, 35, 20, 25],
+  palette: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'],
+  neutral: '#c3cad8', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
+  labels: ['Steady State', 'Titration', 'Juggler', 'Puzzle', 'High-Stakes'],
+  splitLeft: [0, 1],
+  anchorsLabels: ['Specialist-GP track', 'Specialist core'],
+  scenes: [
+    { key: 'cloud' },
+    { key: 'spread' },
+    { key: 'cloud', scan: true, colored: true },
+    { key: 'clusters', colored: true, labels: true },
+    { key: 'bar', colored: true, labels: true },
+    { key: 'bar', colored: true, labels: true, cam: { z: 2.2, x: 0.164, y: 0.46 }, dim: { keep: [0, 1], to: 0.15 } },
+    { key: 'split', colored: true, labels: true, extra: 'split' },
+    { key: 'split', colored: true, dim: { keep: [], to: 0.20 }, extra: 'split' }
+  ]
+});
+</script>
 </body>
 </html>

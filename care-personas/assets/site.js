@@ -36,6 +36,33 @@
     });
   }
 
+  // Comparison bars grow to their value on first reveal (skipped under reduced motion)
+  if (!reduce) {
+    document.querySelectorAll('.bfill').forEach(function (el) {
+      var w = el.style.width;
+      if (!w) return;
+      el.setAttribute('data-w', w);
+      el.style.width = '0%';
+      el.style.transition = 'width .9s cubic-bezier(.25,.7,.3,1)';
+    });
+    var grow = function (scope) {
+      scope.querySelectorAll('.bfill[data-w]').forEach(function (el) {
+        el.style.width = el.getAttribute('data-w');
+        el.removeAttribute('data-w');
+      });
+    };
+    if ('IntersectionObserver' in window) {
+      var gio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { grow(e.target); gio.unobserve(e.target); }
+        });
+      }, { threshold: 0.35 });
+      document.querySelectorAll('.brow').forEach(function (el) { gio.observe(el); });
+      // safety: anything never observed still resolves on load end
+      window.addEventListener('load', function () { setTimeout(function () { grow(document); }, 2500); });
+    } else { grow(document); }
+  }
+
   // Segment / chip → scroll to persona card with a brief highlight
   document.querySelectorAll('[data-target]').forEach(function (el) {
     el.addEventListener('click', function () {

@@ -12,6 +12,13 @@ segmentation (in the style of Surgo Ventures' vaccine persona explainer) to heal
 This folder is **deliberately independent of the portfolio app** — plain HTML/CSS/JS, no build
 step, no framework. The only external requests are Google Fonts.
 
+**Animation-first:** each explainer opens with a scroll-driven unit-dot theatre
+(`assets/dotfield.js`, no libraries) — 200 procedural dots take their persona colours under a
+scan sweep, amalgamate into clusters, then into the segmented bar; the camera zooms in and out
+of the story; everything is user-paced (nothing moves unless the reader scrolls), honours
+`prefers-reduced-motion` with a static composed frame, and is held to a numeric clutter budget
+documented in `docs/care-personas-plan.md`.
+
 ## Hosting
 
 Any static host works — deploy this folder as the site root:

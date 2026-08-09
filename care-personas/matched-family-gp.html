@@ -85,6 +85,28 @@
     </div>
   </section>
 
+  <!-- DOT THEATRE — scroll-driven story (content duplicated in the sections below) -->
+  <section class="theatre" id="story" aria-hidden="true">
+    <div class="df-stage">
+      <canvas id="df2"></canvas>
+      <div class="df-step"><p class="eyebrow">The population</p><h3>The loosely attached.</h3><p>Every dot is a patient without “their” doctor.</p></div>
+      <div class="df-step"><p class="eyebrow">Today</p><h3>The system calls them hard to reach.</h3><p>They're not hiding. The front door doesn't fit.</p></div>
+      <div class="df-step"><p class="eyebrow">The question</p><h3>Ask what they need in a doctor.</h3><p>Twenty seconds. Chips, not forms.</p></div>
+      <div class="df-step"><p class="eyebrow">The reveal</p><h3>Five personas, not one problem.</h3><p>Each one bookable — with the right match.</p></div>
+      <div class="df-step"><p class="eyebrow">The map</p><h3>The demand, mapped.</h3><p>Doctors declared who they want to serve. This is the overlap.</p></div>
+      <div class="df-step"><p class="eyebrow">Zoom in</p><h3>One Mirror Seeker.</h3><p>Five clinics tried generic booking. None of them fit.</p></div>
+      <div class="df-step"><p class="eyebrow">The match</p><h3>One match, made.</h3><p>A patient meets the doctor who asked for exactly them.</p></div>
+      <div class="df-step"><p class="eyebrow">The engine</p><h3>Then the follow-up finds them.</h3><p>“Dr Nguyen is free Thursday 2:40 — reply YES to book.”</p></div>
+      <div class="df-step"><p class="eyebrow">The result</p><h3>The family GP, rebuilt.</h3><p></p></div>
+      <div class="df-stats">
+        <div class="df-stat"><div class="v"><span data-countup="70" data-pre="+" data-suf="%">+0%</span></div><div class="l">visits per year when the doctor fits (1.7 → 2.9)</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="81" data-suf="%">0%</span></div><div class="l">matched patients still active at 12 months (vs 48%)</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="30" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">per GP FTE per year from refilled, re-engaged care</div></div>
+      </div>
+      <div class="df-hint">Scroll</div>
+    </div>
+  </section>
+
   <!-- 01 PROBLEM -->
   <section id="problem" class="tintband">
     <div class="wrap reveal">
@@ -537,6 +559,28 @@
 
 <div id="tip" role="status" aria-hidden="true"></div>
 <script src="assets/site.js"></script>
+<script src="assets/dotfield.js"></script>
+<script>
+DotField({
+  theatre: '#story', canvas: '#df2',
+  count: 200, shares: [18, 14, 24, 12, 32],
+  palette: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'],
+  neutral: '#c3cad8', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
+  labels: ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'],
+  splitLeft: [0, 1],
+  scenes: [
+    { key: 'cloud' },
+    { key: 'spread' },
+    { key: 'cloud', scan: true, colored: true },
+    { key: 'clusters', colored: true, labels: true },
+    { key: 'bar', colored: true, labels: true },
+    { key: 'bar', colored: true, labels: true, cam: { z: 2.2, x: 0.156, y: 0.46 }, dim: { keep: [0], to: 0.15 } },
+    { key: 'bar', colored: true, extra: 'match', dim: { keep: [0], to: 0.30 } },
+    { key: 'bar', colored: true, extra: 'outbound' },
+    { key: 'bar', colored: true, dim: { keep: [], to: 0.18 } }
+  ]
+});
+</script>
 <script>
 /* 20-second match demo — fictional clinicians, client-side only */
 (function(){

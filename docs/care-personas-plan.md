@@ -87,10 +87,45 @@ Brand mark (5 persona dots), headline, the shared method, two hub cards with min
 - Accessibility: keyboard-focusable segments with tooltips on focus, `<details>` table twins,
   `prefers-reduced-motion` respected, skip links, aria labels on charts and the diagram.
 
+## The dot-field theatre (animation-first layer)
+
+Both explainers open with a **scroll-driven unit-dot theatre** (`assets/dotfield.js`, ~9 KB, no
+libraries): 200 procedurally placed dots (each dot = 10 appointments / 1 patient) that morph
+through choreographed scenes as the reader scrolls — cloud → complexity/preference **scan sweep**
+(dots take persona colours) → **amalgamation** into 5 circle-packed clusters → amalgamation into
+the segmented bar → **camera zoom in** on the target segment → zoom out into the split/match/
+outbound choreography → stat count-ups. All layouts are procedural (phyllotaxis packing, seeded
+PRNG so they're stable across resizes); the camera is a projective transform interpolated per
+scene; every beat is **fully user-paced** — nothing moves unless the reader scrolls.
+
+Research basis: the original Surgo explainer is confirmed (designer/developer portfolio + on-page
+captions) to be a Scrollama + D3 **animated-circle unit visualization** whose circles re-sort from
+demographic groups into the 5 persona segments on scroll, with 24–41-word captions, 5 persona
+hues, ~3 element groups per scene, and hover only in the finale — this theatre reproduces that
+grammar for the care-model domain.
+
+### The clutter budget (numeric, enforced in code and audited)
+
+| Metric | Budget (source) | This build |
+|---|---|---|
+| Focus text per scene | ≤ 30 words (Flourish/ONA one-idea-per-step; Surgo measured 24–41) | 10–16 words, one block; windows sized so two captions never co-exist |
+| Active hues per scene | 1 accent + gray context; ≤ 7 ceiling (Datawrapper); 5 persona hues when the segmentation IS the story (Surgo) | neutral-gray scenes until the scan; then the 5 validated persona hues + 1 accent |
+| Concurrent choreographies | 1 (Heer & Robertson staged transitions) | one morph at a time; extras animate only while dots hold |
+| Non-data elements on stage | ≤ 5–6 labels + caption, zero chrome | ≤ 5 persona labels + 1 caption; no gridlines/borders/axes on stage |
+| Dwell : travel | ≥ 2:1 of scroll distance | 67 : 33 per scene |
+| Idle motion at rest | zero autonomous/looping motion (WCAG 2.2.2) | scroll-driven only; single 0.9 s one-shot count-up |
+| Reduced motion | static states / crossfades (WCAG 2.3.3, C39) | single static composed frame + instant stat values |
+| Text position | one fixed slot, 0 layout jumps (Bostock/Pudding) | fixed bottom-left slot every scene |
+| Camera moves per story | ≤ 1 per scene, ~3–5 per story | 2 per story (zoom in, zoom out) |
+
+Micro-animation elsewhere stays inside the same budget: comparison bars grow once on reveal,
+sections fade up once; nothing loops.
+
 ## Hosting
 
 Deploy `care-personas/` as a static-site root (Vercel/Netlify/GitHub Pages). Only external
-dependency: Google Fonts.
+dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialty-visual-
+(product at repo root); the Portfolio repo carries a mirror under `care-personas/`.
 
 ## Roadmap (v2)
 
