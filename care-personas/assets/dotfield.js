@@ -405,14 +405,19 @@
       drawLabels(A, 1 - m, cam); drawLabels(B, m, cam);
       drawExtras(A, tt, 1 - m, cam); drawExtras(B, 0, m, cam);
 
-      // one caption at a time — windows never overlap
+      if (staticMode) return; // overlays are pinned by the static composition
+
+      // one caption at a time — windows never overlap; the final caption
+      // yields to the stats overlay as it fades in
+      var so = statsEl ? clamp((p - (SC - 1.30)) / 0.30, 0, 1) : 0;
       for (var st = 0; st < steps.length; st++) {
         var dist = Math.abs(p - st);
-        steps[st].style.opacity = clamp(1 - Math.max(0, dist - 0.25) / 0.17, 0, 1).toFixed(3);
+        var op = clamp(1 - Math.max(0, dist - 0.25) / 0.17, 0, 1);
+        if (st === SC - 1) op *= 1 - so;
+        steps[st].style.opacity = op.toFixed(3);
       }
       if (hintEl) hintEl.style.opacity = clamp(1 - p / 0.5, 0, 1).toFixed(3);
       if (statsEl) {
-        var so = clamp((p - (SC - 1.30)) / 0.30, 0, 1);
         statsEl.style.opacity = so.toFixed(3);
         if (so > 0.5) fireCountups();
       }
@@ -445,6 +450,7 @@
     var stage = theatre.querySelector('.df-stage');
     var hintEl = theatre.querySelector('.df-hint');
     var override = null;
+    var staticMode = false;
 
     function sizes() {
       var r = stage.getBoundingClientRect();
@@ -472,18 +478,27 @@
     }
 
     if (RM) {
+      // one static composed frame: the scene visual + the final stats; captions
+      // stay hidden (the sections below carry the full narrative)
+      staticMode = true;
       theatre.classList.add('df-static');
       sizes();
       var rmScene = opts.rmScene != null ? opts.rmScene : SC - 2;
       render(rmScene);
+      steps.forEach(function (el) { el.style.opacity = 0; });
+      if (hintEl) hintEl.style.opacity = 0;
       if (statsEl) { statsEl.style.opacity = 1; fireCountups(); }
-      steps.forEach(function (el, i) { el.style.opacity = i === 0 ? 1 : 0; });
       window.addEventListener('resize', function () { sizes(); render(rmScene); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { render(rmScene); });
     } else {
       theatre.style.height = (SC * 100) + 'vh';
       sizes(); render(0);
       window.addEventListener('scroll', schedule, { passive: true });
       window.addEventListener('resize', function () { sizes(); if (override === null) schedule(); else render(override); });
+      // repaint canvas typography once the webfonts arrive
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {
+        if (override !== null) render(override); else render(progress());
+      });
     }
 
     var api = {

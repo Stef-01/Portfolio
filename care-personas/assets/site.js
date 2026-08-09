@@ -58,8 +58,8 @@
         });
       }, { threshold: 0.35 });
       document.querySelectorAll('.brow').forEach(function (el) { gio.observe(el); });
-      // safety: anything never observed still resolves on load end
-      window.addEventListener('load', function () { setTimeout(function () { grow(document); }, 2500); });
+      // print must never show empty bars
+      window.addEventListener('beforeprint', function () { grow(document); });
     } else { grow(document); }
   }
 

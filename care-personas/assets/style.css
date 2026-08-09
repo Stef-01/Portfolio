@@ -110,9 +110,10 @@ p{max-width:70ch}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px 26px;box-shadow:0 1px 2px rgba(22,36,74,.04)}
 .tintband .card,.band .card{box-shadow:0 6px 22px rgba(15,24,52,.10)}
 .grid{display:grid;gap:18px}
-.g2{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
-.g3{grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
-.g4{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.grid > *{min-width:0}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(255px,100%),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(215px,100%),1fr))}
 
 /* ---------- stat tiles ---------- */
 .tile .tlabel{font-size:13px;color:var(--ink-2);margin:0 0 4px;font-weight:500}
@@ -153,7 +154,7 @@ p{max-width:70ch}
 @media (max-width:640px){ .bigbar .seg span{display:none} }
 
 /* ---------- persona cards ---------- */
-.personas{grid-template-columns:repeat(auto-fit,minmax(305px,1fr));margin-top:28px}
+.personas{grid-template-columns:repeat(auto-fit,minmax(min(305px,100%),1fr));margin-top:28px}
 .pcard{border-top:6px solid;display:flex;flex-direction:column;gap:10px}
 .pcard .phead{display:flex;align-items:center;gap:14px}
 .pcard .phead .av{width:64px;height:64px;border-radius:50%;flex:none}
@@ -211,6 +212,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 
 /* ---------- split layout (table + phone) ---------- */
 .split{display:grid;gap:22px;grid-template-columns:1.25fr .85fr;align-items:start}
+.split > *{min-width:0}
 @media (max-width:920px){ .split{grid-template-columns:1fr} }
 
 /* ---------- phone mock ---------- */
@@ -226,7 +228,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 
 /* ---------- match demo ---------- */
 .demo-chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px}
-.docgrid{grid-template-columns:repeat(auto-fit,minmax(255px,1fr));margin-top:18px}
+.docgrid{grid-template-columns:repeat(auto-fit,minmax(min(255px,100%),1fr));margin-top:18px}
 .doc{display:flex;flex-direction:column;gap:8px}
 .doc .dhead{display:flex;gap:12px;align-items:center}
 .doc .dhead .av{width:54px;height:54px;border-radius:50%;flex:none}
@@ -246,7 +248,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .cadence .vlab{position:absolute;top:2px;transform:translateX(-50%);font-size:11.5px;font-weight:700;color:var(--navy);white-space:nowrap}
 
 /* ---------- hub cards ---------- */
-.hub{grid-template-columns:repeat(auto-fit,minmax(310px,1fr));margin-top:30px}
+.hub{grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr));margin-top:30px}
 .hubcard .avarow{margin:0}
 .hubcard .avarow .av{width:46px;height:46px;margin-right:-11px;border-width:3px}
 .hubcard{display:flex;flex-direction:column;gap:14px;text-decoration:none;color:var(--ink);transition:transform .18s ease, box-shadow .18s ease}
@@ -306,3 +308,17 @@ footer .fbrand{font-family:var(--disp);font-weight:800;letter-spacing:.14em;colo
 }
 #tip b{display:block;font-size:13px}
 .xlink{display:inline-block;margin-top:10px;font-size:14px;font-weight:600}
+
+/* ---------- tiny screens (≤380px) — kept last so it wins the cascade ---------- */
+@media (max-width:380px){
+  .topbar{padding:10px 14px;gap:10px}
+  .logo .word{font-size:12.5px;letter-spacing:.08em}
+  .topnav .pill{padding:8px 13px;font-size:12.5px}
+  .brow{grid-template-columns:56px 1fr}
+  .bval{white-space:normal}
+  .blab{font-size:12px}
+  .cadence{margin:26px 22px 8px}
+  .cadence .tlab{font-size:10px}
+  .df-step h3{font-size:21px}
+  .df-step p{font-size:13.5px}
+}

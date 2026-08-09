@@ -121,6 +121,30 @@ grammar for the care-model domain.
 Micro-animation elsewhere stays inside the same budget: comparison bars grow once on reveal,
 sections fade up once; nothing loops.
 
+### Measured audit results (six-agent verification, 2026-08-09)
+
+- **Clutter (both pages, every integer and half-point scene position):** max caption 22 words
+  (budget ≤30); max simultaneous captions **1** (verified by a 0.05-step sweep — second-highest
+  caption opacity 0.000); material hue buckets ≤5 (the 5 persona hues; accent shares the orange
+  bucket); ≤5 non-data elements on stage; zero chrome (no gridlines/borders/axes drawn).
+- **Stillness at rest:** two canvas snapshots 1.5 s apart are byte-identical at every tested
+  scene — including the outbound-rings scene — because all motion is a pure function of scroll
+  progress; zero `requestAnimationFrame` activity while idle.
+- **Amalgamation geometry:** the bar scene resolves into exactly 5 adjacent hue regions in
+  persona order with spans proportional to the shares; the zoom scene measures 2.29× dot size
+  vs the configured camera z = 2.2.
+- **Performance:** p95 frame time 16.8 ms (60 fps) at DPR 1 and 2 on both pages; zero long
+  tasks >100 ms; `.set()` median 0.7–0.8 ms over 500 calls; heap drift ≤0.07 MB; no listener growth.
+- **Accessibility/degradation:** reduced-motion renders one static composed frame with final
+  stat values (resize-safe); no-JS hides the theatre and shows 100% of section content; the
+  theatre is `aria-hidden`; segments and chips are keyboard-reachable with focus tooltips.
+- **Mobile:** zero page-level horizontal overflow at 390 px **and** 320 px across every scene;
+  five clusters disjoint at 390 px (min gap 109 px); match-demo chips tappable; stats unclipped.
+- Post-audit fixes applied: final caption now yields to the stats overlay as it fades in;
+  reduced-motion overlays pinned across resizes; grid min-content propagation stopped
+  (`min-width:0` + `minmax(min(px,100%),1fr)`); tiny-screen (≤380 px) type/topbar compaction;
+  bar-grow fallback timer replaced with a `beforeprint` hook; canvas repaints once webfonts load.
+
 ## Hosting
 
 Deploy `care-personas/` as a static-site root (Vercel/Netlify/GitHub Pages). Only external
