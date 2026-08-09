@@ -65,11 +65,16 @@ img,svg{max-width:100%}
 .topnav a.now{color:var(--navy);border-bottom:2px solid var(--accent)}
 .pill{
   display:inline-block;border-radius:999px;padding:9px 20px;font-weight:700;font-size:14px;
-  background:var(--navy);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:var(--disp)
+  background:var(--navy);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:var(--disp);
+  white-space:nowrap
 }
 .pill:hover{background:var(--navy-deep)}
 .pill.orange{background:var(--accent)}
 .pill.ghost{background:transparent;color:var(--navy);border:2px solid var(--navy)}
+@media (max-width:760px){
+  .topnav{gap:10px}
+  .topnav a:not(.pill){display:none}
+}
 
 /* ---------- layout ---------- */
 .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
@@ -280,7 +285,8 @@ footer .fbrand{font-family:var(--disp);font-weight:800;letter-spacing:.14em;colo
 .df-stat .l{font-size:13px;color:var(--ink-2);margin-top:6px}
 .theatre.df-static{height:100vh}
 @media (max-width:680px){
-  .df-step{left:7%;right:7%;bottom:12%}
+  .df-step{left:7%;right:7%;top:11%;bottom:auto}
+  .df-hint{bottom:2.5%}
 }
 @media print{ .theatre{display:none} }
 

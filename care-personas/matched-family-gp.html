@@ -561,23 +561,28 @@
 <script src="assets/site.js"></script>
 <script src="assets/dotfield.js"></script>
 <script>
+/* Population story: 200 figures = the loosely attached patients of one suburb,
+   in five care-match personas. They colour under the 20-second question, gather
+   into personas, amalgamate into the demand bar, then one match is made and the
+   outbound engine starts pulling people back in. */
 DotField({
   theatre: '#story', canvas: '#df2',
-  count: 200, shares: [18, 14, 24, 12, 32],
-  palette: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'],
-  neutral: '#c3cad8', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
+  counts: [36, 28, 48, 24, 64],
+  groupColors: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'],
+  neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
   labels: ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'],
-  splitLeft: [0, 1],
+  rmScene: 4,
   scenes: [
     { key: 'cloud' },
     { key: 'spread' },
-    { key: 'cloud', scan: true, colored: true },
-    { key: 'clusters', colored: true, labels: true },
-    { key: 'bar', colored: true, labels: true },
-    { key: 'bar', colored: true, labels: true, cam: { z: 2.2, x: 0.156, y: 0.46 }, dim: { keep: [0], to: 0.15 } },
-    { key: 'bar', colored: true, extra: 'match', dim: { keep: [0], to: 0.30 } },
-    { key: 'bar', colored: true, extra: 'outbound' },
-    { key: 'bar', colored: true, dim: { keep: [], to: 0.18 } }
+    { key: 'cloud', colorGroups: 'all', scan: { groups: 'all', axis: 'x' } },
+    { key: 'clusters', colorGroups: 'all', labels: true },
+    { key: 'bar', colorGroups: 'all', labels: true },
+    { key: 'bar', colorGroups: 'all', labels: true, dim: { keep: [0], to: 0.15 },
+      cam: { z: 2.2, x: 0.156, y: 0.46 }, camNarrow: { z: 2.0, x: 0.16, y: 0.46 } },
+    { key: 'bar', colorGroups: 'all', extra: 'match', dim: { keep: [0], to: 0.30 } },
+    { key: 'bar', colorGroups: 'all', extra: 'outbound' },
+    { key: 'bar', colorGroups: 'all', dim: { keep: [], to: 0.18 } }
   ]
 });
 </script>

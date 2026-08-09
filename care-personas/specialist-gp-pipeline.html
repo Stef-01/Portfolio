@@ -93,13 +93,13 @@
   <section class="theatre" id="story" aria-hidden="true">
     <div class="df-stage">
       <canvas id="df1"></canvas>
-      <div class="df-step"><p class="eyebrow">The caseload</p><h3>One cardiologist. 2,000 appointments.</h3><p>Every dot is ten visits in one year of clinic.</p></div>
-      <div class="df-step"><p class="eyebrow">Today</p><h3>The queue treats them all the same.</h3><p>First referred, first seen — complexity never enters into it.</p></div>
-      <div class="df-step"><p class="eyebrow">The screen</p><h3>Run the complexity screen.</h3><p>Six questions, scored 0–100, for every referral and follow-up.</p></div>
-      <div class="df-step"><p class="eyebrow">The reveal</p><h3>Five personas emerge.</h3><p>Not one caseload — five, each needing a different clinician.</p></div>
-      <div class="df-step"><p class="eyebrow">The map</p><h3>The whole book, in one bar.</h3><p>Two segments — one fifth of the book — sit in the bottom quintile.</p></div>
-      <div class="df-step"><p class="eyebrow">Zoom in</p><h3>Look closer at that 20%.</h3><p>Stable, protocol-driven care that doesn't need a decade of training.</p></div>
-      <div class="df-step"><p class="eyebrow">The pipeline</p><h3>Hand it to accredited GPs.</h3><p>With a named specialist 72 hours away — not four months.</p></div>
+      <div class="df-step"><p class="eyebrow">Two pools</p><h3>Two clinicians. Two patient pools.</h3><p>A GP's book of everyday medicine. A cardiologist's referred pool. Each figure is about fifteen patients.</p></div>
+      <div class="df-step"><p class="eyebrow">The screen</p><h3>Sort the specialist's pool by complexity.</h3><p>Top: procedures, puzzles, unstable disease. Bottom: stable, protocol-driven follow-ups.</p></div>
+      <div class="df-step"><p class="eyebrow">The bottom quintile</p><h3>The bottom 20% barely needs the specialist.</h3><p>Stable AF checks. Routine titration. A protocol already says what to do.</p></div>
+      <div class="df-step"><p class="eyebrow">Zoom in</p><h3>Look them in the eye.</h3><p>These are continuity patients — the kind GPs are built for.</p></div>
+      <div class="df-step"><p class="eyebrow">The move</p><h3>Move them into the GP's pool.</h3><p>Sixteen figures cross. The GP now bills properly for genuinely complex care.</p></div>
+      <div class="df-step"><p class="eyebrow">The backstop</p><h3>Guidance stays one message away.</h3><p>Stuck? An eConsult comes back inside 72 hours — not four months.</p></div>
+      <div class="df-step"><p class="eyebrow">The other half</p><h3>Specialists keep what needs a specialist.</h3><p>A denser, more complex pool — the whole decade of training, used all day.</p></div>
       <div class="df-step"><p class="eyebrow">The result</p><h3>Everyone bills better.</h3><p></p></div>
       <div class="df-stats">
         <div class="df-stat"><div class="v"><span data-countup="35" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">specialist consulting per FTE, per year, on the same clinic hours</div></div>
@@ -604,25 +604,115 @@
 <script src="assets/site.js"></script>
 <script src="assets/dotfield.js"></script>
 <script>
-DotField({
-  theatre: '#story', canvas: '#df1',
-  count: 200, shares: [12, 8, 35, 20, 25],
-  palette: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'],
-  neutral: '#c3cad8', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
-  labels: ['Steady State', 'Titration', 'Juggler', 'Puzzle', 'High-Stakes'],
-  splitLeft: [0, 1],
-  anchorsLabels: ['Specialist-GP track', 'Specialist core'],
-  scenes: [
-    { key: 'cloud' },
-    { key: 'spread' },
-    { key: 'cloud', scan: true, colored: true },
-    { key: 'clusters', colored: true, labels: true },
-    { key: 'bar', colored: true, labels: true },
-    { key: 'bar', colored: true, labels: true, cam: { z: 2.2, x: 0.164, y: 0.46 }, dim: { keep: [0, 1], to: 0.15 } },
-    { key: 'split', colored: true, labels: true, extra: 'split' },
-    { key: 'split', colored: true, dim: { keep: [], to: 0.20 }, extra: 'split' }
-  ]
-});
+/* Two-pools story: a GP's book (120 figures, group 5) and a cardiologist's
+   referred pool (80 figures, groups 0-4 = the five personas). The bottom
+   quintile of the specialist pool (groups 0+1 = 16 figures) crosses to the
+   GP pool with an eConsult guidance line back. Each figure ≈ 15 patients. */
+(function () {
+  function poolCentres(c) {
+    return c.narrow
+      ? { gp: [0.5 * c.W, 0.78 * c.H], sp: [0.5 * c.W, 0.42 * c.H] }
+      : { gp: [0.30 * c.W, 0.52 * c.H], sp: [0.73 * c.W, 0.46 * c.H] };
+  }
+  function packInto(c, pos, centre, members, seed) {
+    var pts = c.phyllo(centre[0], centre[1], members.length, c.U * 1.55, seed);
+    for (var i = 0; i < members.length; i++) pos[members[i]] = pts[i];
+    return pts.radius;
+  }
+  function membersOf(c, want) {
+    var out = [];
+    for (var d = 0; d < c.N; d++) if (want.indexOf(c.groups[d]) >= 0) out.push(d);
+    return out;
+  }
+  var layouts = {
+    pools: function (c) {
+      var P = poolCentres(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, P.gp, membersOf(c, [5]), 0);
+      var rSp = packInto(c, pos, P.sp, membersOf(c, [0, 1, 2, 3, 4]), 5);
+      return { pos: pos, meta: {
+        labels: [
+          { x: P.gp[0], y: P.gp[1] - rGp - 30, text: "ONE GP'S BOOK", big: true },
+          { x: P.gp[0], y: P.gp[1] - rGp - 12, text: 'mostly everyday medicine', muted: true },
+          { x: P.sp[0], y: P.sp[1] - rSp - 30, text: "ONE CARDIOLOGIST'S POOL", big: true },
+          { x: P.sp[0], y: P.sp[1] - rSp - 12, text: 'referred for complexity', muted: true }
+        ],
+        zones: [
+          { x: P.gp[0], y: P.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 },
+          { x: P.sp[0], y: P.sp[1], r: rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }
+        ]
+      } };
+    },
+    ladder: function (c) {
+      var P = poolCentres(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, P.gp, membersOf(c, [5]), 0);
+      var cols = c.narrow ? 8 : 10, rows = c.narrow ? 10 : 8;
+      var cw = c.U * 1.6, ch = c.U * 2.05;
+      var gx = P.sp[0] - cols * cw / 2, gy = P.sp[1] - rows * ch / 2;
+      // rank specialists most-complex-first: groups 4,3,2 then 1,0 at the bottom
+      var order = [4, 3, 2, 1, 0], rank = 0;
+      for (var oi = 0; oi < order.length; oi++) {
+        for (var d = 0; d < c.N; d++) if (c.groups[d] === order[oi]) {
+          var col = rank % cols, row = Math.floor(rank / cols);
+          pos[d] = [gx + cw * (col + 0.5), gy + ch * (row + 0.5)];
+          rank++;
+        }
+      }
+      return { pos: pos, meta: {
+        labels: [
+          { x: P.gp[0], y: P.gp[1] - rGp - 30, text: "ONE GP'S BOOK", big: true },
+          { x: P.sp[0], y: gy - 34, text: "THE SPECIALIST'S POOL", big: true },
+          { x: P.sp[0], y: gy - 14, text: 'most complex at the top', muted: true },
+          { x: P.sp[0], y: gy + rows * ch + 22, text: 'stable & protocol-driven at the bottom', muted: true }
+        ],
+        zones: [
+          { x: P.gp[0], y: P.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 },
+          { x: P.sp[0], y: P.sp[1], r: Math.max(cols * cw, rows * ch) * 0.62 + c.U * 2, color: '#1c5cab', alpha: 0.05 }
+        ]
+      } };
+    },
+    moved: function (c) {
+      var P = poolCentres(c), pos = new Array(c.N);
+      // GP pool grows: its 120 plus the 16 transfers (who land on the outer ring)
+      var gpMembers = membersOf(c, [5]).concat(membersOf(c, [0, 1]));
+      var rGp = packInto(c, pos, P.gp, gpMembers, 0);
+      var rSp = packInto(c, pos, P.sp, membersOf(c, [2, 3, 4]), 5);
+      return { pos: pos, meta: {
+        labels: [
+          { x: P.gp[0], y: P.gp[1] - rGp - 30, text: "THE GP'S BOOK — GROWN", big: true },
+          { x: P.gp[0], y: P.gp[1] - rGp - 12, text: '+16 pipeline patients, billed properly', muted: true },
+          { x: P.sp[0], y: P.sp[1] - rSp - 30, text: "THE SPECIALIST'S POOL — CONCENTRATED", big: true },
+          { x: P.sp[0], y: P.sp[1] - rSp - 12, text: 'complex & procedural work only', muted: true }
+        ],
+        zones: [
+          { x: P.gp[0], y: P.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 },
+          { x: P.sp[0], y: P.sp[1], r: rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }
+        ],
+        link: { a: [P.gp[0] + (c.narrow ? 0 : rGp * 0.5), P.gp[1] - rGp - 6], b: [P.sp[0] - (c.narrow ? 0 : rSp * 0.5), P.sp[1] + (c.narrow ? rSp + 6 : -rSp - 6)] }
+      } };
+    }
+  };
+  DotField({
+    theatre: '#story', canvas: '#df1',
+    counts: [10, 6, 28, 16, 20, 120],
+    groupColors: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', null],
+    neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
+    labels: ['Steady State', 'Titration', 'Juggler', 'Puzzle', 'High-Stakes', ''],
+    layouts: layouts,
+    rmScene: 4,
+    scenes: [
+      { key: 'pools', labels: true },
+      { key: 'ladder', labels: true, colorGroups: [0, 1, 2, 3, 4], scan: { groups: [0, 1, 2, 3, 4], axis: 'y' } },
+      { key: 'ladder', labels: true, colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.15 } },
+      { key: 'ladder', colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.08 },
+        cam: { z: 2.4, x: 0.73, y: 0.545 }, camNarrow: { z: 2.2, x: 0.5, y: 0.50 } },
+      { key: 'moved', labels: true, colorGroups: [0, 1] },
+      { key: 'moved', labels: true, colorGroups: [0, 1], extra: 'link', linkLabel: 'eConsult · answered in 72 h' },
+      { key: 'moved', labels: true, colorGroups: [0, 1, 2, 3, 4], dim: { keep: [2, 3, 4], to: 0.30 },
+        cam: { z: 1.2, x: 0.62, y: 0.44 }, camNarrow: { z: 1.1, x: 0.5, y: 0.46 } },
+      { key: 'moved', colorGroups: [0, 1], dim: { keep: [], to: 0.15 } }
+    ]
+  });
+})();
 </script>
 </body>
 </html>
