@@ -175,6 +175,20 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   assessments, 130,000 patients into GP-led care, $116M network benefit against ~$93M new
   Medicare outlay — so no national workforce headcount is assumed or invented.
 
+- **Motion pass (engine v2.1):** three changes, each measured.
+  *Quality:* people now move **individually rather than as a block** — each figure starts at its
+  own moment inside the travel window (34% of travel spent staggering entries) and walks a
+  slightly **bowed bezier path**, so amalgamation reads as a crowd of individuals crossing, not a
+  rigid slide. Clinicians and labels shared between two scenes now **travel to their new
+  position** instead of crossfading into a visible second copy of themselves (this was ghosting
+  "the cardiologist" mid-transition).
+  *Cost:* memoised colour strings (a scroll frame was allocating ~600 throwaway strings) and a
+  sub-pixel render-skip guard. Net effect at CPU throttle 12× (low-end phone): p95 render
+  **27.6 ms → 21.2 ms**, worst frame **36.2 ms → 24.3 ms** (no dropped frames); unthrottled
+  desktop median **1.3 ms → 0.7 ms** — faster despite the added per-dot maths.
+  *Invariants re-verified:* the dwell window of an extra-free scene is byte-identical across its
+  whole span, scene landings are idempotent, and nothing moves at rest — the stagger is
+  normalised so every figure is exactly at its destination by the end of travel.
 - **One-page executive summary (`executive-summary.html`):** both concepts side by side —
   problem, mechanism, four headline numbers each, generalisability, guardrails, and both asks —
   plus a "why the two belong together" note ($840k buys evidence for both). Print CSS targets

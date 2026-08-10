@@ -36,7 +36,15 @@
   function mixRgb(a, b, t) {
     return [Math.round(lerp(a[0], b[0], t)), Math.round(lerp(a[1], b[1], t)), Math.round(lerp(a[2], b[2], t))];
   }
-  function css(rgb) { return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')'; }
+  // Colour strings are rebuilt for every figure on every frame otherwise —
+  // memoised here so a scroll frame allocates almost no strings.
+  var CSS_CACHE = Object.create(null);
+  function css(rgb) {
+    var k = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
+    var v = CSS_CACHE[k];
+    if (v === undefined) { v = CSS_CACHE[k] = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')'; }
+    return v;
+  }
 
   var SKINS = ['#f2c9a0', '#eeb98d', '#d29a6b', '#c68b59', '#a06a3f', '#8c5a33', '#5c3b21'].map(hexRgb);
   var HAIRS = ['#201209', '#201209', '#3a2a1c', '#3a2a1c', '#5a3b23', '#7a3b1e', '#8d8d95', '#e6e9f0'].map(hexRgb);
@@ -65,11 +73,13 @@
       for (var g = 0; g < G; g++) for (var i = 0; i < counts[g]; i++) { groups.push(g); idxInGroup.push(i); }
     })();
     var rand = mulberry32(20260809);
-    var skin = [], hair = [], jit = [];
+    var skin = [], hair = [], jit = [], stag = [], curve = [];
     for (var i0 = 0; i0 < N; i0++) {
       skin.push(SKINS[Math.floor(rand() * SKINS.length)]);
       hair.push(HAIRS[Math.floor(rand() * HAIRS.length)]);
       jit.push([rand() * 2 - 1, rand() * 2 - 1]);
+      stag.push(rand());          // when this person starts moving
+      curve.push(rand() * 2 - 1); // which way their path bows
     }
 
     /* ---------- geometry ---------- */
@@ -271,13 +281,37 @@
         ctx.fillText(spec.label, x, y + 1.5 * s);
       }
     }
-    function drawClinicians(scene, alpha, cam) {
-      if (!scene || alpha <= 0.02) return;
-      var C = (meta[scene.key] || {}).clinicians || [];
-      for (var i = 0; i < C.length; i++) {
-        var p = project([C[i].x, C[i].y], cam);
-        if (p[0] < -60 || p[0] > W + 60 || p[1] < -60 || p[1] > H + 60) continue;
-        drawClinician(p[0], p[1], U * 2.1 * cam[0], C[i], alpha);
+    // A clinician who exists in both scenes should WALK to their new spot, not
+    // ghost-crossfade into a second copy of themselves; same for shared labels.
+    function pairUp(listA, listB, key) {
+      var used = {}, out = [];
+      (listA || []).forEach(function (a, ai) {
+        var bi = -1;
+        (listB || []).forEach(function (b, j) {
+          if (bi < 0 && !used[j] && key(b) && key(b) === key(a)) bi = j;
+        });
+        if (bi >= 0) { used[bi] = 1; out.push({ a: a, b: listB[bi], ai: ai, bi: bi }); }
+        else out.push({ a: a, b: null, ai: ai, bi: -1 });
+      });
+      (listB || []).forEach(function (b, j) {
+        if (!used[j]) out.push({ a: null, b: b, ai: -1, bi: j });
+      });
+      return out;
+    }
+
+    function drawCliniciansPair(A, B, m, cam) {
+      var CA = (meta[A.key] || {}).clinicians || [];
+      var CB = (meta[B.key] || {}).clinicians || [];
+      var pairs = pairUp(CA, CB, function (c) { return c.label; });
+      for (var i = 0; i < pairs.length; i++) {
+        var a = pairs[i].a, b = pairs[i].b, spec, x, y, al;
+        if (a && b) { spec = a; x = lerp(a.x, b.x, m); y = lerp(a.y, b.y, m); al = 1; }
+        else if (a) { spec = a; x = a.x; y = a.y; al = 1 - m; }
+        else { spec = b; x = b.x; y = b.y; al = m; }
+        if (al <= 0.02) continue;
+        var p = project([x, y], cam);
+        if (p[0] < -80 || p[0] > W + 80 || p[1] < -80 || p[1] > H + 80) continue;
+        drawClinician(p[0], p[1], U * 2.1 * cam[0], spec, al);
       }
       ctx.globalAlpha = 1;
     }
@@ -296,22 +330,38 @@
     }
 
     /* ---------- labels ---------- */
-    function drawLabels(scene, alpha, cam) {
-      if (!scene || !scene.labels || alpha <= 0.02) return;
-      var L = (meta[scene.key] || {}).labels || [];
+    function labelAlpha(scene, idx, label) {
+      if (!scene.labels) return 0;
+      var a = 1;
       var grouped = scene.key === 'clusters' || scene.key === 'bar';
+      if (grouped && scene.dim) a *= scene.dim.keep.indexOf(idx) >= 0 ? 1 : scene.dim.to;
+      if (label.dimWith != null && scene.dim) a *= scene.dim.keep.indexOf(label.dimWith) >= 0 ? 1 : scene.dim.to;
+      return a;
+    }
+
+    function drawLabelsPair(A, B, m, cam) {
+      var LA = A.labels ? ((meta[A.key] || {}).labels || []) : [];
+      var LB = B.labels ? ((meta[B.key] || {}).labels || []) : [];
+      var pairs = pairUp(LA, LB, function (l) { return l.text; });
       ctx.save();
       ctx.textAlign = 'center';
-      for (var i = 0; i < L.length; i++) {
-        if (!L[i].text) continue;
-        var la = alpha;
-        if (grouped && scene.dim) la *= scene.dim.keep.indexOf(i) >= 0 ? 1 : scene.dim.to;
-        if (L[i].dimWith != null && scene.dim) la *= scene.dim.keep.indexOf(L[i].dimWith) >= 0 ? 1 : scene.dim.to;
-        ctx.globalAlpha = la;
-        ctx.fillStyle = L[i].muted ? ink2 : ink;
-        ctx.font = (L[i].big ? '700 ' + (W < 680 ? 13 : 15) : '600 ' + (W < 680 ? 11 : 13)) + 'px Poppins, Inter, system-ui, sans-serif';
-        var p = project([L[i].x, L[i].y], cam);
-        ctx.fillText(L[i].text, p[0], p[1]);
+      for (var i = 0; i < pairs.length; i++) {
+        var a = pairs[i].a, b = pairs[i].b, L, x, y, al;
+        if (a && b) {
+          L = a;
+          x = lerp(a.x, b.x, m); y = lerp(a.y, b.y, m);
+          al = lerp(labelAlpha(A, pairs[i].ai, a), labelAlpha(B, pairs[i].bi, b), m);
+        } else if (a) {
+          L = a; x = a.x; y = a.y; al = labelAlpha(A, pairs[i].ai, a) * (1 - m);
+        } else {
+          L = b; x = b.x; y = b.y; al = labelAlpha(B, pairs[i].bi, b) * m;
+        }
+        if (!L.text || al <= 0.02) continue;
+        ctx.globalAlpha = al;
+        ctx.fillStyle = L.muted ? ink2 : ink;
+        ctx.font = (L.big ? '700 ' + (W < 680 ? 13 : 15) : '600 ' + (W < 680 ? 11 : 13)) + 'px Poppins, Inter, system-ui, sans-serif';
+        var p = project([x, y], cam);
+        ctx.fillText(L.text, p[0], p[1]);
       }
       ctx.restore();
     }
@@ -372,14 +422,16 @@
 
     /* ---------- render ---------- */
     var lastP = -1;
-    function render(p) {
+    function render(p, force) {
       p = clamp(p, 0, SC - 1);
+      // a sub-pixel scroll delta cannot change the frame — skip the repaint
+      if (!force && lastP >= 0 && Math.abs(p - lastP) < 0.0004) return;
       lastP = p;
       var si = Math.min(Math.floor(p), SC - 2);
       var t = p - si;
       var DWELL = 0.67; // dwell:travel ≥ 2:1
-      var m = t < DWELL ? 0 : ease((t - DWELL) / (1 - DWELL));
-      if (RM) m = t < DWELL ? 0 : 1;
+      var u = t < DWELL ? 0 : clamp((t - DWELL) / (1 - DWELL), 0, 1); // raw travel
+      var m = RM ? (t < DWELL ? 0 : 1) : ease(u);   // scene-level progress (camera, labels, zones)
       var A = scenes[si], B = scenes[si + 1];
       var layA = layouts[A.key], layB = layouts[B.key];
       var camA = camOf(A), camB = camOf(B);
@@ -389,20 +441,49 @@
       ctx.clearRect(0, 0, W, H);
       drawZones(A, 1 - m, cam); drawZones(B, m, cam);
 
+      // People move individually, not as one block: each starts at their own
+      // moment within the travel window and walks a slightly bowed path. Every
+      // figure is still exactly at rest at u=0 and u=1, so scenes stay static.
       var s = U * cam[0];
+      var LAG = RM ? 0 : 0.34;              // fraction of travel spent staggering entries
+      var SPAN = 1 - LAG;
+      var bowMax = U * 5.5;
       for (var d = 0; d < N; d++) {
         var pa = layA[d], pb = layB[d];
-        var x = lerp(pa[0], pb[0], m), y = lerp(pa[1], pb[1], m);
+        var lm;
+        if (u <= 0) lm = 0;
+        else if (u >= 1) lm = 1;
+        else lm = ease(clamp((u - stag[d] * LAG) / SPAN, 0, 1));
+
+        var x, y;
+        if (lm <= 0) { x = pa[0]; y = pa[1]; }
+        else if (lm >= 1) { x = pb[0]; y = pb[1]; }
+        else {
+          var dx = pb[0] - pa[0], dy = pb[1] - pa[1];
+          var len = Math.sqrt(dx * dx + dy * dy);
+          if (len > U * 2) {
+            // quadratic bezier bowed perpendicular to the direction of travel
+            var bow = curve[d] * Math.min(len * 0.16, bowMax);
+            var cx = (pa[0] + pb[0]) / 2 - (dy / len) * bow;
+            var cy = (pa[1] + pb[1]) / 2 + (dx / len) * bow;
+            var iv = 1 - lm;
+            x = iv * iv * pa[0] + 2 * iv * lm * cx + lm * lm * pb[0];
+            y = iv * iv * pa[1] + 2 * iv * lm * cy + lm * lm * pb[1];
+          } else {
+            x = lerp(pa[0], pb[0], lm); y = lerp(pa[1], pb[1], lm);
+          }
+        }
+
         var q = project([x, y], cam);
         if (q[0] < -30 || q[0] > W + 30 || q[1] < -30 || q[1] > H + 30) continue;
         var ca = clothingOf(d, A, tt), cb = clothingOf(d, B, 0);
-        var col = m === 0 ? ca : mixRgb(ca, cb, m);
-        var al = lerp(alphaOf(d, A), alphaOf(d, B), m);
+        var col = lm === 0 ? ca : lm === 1 ? cb : mixRgb(ca, cb, lm);
+        var al = lerp(alphaOf(d, A), alphaOf(d, B), lm);
         drawPerson(q[0], q[1], s, col, d, al);
       }
       ctx.globalAlpha = 1;
-      drawClinicians(A, 1 - m, cam); drawClinicians(B, m, cam);
-      drawLabels(A, 1 - m, cam); drawLabels(B, m, cam);
+      drawCliniciansPair(A, B, m, cam);
+      drawLabelsPair(A, B, m, cam);
       drawExtras(A, tt, 1 - m, cam); drawExtras(B, 0, m, cam);
 
       if (staticMode) return; // overlays are pinned by the static composition
@@ -488,21 +569,24 @@
       steps.forEach(function (el) { el.style.opacity = 0; });
       if (hintEl) hintEl.style.opacity = 0;
       if (statsEl) { statsEl.style.opacity = 1; fireCountups(); }
-      window.addEventListener('resize', function () { sizes(); render(rmScene); });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { render(rmScene); });
+      window.addEventListener('resize', function () { sizes(); render(rmScene, true); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { render(rmScene, true); });
     } else {
       theatre.style.height = (SC * 100) + 'vh';
-      sizes(); render(0);
+      sizes(); render(0, true);
       window.addEventListener('scroll', schedule, { passive: true });
-      window.addEventListener('resize', function () { sizes(); if (override === null) schedule(); else render(override); });
+      // geometry changed, so the frame must be rebuilt even at the same scroll position
+      window.addEventListener('resize', function () {
+        sizes(); render(override !== null ? override : progress(), true);
+      });
       // repaint canvas typography once the webfonts arrive
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {
-        if (override !== null) render(override); else render(progress());
+        render(override !== null ? override : progress(), true);
       });
     }
 
     var api = {
-      set: function (p) { override = p; render(p); },
+      set: function (p) { override = p; render(p, true); },
       release: function () { override = null; schedule(); },
       progress: function () { return lastP; },
       scenes: SC,
