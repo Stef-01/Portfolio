@@ -2,9 +2,21 @@
   import { defineConfig } from 'vite';
   import react from '@vitejs/plugin-react-swc';
   import path from 'path';
+  import fs from 'fs';
+
+  // The Care Personas explainers are a self-contained static site that must ship
+  // alongside the app, served verbatim at /care-personas/ — no bundling.
+  const copyCarePersonas = {
+    name: 'copy-care-personas',
+    closeBundle() {
+      const from = path.resolve(__dirname, 'care-personas');
+      const to = path.resolve(__dirname, 'build/care-personas');
+      if (fs.existsSync(from)) fs.cpSync(from, to, { recursive: true });
+    },
+  };
 
   export default defineConfig({
-    plugins: [react()],
+    plugins: [react(), copyCarePersonas],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
