@@ -90,14 +90,15 @@
   <section class="theatre" id="story" aria-hidden="true">
     <div class="df-stage">
       <canvas id="df2"></canvas>
-      <div class="df-step"><p class="eyebrow">The population</p><h3>The loosely attached.</h3><p>Every dot is a patient without “their” doctor.</p></div>
+      <div class="df-step"><p class="eyebrow">The population</p><h3>The loosely attached.</h3><p>Every figure is a patient without “their” doctor.</p></div>
       <div class="df-step"><p class="eyebrow">Today</p><h3>The system calls them hard to reach.</h3><p>They're not hiding. The front door doesn't fit.</p></div>
-      <div class="df-step"><p class="eyebrow">The question</p><h3>Ask what they need in a doctor.</h3><p>Twenty seconds. Chips, not forms.</p></div>
-      <div class="df-step"><p class="eyebrow">The reveal</p><h3>Five personas, not one problem.</h3><p>Each one bookable — with the right match.</p></div>
-      <div class="df-step"><p class="eyebrow">The map</p><h3>The demand, mapped.</h3><p>Doctors declared who they want to serve. This is the overlap.</p></div>
-      <div class="df-step"><p class="eyebrow">Zoom in</p><h3>One Mirror Seeker.</h3><p>Five clinics tried generic booking. None of them fit.</p></div>
-      <div class="df-step"><p class="eyebrow">The match</p><h3>One match, made.</h3><p>A patient meets the doctor who asked for exactly them.</p></div>
-      <div class="df-step"><p class="eyebrow">The engine</p><h3>Then the follow-up finds them.</h3><p>“Dr Nguyen is free Thursday 2:40 — reply YES to book.”</p></div>
+      <div class="df-step"><p class="eyebrow">Step 1 — ask</p><h3>Ask what they need in a doctor.</h3><p>Twenty seconds. Chips, not forms.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 2 — see them</p><h3>Five personas, not one problem.</h3><p>Each one bookable — with the right match.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 3 — the doctors</p><h3>Doctors declare what they bring.</h3><p>Culture and language. Lived experience of your condition. Openness to lifestyle-first, non-drug care.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 4 — the match</p><h3>Match them — by colour.</h3><p>Every patient flows to the doctor wearing their colour: same culture, same condition experience, same philosophy of care.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 5 — look closer</p><h3>The doctor actually understands them.</h3><p>The first visit starts from recognition, not translation.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 6 — the engine</p><h3>Then the follow-up finds them.</h3><p>“Dr Nguyen is free Thursday 2:40 — reply YES to book.”</p></div>
+      <div class="df-step"><p class="eyebrow">Step 7 — the payoff</p><h3>Disengagement collapses.</h3><p>Patients who feel understood stay: 48% → 81% still in care at twelve months.</p></div>
       <div class="df-step"><p class="eyebrow">The result</p><h3>The family GP, rebuilt.</h3><p></p></div>
       <div class="df-stats">
         <div class="df-stat"><div class="v"><span data-countup="70" data-pre="+" data-suf="%">+0%</span></div><div class="l">visits per year when the doctor fits (1.7 → 2.9)</div></div>
@@ -590,30 +591,93 @@
 <script src="assets/site.js"></script>
 <script src="assets/dotfield.js"></script>
 <script>
-/* Population story: 200 figures = the loosely attached patients of one suburb,
-   in five care-match personas. They colour under the 20-second question, gather
-   into personas, amalgamate into the demand bar, then one match is made and the
-   outbound engine starts pulling people back in. */
-DotField({
-  theatre: '#story', canvas: '#df2',
-  counts: [36, 28, 48, 24, 64],
-  groupColors: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'],
-  neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
-  labels: ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'],
-  rmScene: 4,
-  scenes: [
-    { key: 'cloud' },
-    { key: 'spread' },
-    { key: 'cloud', colorGroups: 'all', scan: { groups: 'all', axis: 'x' } },
-    { key: 'clusters', colorGroups: 'all', labels: true },
-    { key: 'bar', colorGroups: 'all', labels: true },
-    { key: 'bar', colorGroups: 'all', labels: true, dim: { keep: [0], to: 0.15 },
-      cam: { z: 2.2, x: 0.156, y: 0.46 }, camNarrow: { z: 2.0, x: 0.16, y: 0.46 } },
-    { key: 'bar', colorGroups: 'all', extra: 'match', dim: { keep: [0], to: 0.30 } },
-    { key: 'bar', colorGroups: 'all', extra: 'outbound' },
-    { key: 'bar', colorGroups: 'all', dim: { keep: [], to: 0.18 } }
-  ]
-});
+/* Colour-match story: 200 loosely attached patients in five care-match
+   personas. Five doctors appear, each wearing a ring in the colour of the
+   patients they declared for — culture, condition experience, lifestyle-first
+   care — and every patient flows to the doctor wearing their colour. */
+(function () {
+  var COUNTS = [36, 28, 48, 24, 64];
+  var HUES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'];
+  var DOCSPEC = [
+    { skin: 4, hair: 0, label: 'your culture' },
+    { skin: 2, hair: 3, label: 'lifestyle-first' },
+    { skin: 0, hair: 5, label: 'lived it too' },
+    { skin: 5, hair: 1, label: 'data-literate' },
+    { skin: 3, hair: 6, label: 'whole family' }
+  ];
+  function docPos(c, g) {
+    return c.narrow
+      ? [0.84 * c.W, (0.14 + 0.18 * g) * c.H]
+      : [(0.14 + 0.18 * g) * c.W, 0.84 * c.H];
+  }
+  function docsMeta(c) {
+    var clin = [], docs = [];
+    for (var g = 0; g < 5; g++) {
+      var p = docPos(c, g);
+      var s = DOCSPEC[g];
+      clin.push({ x: p[0], y: p[1], skin: s.skin, hair: s.hair, label: s.label, ring: HUES[g] });
+      docs.push(p);
+    }
+    return { clinicians: clin, docs: docs };
+  }
+  // replicate the engine's builtin cluster geometry so scene 3 -> 4 holds still
+  function clusterPos(c) {
+    var slots = c.narrow
+      ? [[0.30, 0.32], [0.72, 0.42], [0.32, 0.57], [0.72, 0.71], [0.34, 0.85]]
+      : [[0.15, 0.35], [0.32, 0.66], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
+    var pos = new Array(c.N);
+    for (var g = 0; g < 5; g++) {
+      var pts = c.phyllo(slots[g][0] * c.W, slots[g][1] * c.H, COUNTS[g], c.U * 1.55, g * 13);
+      var gi = 0;
+      for (var d = 0; d < c.N; d++) if (c.groups[d] === g) pos[d] = pts[gi++];
+    }
+    return pos;
+  }
+  var layouts = {
+    docrow: function (c) {
+      var m = docsMeta(c);
+      return { pos: clusterPos(c), meta: {
+        clinicians: m.clinicians, docs: m.docs,
+        labels: [{ x: c.narrow ? 0.84 * c.W : 0.5 * c.W, y: c.narrow ? 0.05 * c.H : 0.945 * c.H, text: 'the practice — each doctor declared their focus', muted: true }]
+      } };
+    },
+    matched: function (c) {
+      var m = docsMeta(c), pos = new Array(c.N);
+      for (var g = 0; g < 5; g++) {
+        var r = c.U * 1.55 * Math.sqrt(COUNTS[g]) * 0.62;
+        var p = docPos(c, g);
+        var cx = c.narrow ? p[0] - r - c.U * 3.2 : p[0];
+        var cy = c.narrow ? p[1] : p[1] - r - c.U * 3.4;
+        var pts = c.phyllo(cx, cy, COUNTS[g], c.U * 1.55, g * 7);
+        var gi = 0;
+        for (var d = 0; d < c.N; d++) if (c.groups[d] === g) pos[d] = pts[gi++];
+      }
+      return { pos: pos, meta: { clinicians: m.clinicians, docs: m.docs, labels: [] } };
+    }
+  };
+  DotField({
+    theatre: '#story', canvas: '#df2',
+    counts: COUNTS,
+    groupColors: HUES,
+    neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
+    labels: ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'],
+    layouts: layouts,
+    rmScene: 5,
+    scenes: [
+      { key: 'cloud' },
+      { key: 'spread' },
+      { key: 'cloud', colorGroups: 'all', scan: { groups: 'all', axis: 'x' } },
+      { key: 'clusters', colorGroups: 'all', labels: true },
+      { key: 'docrow', colorGroups: 'all', labels: true },
+      { key: 'matched', colorGroups: 'all', labels: true },
+      { key: 'matched', colorGroups: 'all', dim: { keep: [0], to: 0.15 },
+        cam: { z: 1.9, x: 0.16, y: 0.74 }, camNarrow: { z: 1.6, x: 0.68, y: 0.15 } },
+      { key: 'matched', colorGroups: 'all', extra: 'outbound' },
+      { key: 'matched', colorGroups: 'all' },
+      { key: 'matched', colorGroups: 'all', dim: { keep: [], to: 0.18 } }
+    ]
+  });
+})();
 </script>
 <script>
 /* 20-second match demo — fictional clinicians, client-side only */

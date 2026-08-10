@@ -85,6 +85,10 @@
     /* ---------- geometry ---------- */
     var W = 0, H = 0, DPR = 1, U = 9; // U = base unit (figure) size in px
     var layouts = {}, meta = {};
+    // ctx.font assignment parses a CSS font string — cache it, it's a hot path
+    var curFont = '';
+    function setFont(f) { if (f !== curFont) { curFont = f; ctx.font = f; } }
+    var F_BIG = '', F_SMALL = '', F_ANNO = '600 12px Inter, system-ui, sans-serif', F_TINY = '700 11px Inter, system-ui, sans-serif';
 
     function phyllo(cx, cy, count, pitch, startI) {
       var out = [], golden = 2.399963;
@@ -248,6 +252,11 @@
     function drawClinician(x, y, s, spec, alpha) {
       ctx.globalAlpha = alpha;
       var sk = SKINS[spec.skin % SKINS.length], hr = HAIRS[spec.hair % HAIRS.length];
+      // declared-focus ring — the colour a patient matches to
+      if (spec.ring) {
+        ctx.strokeStyle = spec.ring; ctx.lineWidth = Math.max(2, 0.14 * s);
+        ctx.beginPath(); ctx.arc(x, y + 0.3 * s, 1.05 * s, 0, 6.2832); ctx.stroke();
+      }
       // coat
       ctx.fillStyle = '#f4f7fb';
       ctx.strokeStyle = 'rgba(27,40,70,.38)';
@@ -277,7 +286,7 @@
       ctx.beginPath(); ctx.arc(x, y - 0.06 * s, 0.13 * s, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
       if (spec.label) {
         ctx.fillStyle = ink2; ctx.textAlign = 'center';
-        ctx.font = '700 ' + Math.max(10, Math.round(0.5 * s)) + 'px Poppins, Inter, system-ui, sans-serif';
+        setFont('700 ' + Math.max(10, Math.round(0.5 * s)) + 'px Poppins, Inter, system-ui, sans-serif');
         ctx.fillText(spec.label, x, y + 1.5 * s);
       }
     }
@@ -299,10 +308,14 @@
       return out;
     }
 
-    function drawCliniciansPair(A, B, m, cam) {
-      var CA = (meta[A.key] || {}).clinicians || [];
-      var CB = (meta[B.key] || {}).clinicians || [];
-      var pairs = pairUp(CA, CB, function (c) { return c.label; });
+    var pairCache = {};
+    function drawCliniciansPair(A, B, m, cam, si) {
+      var ck = 'c' + si, pairs = pairCache[ck];
+      if (!pairs) {
+        var CA = (meta[A.key] || {}).clinicians || [];
+        var CB = (meta[B.key] || {}).clinicians || [];
+        pairs = pairCache[ck] = pairUp(CA, CB, function (c) { return c.label; });
+      }
       for (var i = 0; i < pairs.length; i++) {
         var a = pairs[i].a, b = pairs[i].b, spec, x, y, al;
         if (a && b) { spec = a; x = lerp(a.x, b.x, m); y = lerp(a.y, b.y, m); al = 1; }
@@ -339,10 +352,13 @@
       return a;
     }
 
-    function drawLabelsPair(A, B, m, cam) {
-      var LA = A.labels ? ((meta[A.key] || {}).labels || []) : [];
-      var LB = B.labels ? ((meta[B.key] || {}).labels || []) : [];
-      var pairs = pairUp(LA, LB, function (l) { return l.text; });
+    function drawLabelsPair(A, B, m, cam, si) {
+      var lk = 'l' + si, pairs = pairCache[lk];
+      if (!pairs) {
+        var LA = A.labels ? ((meta[A.key] || {}).labels || []) : [];
+        var LB = B.labels ? ((meta[B.key] || {}).labels || []) : [];
+        pairs = pairCache[lk] = pairUp(LA, LB, function (l) { return l.text; });
+      }
       ctx.save();
       ctx.textAlign = 'center';
       for (var i = 0; i < pairs.length; i++) {
@@ -359,7 +375,7 @@
         if (!L.text || al <= 0.02) continue;
         ctx.globalAlpha = al;
         ctx.fillStyle = L.muted ? ink2 : ink;
-        ctx.font = (L.big ? '700 ' + (W < 680 ? 13 : 15) : '600 ' + (W < 680 ? 11 : 13)) + 'px Poppins, Inter, system-ui, sans-serif';
+        setFont(L.big ? F_BIG : F_SMALL);
         var p = project([x, y], cam);
         ctx.fillText(L.text, p[0], p[1]);
       }
@@ -388,7 +404,7 @@
         ctx.beginPath(); ctx.arc(pp[0], pp[1], 5 * z, 0, 6.2832); ctx.fill();
         ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
         if (scene.linkLabel) {
-          ctx.fillStyle = ink2; ctx.font = '600 12px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
+          ctx.fillStyle = ink2; setFont(F_ANNO); ctx.textAlign = 'center';
           ctx.fillText(scene.linkLabel, q2[0], q2[1] - 10);
         }
       }
@@ -406,15 +422,23 @@
           ctx.beginPath(); ctx.arc(Dp[0], Dp[1], U * 3.2 * z, 0, 6.2832); ctx.stroke();
         }
       }
-      if (scene.extra === 'outbound' && M.doc) {
-        var D2 = M.doc, Dq = P(D2[0], D2[1]);
-        drawClinician(Dq[0], Dq[1], U * 2.1 * z, { skin: 4, hair: 0, label: 'their GP' }, alpha);
-        for (var ri = 0; ri < 3; ri++) {
-          var pt = (tt * 1.2 + ri / 3) % 1;
-          var rad = (U * 3 + pt * Math.min(W, H) * 0.28) * z;
-          ctx.strokeStyle = 'rgba(235,104,52,' + (0.5 * (1 - pt)).toFixed(3) + ')';
-          ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.arc(Dq[0], Dq[1], rad, 0, 6.2832); ctx.stroke();
+      if (scene.extra === 'outbound' && (M.docs || M.doc)) {
+        // pulse rings from every doctor; when the layout already draws its
+        // clinicians (meta.clinicians), don't draw a duplicate figure here
+        var srcs = M.docs || [M.doc];
+        if (!M.clinicians && !M.docs) {
+          var Dq0 = P(M.doc[0], M.doc[1]);
+          drawClinician(Dq0[0], Dq0[1], U * 2.1 * z, { skin: 4, hair: 0, label: 'their GP' }, alpha);
+        }
+        for (var si2 = 0; si2 < srcs.length; si2++) {
+          var Dq = P(srcs[si2][0], srcs[si2][1]);
+          for (var ri = 0; ri < 3; ri++) {
+            var pt = (tt * 1.2 + ri / 3 + si2 * 0.13) % 1;
+            var rad = (U * 3 + pt * Math.min(W, H) * (M.docs ? 0.14 : 0.28)) * z;
+            ctx.strokeStyle = 'rgba(235,104,52,' + (0.5 * (1 - pt)).toFixed(3) + ')';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(Dq[0], Dq[1], rad, 0, 6.2832); ctx.stroke();
+          }
         }
       }
       ctx.restore();
@@ -429,7 +453,7 @@
       lastP = p;
       var si = Math.min(Math.floor(p), SC - 2);
       var t = p - si;
-      var DWELL = 0.67; // dwell:travel ≥ 2:1
+      var DWELL = 0.5; // half of each scene's scroll span is travel — legibility over strict 2:1
       var u = t < DWELL ? 0 : clamp((t - DWELL) / (1 - DWELL), 0, 1); // raw travel
       var m = RM ? (t < DWELL ? 0 : 1) : ease(u);   // scene-level progress (camera, labels, zones)
       var A = scenes[si], B = scenes[si + 1];
@@ -482,8 +506,8 @@
         drawPerson(q[0], q[1], s, col, d, al);
       }
       ctx.globalAlpha = 1;
-      drawCliniciansPair(A, B, m, cam);
-      drawLabelsPair(A, B, m, cam);
+      drawCliniciansPair(A, B, m, cam, si);
+      drawLabelsPair(A, B, m, cam, si);
       drawExtras(A, tt, 1 - m, cam); drawExtras(B, 0, m, cam);
 
       if (staticMode) return; // overlays are pinned by the static composition
@@ -540,6 +564,10 @@
       canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
       canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      curFont = ''; // canvas state reset by resize
+      F_BIG = '700 ' + (W < 680 ? 13 : 15) + 'px Poppins, Inter, system-ui, sans-serif';
+      F_SMALL = '600 ' + (W < 680 ? 11 : 13) + 'px Poppins, Inter, system-ui, sans-serif';
+      pairCache = {};
       buildLayouts();
     }
 
@@ -551,11 +579,29 @@
       return span > 0 ? clamp(-top / span, 0, 1) * (SC - 1) : 0;
     }
 
-    var raf = null;
+    // Smoothness: discrete wheel/scroll events would otherwise jump the story in
+    // steps. The rendered progress chases the scroll target with critical
+    // damping, so motion is fluid between events and settles (≈300 ms) the
+    // moment the reader stops — still fully user-paced.
+    var raf = null, cur = null, lastTs = 0;
+    function chase(ts) {
+      var dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
+      lastTs = ts;
+      var target = progress();
+      if (cur === null) cur = target;
+      var d = target - cur;
+      if (Math.abs(d) < 0.0006) {
+        cur = target; render(cur, true); raf = null; return;
+      }
+      cur += d * (1 - Math.exp(-dt * 8.5));
+      render(cur, true);
+      raf = requestAnimationFrame(chase);
+    }
     function schedule() {
       if (override !== null) return;
       if (raf) return;
-      raf = requestAnimationFrame(function () { raf = null; render(progress()); });
+      lastTs = performance.now();
+      raf = requestAnimationFrame(chase);
     }
 
     if (RM) {

@@ -189,6 +189,30 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   *Invariants re-verified:* the dwell window of an extra-free scene is byte-identical across its
   whole span, scene landings are idempotent, and nothing moves at rest — the stagger is
   normalised so every figure is exactly at its destination by the end of travel.
+- **Storyboard v3 + scroll smoothing (engine v2.2):** rebuilt both theatres to be step-by-step
+  after feedback that stages were being skipped.
+  *Explainer 01 (9 stages):* pools → the specialist's patients **line up in complexity order**
+  (ranked line, most complex left) → the bottom 20% **separate** ("medication optimisation, not a
+  specialist") → zoom to faces ("GP-managed, followed up with eConsults") → the sixteen **move**
+  to the GP → the **backfill**: sixteen more-complex patients waiting in general practice take
+  the freed slots (the queue visibly advances) → the **incentive** ("the GP is paid properly for
+  the borderline cases", +$449/patient/yr, eConsult arc) → the payoff (specialist pool fully
+  complex, same size, better sorted) → stats.
+  *Explainer 02 (10 stages):* population → scan → personas → **doctors declare what they bring**
+  (five clinicians appear, each wearing a ring in the persona colour they declared for — culture
+  & language, lived experience of the condition, lifestyle-first non-drug care, data literacy,
+  whole-family books) → **match by colour** (every patient flows to the doctor wearing their
+  colour) → zoom ("the doctor actually understands them") → outbound pulses from every doctor →
+  "disengagement collapses" (48% → 81%) → stats.
+  *Smoothness:* rendered progress now **chases the scroll target with critical damping** (settles
+  ≈300 ms after the reader stops), so discrete wheel events no longer step the story; dwell:travel
+  moved from 67:33 to **50:50** — a deliberate budget deviation, trading dwell for legible travel
+  per Heer & Robertson's ~1 s/stage tracking guidance.
+  *Cost:* `ctx.font` assignments cached (CSS font parsing was the new hot path) and label/clinician
+  pairings memoised per scene pair. At CPU throttle 12×: p95 render **19.3 ms** (was 31.8 ms after
+  the storyboard grew, 27.6 ms originally); dwell-freeze, stillness-at-rest and reduced-motion
+  invariants re-verified; zero caption/canvas collisions and zero overflow at 390 px re-verified
+  scene-by-scene.
 - **One-page executive summary (`executive-summary.html`):** both concepts side by side —
   problem, mechanism, four headline numbers each, generalisability, guardrails, and both asks —
   plus a "why the two belong together" note ($840k buys evidence for both). Print CSS targets
