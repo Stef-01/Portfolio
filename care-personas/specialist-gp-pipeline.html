@@ -95,7 +95,7 @@
     <div class="df-stage">
       <canvas id="df1"></canvas>
       <div class="df-step"><p class="eyebrow">Two pools</p><h3>Two clinicians. Two patient pools.</h3><p>A GP's book of everyday medicine. A cardiologist's referred pool. Each figure is about fifteen patients.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 1 — rank</p><h3>Line the specialist's patients up by complexity.</h3><p>The complexity screen scores every referral and follow-up, 0–100. Most complex on the left.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 1 — rank</p><h3>Line the specialist's patients up by complexity.</h3><p>The complexity screen scores every referral and follow-up, 0–100. Most complex at the top.</p></div>
       <div class="df-step"><p class="eyebrow">Step 2 — separate</p><h3>The bottom 20% are stable.</h3><p>They need medication optimisation, not a specialist — a protocol already says the next dose.</p></div>
       <div class="df-step"><p class="eyebrow">Step 3 — look closer</p><h3>These patients can be GP-managed.</h3><p>Followed up with eConsults: any question back inside 72 hours, and the specialist stays in the loop.</p></div>
       <div class="df-step"><p class="eyebrow">Step 4 — the move</p><h3>Sixteen move to the GP.</h3><p>Accredited GPs take them on — capped panels, a named specialist of record for every patient.</p></div>
@@ -104,9 +104,9 @@
       <div class="df-step"><p class="eyebrow">Step 7 — the payoff</p><h3>The specialist pool is now fully complex.</h3><p>Whole-of-training work all day — and the waitlist just moved.</p></div>
       <div class="df-step"><p class="eyebrow">The result</p><h3>Everyone bills better.</h3><p></p></div>
       <div class="df-stats">
-        <div class="df-stat"><div class="v"><span data-countup="35" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">specialist consulting per FTE, per year, on the same clinic hours</div></div>
-        <div class="df-stat"><div class="v"><span data-countup="449" data-pre="+$">+$0</span></div><div class="l">GP billings per pipeline patient, per year</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="15" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">per participating GP, per year ($449 × a 33-patient panel)</div></div>
         <div class="df-stat"><div class="v"><span data-countup="57" data-pre="−" data-suf="%">−0%</span></div><div class="l">median wait for a new specialist referral</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="35" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">per specialist FTE, per year, on the same clinic hours</div></div>
       </div>
       <div class="df-hint">Scroll</div>
     </div>
@@ -394,12 +394,19 @@
           <div class="brow"><span class="blab">Pipeline</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div></div></div>
           <div class="brow" style="margin-top:-4px"><span class="blab"></span><span class="bval">$535 / patient / yr</span></div>
           <ul class="mathlist">
-            <li>2 × Level C review ($83) = $166</li>
-            <li>1 × Level D long consult ($122)</li>
-            <li>GP Management Plan ($165) + review ($82)</li>
-            <li>vs today: 2 × Level B scripts visit ($43)</li>
+            <li>2 × Level C review — <b>MBS 36</b> ($83) = $166</li>
+            <li>1 × Level D long consult — <b>MBS 44</b> ($122)</li>
+            <li>GP Management Plan — <b>MBS 721</b> ($165) + review — <b>MBS 732</b> ($82)</li>
+            <li>vs today: 2 × Level B visit — <b>MBS 23</b> ($43)</li>
           </ul>
-          <p class="plus"><b>+$449 per patient per year.</b> A GP carrying 30–40 pipeline patients
+          <div class="mchips" aria-label="MBS items used — tap for the full maths">
+          <button class="mchip" data-maths="gp"><b>MBS 36</b> · $83</button>
+          <button class="mchip" data-maths="gp"><b>MBS 44</b> · $122</button>
+          <button class="mchip" data-maths="gp"><b>MBS 721</b> · $165</button>
+          <button class="mchip" data-maths="gp"><b>MBS 732</b> · $82</button>
+          <button class="mchip" data-maths="gp">full maths →</button>
+        </div>
+        <p class="plus"><b>+$449 per patient per year.</b> A GP carrying 30–40 pipeline patients
           adds <b>$13k–18k/yr</b> — for complexity they were already managing informally.</p>
         </div>
 
@@ -410,12 +417,18 @@
           <div class="brow"><span class="blab">Pipeline</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div></div></div>
           <div class="brow" style="margin-top:-4px"><span class="blab"></span><span class="bval">$71.8k / FTE / yr</span></div>
           <ul class="mathlist">
-            <li>240 new complex assessments × $170 = $40.8k</li>
-            <li>160 complex reviews × $92 = $14.7k</li>
-            <li>~250 eConsults × $65 = $16.3k</li>
-            <li>vs today: 400 routine reviews × $92 = $36.8k</li>
+            <li>240 initial assessments — <b>MBS 110</b> ($170) = $40.8k</li>
+            <li>160 reviews — <b>MBS 116</b> ($92) = $14.7k</li>
+            <li>~250 eConsults — <b>proposed item</b> ($65) = $16.3k</li>
+            <li>vs today: 400 reviews — <b>MBS 116</b> ($92) = $36.8k</li>
           </ul>
-          <p class="plus"><b>+$35k on the same clinic hours</b> (≈ +9% of consulting billings) —
+          <div class="mchips" aria-label="MBS items used — tap for the full maths">
+          <button class="mchip" data-maths="spec"><b>MBS 110</b> · $170</button>
+          <button class="mchip" data-maths="spec"><b>MBS 116</b> · $92</button>
+          <button class="mchip" data-maths="spec"><b>eConsult*</b> · $65</button>
+          <button class="mchip" data-maths="spec">full maths →</button>
+        </div>
+        <p class="plus"><b>+$35k on the same clinic hours</b> (≈ +9% of consulting billings) —
           plus 240 extra new complex patients cascading <b>≈ $200k/yr</b> of echo, angiography and
           device work into the department.</p>
         </div>
@@ -431,7 +444,10 @@
             <li>~120 avoided ED presentations + ~30 avoided admissions → <b>$312k</b></li>
             <li>Median wait 127 → 55 days, no new hires</li>
           </ul>
-          <p class="plus"><b>−55% unit cost</b> on a fifth of the outpatient book, and the queue
+          <div class="mchips" aria-label="Tap for the full maths">
+          <button class="mchip" data-maths="net">full maths →</button>
+        </div>
+        <p class="plus"><b>−55% unit cost</b> on a fifth of the outpatient book, and the queue
           finally moves.</p>
         </div>
       </div>
@@ -701,24 +717,29 @@
   </div>
 </footer>
 
+<dialog class="maths" id="mathsDialog" aria-labelledby="mathsTitle">
+  <div class="maths-in" id="mathsBody"></div>
+</dialog>
+
 <div id="tip" role="status" aria-hidden="true"></div>
 <script src="assets/site.js"></script>
 <script src="assets/dotfield.js"></script>
 <script>
-/* Ranked-line story: a GP's book (120 figures) and a cardiologist's referred
+/* Ranked-queue story: a GP's book (120 figures) and a cardiologist's referred
    pool (80 figures, groups 0-4 = the five personas). The specialist's patients
-   line up in complexity order; the bottom 20% (groups 0+1, 16 figures)
-   separate, move to the GP, and sixteen complex patients waiting in general
-   practice (group 6) take the freed slots. Each figure ≈ 15 patients. */
+   form ONE VERTICAL QUEUE ranked by complexity — most complex at the top,
+   so the bottom 20% sit literally at the bottom. They separate, move to the
+   GP, and sixteen complex patients waiting in general practice (group 6) join
+   the front of the queue. Each figure ≈ 15 patients. */
 (function () {
   function geo(c) {
     if (c.narrow) return {
-      gp: [0.50 * c.W, 0.82 * c.H], sp: [0.50 * c.W, 0.38 * c.H],
-      rows: 5, per: 16, x0: 0.10, x1: 0.80, ys: [0.34, 0.41, 0.48, 0.55, 0.62]
+      gp: [0.26 * c.W, 0.60 * c.H], sp: [0.50 * c.W, 0.38 * c.H],
+      qx: 0.64 * c.W, y0: 0.30 * c.H, y1: 0.93 * c.H, rows: 40
     };
     return {
       gp: [0.20 * c.W, 0.46 * c.H], sp: [0.72 * c.W, 0.42 * c.H],
-      rows: 2, per: 40, x0: 0.42, x1: 0.97, ys: [0.26, 0.40]
+      qx: 0.60 * c.W, y0: 0.12 * c.H, y1: 0.90 * c.H, rows: 40
     };
   }
   function packInto(c, pos, centre, members, seed) {
@@ -731,7 +752,6 @@
     for (var d = 0; d < c.N; d++) if (want.indexOf(c.groups[d]) >= 0) out.push(d);
     return out;
   }
-  // rank the specialist figures most-complex-first: groups 4,3,2,1,0
   function specRanks(c, order) {
     var ranks = {}, r = 0;
     order.forEach(function (g) {
@@ -739,10 +759,11 @@
     });
     return ranks;
   }
-  function lineXY(g, rank, dy) {
-    var pitch = (g.x1 - g.x0) / g.per;
-    var row = Math.floor(rank / g.per), col = rank % g.per;
-    return [(g.x0 + pitch * (col + 0.5)) * g.W_, g.ys[row] * g.H_ + (dy || 0)];
+  // one vertical queue, two figures per row so eighty fit legibly
+  function queueXY(c, g, rank, dx) {
+    var pitch = (g.y1 - g.y0) / g.rows;
+    var row = Math.floor(rank / 2), col = rank % 2;
+    return [g.qx + (col === 0 ? -c.U * 0.85 : c.U * 0.85) + (dx || 0), g.y0 + pitch * (row + 0.5)];
   }
   function gpClin(c, g, rGp) { return { x: g.gp[0] - rGp - c.U * 2.8, y: g.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' }; }
   function gpZone(c, g, rGp) { return { x: g.gp[0], y: g.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 }; }
@@ -751,20 +772,17 @@
     if (sub) L.push({ x: g.gp[0], y: g.gp[1] - rGp - 12, text: sub, muted: true });
     return L;
   }
-  function lineChrome(c, g, extraLabels) {
-    var midX = (g.x0 + g.x1) / 2 * c.W;
-    var L = c.narrow
-      ? [{ x: midX, y: g.ys[0] * c.H - 26, text: 'RANKED BY COMPLEXITY', big: true }]
-      : [
-        { x: midX, y: g.ys[0] * c.H - 44, text: "THE SPECIALIST'S POOL — RANKED", big: true },
-        { x: (g.x0 + 0.05) * c.W, y: g.ys[0] * c.H - 20, text: 'most complex', muted: true }
-      ];
+  function queueChrome(c, g, extraLabels) {
+    var L = [
+      { x: g.qx, y: g.y0 - (c.narrow ? 26 : 44), text: 'THE SPECIALIST QUEUE', big: true },
+      { x: g.qx, y: g.y0 - (c.narrow ? 10 : 24), text: 'most complex first', muted: true }
+    ];
     return L.concat(extraLabels || []);
   }
   function cardClin(c, g) {
     return c.narrow
-      ? { x: 0.88 * c.W, y: (g.ys[1] + g.ys[2]) / 2 * c.H, skin: 1, hair: 6, label: 'cardiologist' }
-      : { x: g.x0 * c.W - c.U * 3.2, y: g.ys[0] * c.H + c.U, skin: 1, hair: 6, label: 'the cardiologist' };
+      ? { x: 0.87 * c.W, y: g.y0 + c.U * 2, skin: 1, hair: 6, label: 'cardiologist' }
+      : { x: g.qx - 0.09 * c.W, y: g.y0 + c.U, skin: 1, hair: 6, label: 'the cardiologist' };
   }
   var ORDER = [4, 3, 2, 1, 0];
 
@@ -783,60 +801,56 @@
       } };
     },
     line: function (c) {
-      var g = geo(c); g.W_ = c.W; g.H_ = c.H;
-      var pos = new Array(c.N);
+      var g = geo(c), pos = new Array(c.N);
       var rGp = packInto(c, pos, g.gp, membersOf(c, [5, 6]), 0);
       var ranks = specRanks(c, ORDER);
-      for (var d in ranks) pos[d] = lineXY(g, ranks[d], 0);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "ONE GP'S BOOK").concat(lineChrome(c, g, [
-          { x: (c.narrow ? 0.45 : g.x1 - 0.07) * c.W, y: g.ys[g.rows - 1] * c.H + 30, text: 'least complex — stable', muted: true }])),
+        labels: gpTitle(g, rGp, "ONE GP'S BOOK").concat(queueChrome(c, g, [
+          { x: g.qx, y: g.y1 + 20, text: 'least complex — stable', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
       } };
     },
     linesep: function (c) {
-      var g = geo(c); g.W_ = c.W; g.H_ = c.H;
-      var pos = new Array(c.N);
+      var g = geo(c), pos = new Array(c.N);
       var rGp = packInto(c, pos, g.gp, membersOf(c, [5, 6]), 0);
-      var ranks = specRanks(c, ORDER), dy = c.U * 4.5;
+      var ranks = specRanks(c, ORDER), dx = c.U * 5;
       for (var d in ranks) {
         var grp = c.groups[d];
-        pos[d] = lineXY(g, ranks[d], (grp === 0 || grp === 1) ? dy : 0);
+        pos[d] = queueXY(c, g, ranks[d], (grp === 0 || grp === 1) ? dx : 0);
       }
+      var sepY = g.y0 + (g.y1 - g.y0) * 0.90;
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "ONE GP'S BOOK").concat(lineChrome(c, g, [
-          { x: (c.narrow ? 0.45 : g.x1 - 0.10) * c.W, y: g.ys[g.rows - 1] * c.H + dy + 32, text: c.narrow ? 'the bottom 20% — stable' : 'the bottom 20% — stable, protocol-driven', muted: true }])),
+        labels: gpTitle(g, rGp, "ONE GP'S BOOK").concat(queueChrome(c, g, [
+          { x: c.narrow ? g.qx - 0.27 * c.W : g.qx + 0.215 * c.W, y: sepY, text: c.narrow ? 'bottom 20% — stable' : 'the bottom 20% — stable, protocol-driven', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
       } };
     },
     moved1: function (c) {
-      var g = geo(c); g.W_ = c.W; g.H_ = c.H;
-      var pos = new Array(c.N);
+      var g = geo(c), pos = new Array(c.N);
       var gpMembers = membersOf(c, [5, 6]).concat(membersOf(c, [0, 1]));
       var rGp = packInto(c, pos, g.gp, gpMembers, 0);
       var ranks = specRanks(c, [4, 3, 2]);
-      for (var d in ranks) pos[d] = lineXY(g, ranks[d], 0);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "THE GP'S BOOK +16", 'billed properly, eConsult-backed').concat(lineChrome(c, g, [
-          { x: (c.narrow ? 0.45 : g.x1 - 0.08) * c.W, y: g.ys[g.rows - 1] * c.H + 30, text: 'sixteen slots freed', muted: true }])),
+        labels: gpTitle(g, rGp, "THE GP'S BOOK +16", 'billed properly, eConsult-backed').concat(queueChrome(c, g, [
+          { x: g.qx, y: g.y0 + (g.y1 - g.y0) * 0.90, text: 'sixteen slots freed', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
       } };
     },
     backfill: function (c) {
-      var g = geo(c); g.W_ = c.W; g.H_ = c.H;
-      var pos = new Array(c.N);
+      var g = geo(c), pos = new Array(c.N);
       var rGp = packInto(c, pos, g.gp, membersOf(c, [5]).concat(membersOf(c, [0, 1])), 0);
-      // sixteen waiting-complex patients take ranks 0-15; everyone shifts up
       var w = membersOf(c, [6]);
-      for (var i = 0; i < w.length; i++) pos[w[i]] = lineXY(g, i, 0);
+      for (var i = 0; i < w.length; i++) pos[w[i]] = queueXY(c, g, i, 0);
       var ranks = specRanks(c, [4, 3, 2]);
-      for (var d in ranks) pos[d] = lineXY(g, ranks[d] + 16, 0);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d] + 16, 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "THE GP'S BOOK", '120 patients, better paid').concat(lineChrome(c, g, [
-          { x: (c.narrow ? 0.45 : g.x0 + 0.10) * c.W, y: g.ys[0] * c.H + c.U * 4.6 + 16, text: c.narrow ? 'sixteen new complex patients' : 'sixteen new complex patients, off the waitlist', muted: true }])),
+        labels: gpTitle(g, rGp, "THE GP'S BOOK", '120 patients, better paid').concat(queueChrome(c, g, [
+          { x: c.narrow ? g.qx - 0.30 * c.W : g.qx + 0.155 * c.W, y: g.y0 + (g.y1 - g.y0) * 0.10, text: c.narrow ? 'sixteen new, complex' : 'sixteen new complex patients, off the waitlist', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
       } };
@@ -868,10 +882,10 @@
     rmScene: 6,
     scenes: [
       { key: 'pools', labels: true },
-      { key: 'line', labels: true, colorGroups: [0, 1, 2, 3, 4], scan: { groups: [0, 1, 2, 3, 4], axis: 'x' } },
+      { key: 'line', labels: true, colorGroups: [0, 1, 2, 3, 4], scan: { groups: [0, 1, 2, 3, 4], axis: 'y' } },
       { key: 'linesep', labels: true, colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.35 } },
       { key: 'linesep', colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.10 },
-        cam: { z: 2.1, x: 0.855, y: 0.455 }, camNarrow: { z: 1.35, x: 0.5, y: 0.64 } },
+        cam: { z: 2.1, x: 0.645, y: 0.83 }, camNarrow: { z: 1.6, x: 0.70, y: 0.86 } },
       { key: 'moved1', labels: true, colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.5 } },
       { key: 'backfill', labels: true, colorGroups: [0, 1, 2, 3, 4, 6], dim: { keep: [6], to: 0.45 } },
       { key: 'exchange', labels: true, colorGroups: [0, 1, 2, 3, 4, 6], extra: 'link', linkLabel: 'eConsult · answered in 72 h' },
@@ -938,6 +952,77 @@
     recompute();
   });
   recompute();
+})();
+
+/* Pop-out maths — itemised MBS derivations behind every headline number.
+   Fees are indicative, rounded from the published schedule; the eConsult
+   line is a PROPOSED item (no current MBS asynchronous-advice item),
+   modelled at $65 and flagged as such wherever it appears. */
+(function () {
+  var dlg = document.getElementById('mathsDialog'), body = document.getElementById('mathsBody');
+  if (!dlg || !body) return;
+  function row(cells, cls) {
+    return '<tr' + (cls ? ' class="' + cls + '"' : '') + '>' + cells.map(function (c, i) {
+      return '<td' + (i > 0 ? ' class="num"' : '') + '>' + c + '</td>';
+    }).join('') + '</tr>';
+  }
+  var HEAD = '<thead><tr><th>Item</th><th class="num">Fee</th><th class="num">Volume / yr</th><th class="num">Subtotal</th></tr></thead>';
+  var MATHS = {
+    gp: {
+      title: 'The participating GP — per pipeline patient, per year',
+      note: 'Indicative schedule fees, rounded. One patient, one year of structured care.',
+      rows: [
+        row(['<b>MBS 36</b> — Level C consult (20–40 min)', '$83', '2', '$166']),
+        row(['<b>MBS 44</b> — Level D consult (40+ min)', '$122', '1', '$122']),
+        row(['<b>MBS 721</b> — GP Management Plan', '$165', '1', '$165']),
+        row(['<b>MBS 732</b> — plan review', '$82', '1', '$82']),
+        row(['Under the pipeline', '', '', '<b>$535</b>'], 'total'),
+        row(['Today: <b>MBS 23</b> — Level B visit (<20 min)', '$43', '2', '$86'], 'was'),
+        row(['<b>Net gain per patient</b>', '', '', '<b>+$449</b>'], 'total')
+      ],
+      foot: 'A participating GP carrying a 33-patient panel: 33 × $449 ≈ <b>+$14.8k/yr</b> (headline +$15k; 30–40 patients spans +$13k–18k).'
+    },
+    spec: {
+      title: 'The specialist — the 400 freed clinic slots, per FTE per year',
+      note: 'Same clinic hours, refilled with top-of-licence work. eConsult* is a proposed item — there is no current MBS asynchronous-advice item — modelled at $65.',
+      rows: [
+        row(['<b>MBS 110</b> — initial specialist attendance', '$170', '240', '$40,800']),
+        row(['<b>MBS 116</b> — subsequent attendance', '$92', '160', '$14,720']),
+        row(['eConsult* — asynchronous advice (proposed)', '$65', '~250', '$16,250']),
+        row(['Under the pipeline', '', '', '<b>$71,770</b>'], 'total'),
+        row(['Today: <b>MBS 116</b> — routine reviews', '$92', '400', '$36,800'], 'was'),
+        row(['<b>Net gain per FTE</b>', '', '', '<b>+$34,970</b>'], 'total')
+      ],
+      foot: 'Displayed as +$35k. Plus ≈ $200k/yr of downstream diagnostics and procedures per FTE flowing to the department from the 240 extra new complex patients.'
+    },
+    net: {
+      title: 'The network & payer — a 6-FTE department, per year',
+      note: 'Full-cost comparison per low-complexity episode, plus avoided acute care.',
+      rows: [
+        row(['Hospital outpatient visit — full cost', '$290', '2,400', '$696,000'], 'was'),
+        row(['Specialist-GP visit — full cost', '$130', '2,400', '$312,000'], 'was'),
+        row(['Setting-shift saving', '$160', '2,400', '<b>$384,000</b>'], 'total'),
+        row(['Avoided ED presentations', '$1,050', '~120', '$126,000']),
+        row(['Avoided admissions', '$6,200', '~30', '$186,000']),
+        row(['<b>Network benefit per year</b>', '', '', '<b>$696,000</b>'], 'total')
+      ],
+      foot: 'Against a $460k one-off trial cost: payback ≈ 8 months. The corresponding new Medicare outlay (≈$560k/yr) is stated in the honest ledger above.'
+    }
+  };
+  function open(key) {
+    var m = MATHS[key];
+    if (!m) return;
+    body.innerHTML = '<button class="maths-close" aria-label="Close">×</button>' +
+      '<h3 id="mathsTitle">' + m.title + '</h3><p class="note">' + m.note + '</p>' +
+      '<table>' + HEAD + '<tbody>' + m.rows.join('') + '</tbody></table>' +
+      '<p class="note" style="margin-top:12px">' + m.foot + '</p>';
+    body.querySelector('.maths-close').addEventListener('click', function () { dlg.close(); });
+    dlg.showModal();
+  }
+  document.querySelectorAll('.mchip').forEach(function (ch) {
+    ch.addEventListener('click', function () { open(ch.getAttribute('data-maths')); });
+  });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
 })();
 
 /* Specialty switcher — the mechanism is specialty-agnostic; only the clinical

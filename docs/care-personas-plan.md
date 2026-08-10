@@ -213,6 +213,22 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   the storyboard grew, 27.6 ms originally); dwell-freeze, stillness-at-rest and reduced-motion
   invariants re-verified; zero caption/canvas collisions and zero overflow at 390 px re-verified
   scene-by-scene.
+- **Critical-appraisal round (v2.3):** four presentation defects found and fixed.
+  *E01:* the two horizontal specialist rows became **one vertical queue** (two-abreast, most
+  complex at the top) so the bottom 20% sit literally at the bottom; the stats overlay was
+  re-ordered so the **GP benefit sits over the GP's side** and the specialist's over theirs;
+  headline units made **uniform per-clinician-per-year** (+$15k per participating GP vs +$35k
+  per specialist FTE — the $449/patient derivation moves to the caption and pop-out);
+  and the money cards now carry **named MBS items** (23, 36, 44, 721, 732, 110, 116, plus the
+  eConsult line explicitly flagged as a *proposed* item — no current MBS asynchronous-advice
+  item exists) as clickable chips opening an **itemised pop-out derivation** (native `<dialog>`,
+  fee × volume → subtotal → net, with the "today" comparator rows).
+  *E02:* persona labels now persist through the doctor-row scene; the doctor row moved out of
+  the caption column (it was parking two doctors under the story text in every scene from
+  step 3 on); and the retention beat got a real visual — the arcs **tighten around their
+  doctor** ("twelve months on — still here") instead of a caption over an unchanged frame.
+  All invariants re-verified after the round (dwell freeze, stillness, overflow, caption
+  collisions, 12× throttle p95 19.5 ms).
 - **One-page executive summary (`executive-summary.html`):** both concepts side by side —
   problem, mechanism, four headline numbers each, generalisability, guardrails, and both asks —
   plus a "why the two belong together" note ($840k buys evidence for both). Print CSS targets

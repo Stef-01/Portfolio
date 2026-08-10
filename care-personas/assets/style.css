@@ -200,6 +200,26 @@ p{max-width:70ch}
   padding:6px 16px;font-family:var(--disp);font-weight:700;font-size:12.5px;color:var(--ink-2);cursor:pointer}
 .mreset:hover{border-color:var(--navy);color:var(--navy)}
 
+/* ---------- MBS item chips + pop-out maths ---------- */
+.mchips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.mchip{font:600 12px/1 var(--body);border:1.5px solid var(--line);border-radius:8px;padding:6px 9px;
+  background:var(--tint);color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
+.mchip b{color:var(--navy);font-family:var(--disp);font-weight:700}
+.mchip:hover,.mchip:focus-visible{border-color:var(--navy);color:var(--navy)}
+dialog.maths{border:none;border-radius:16px;padding:0;max-width:600px;width:calc(100vw - 40px);
+  box-shadow:0 24px 80px rgba(15,24,52,.35);background:var(--paper);color:var(--ink)}
+dialog.maths::backdrop{background:rgba(15,24,52,.45)}
+.maths-in{padding:22px 26px 24px;position:relative}
+.maths-in h3{margin:0 0 2px;padding-right:30px}
+.maths-in .note{margin:0 0 6px}
+.maths-in table{font-size:13.5px}
+.maths-in td.num,.maths-in th.num{white-space:nowrap}
+.maths-in tr.total td{font-weight:700;color:var(--navy);border-top:2px solid var(--navy);border-bottom:none}
+.maths-in tr.was td{color:var(--mut)}
+.maths-close{position:absolute;top:12px;right:14px;border:0;background:none;
+  font:700 22px/1 var(--disp);color:var(--mut);cursor:pointer;padding:6px}
+.maths-close:hover{color:var(--navy)}
+
 /* ---------- tables ---------- */
 details{margin-top:14px}
 summary{cursor:pointer;font-size:13.5px;color:var(--accent);font-weight:600}

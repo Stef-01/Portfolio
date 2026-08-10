@@ -294,8 +294,9 @@
       <h2>Doctors declared who they want to serve. Patients just have to ask.</h2>
       <p class="lede">The database isn't scraped — it's built. Every clinician joins through a
       structured onboarding interview: <i>which patients do you want more of? What care do you love
-      doing? Which languages, cultures, food traditions do you carry? Will you review wearable
-      data?</i> Their answers become a match profile. Then the patient side takes 20 seconds.</p>
+      doing? Which languages, cultures, food traditions do you carry? What conditions have you
+      lived with yourself? How openly do you offer lifestyle-first, non-drug options? Will you
+      review wearable data?</i> Their answers become a match profile. Then the patient side takes 20 seconds.</p>
 
       <div class="grid g4" style="margin-top:26px">
         <div class="card phase"><p class="mo">Step 1</p><h3>Say what matters</h3><ul><li>A 20-second guided conversation — chips, not forms</li><li>Background &amp; language · food culture · judgement-free · wearables · whole family</li></ul></div>
@@ -606,9 +607,11 @@
     { skin: 3, hair: 6, label: 'whole family' }
   ];
   function docPos(c, g) {
+    // desktop row starts right of the fixed caption column so no scene ever
+    // parks a doctor or their patients under the story text
     return c.narrow
       ? [0.84 * c.W, (0.14 + 0.18 * g) * c.H]
-      : [(0.14 + 0.18 * g) * c.W, 0.84 * c.H];
+      : [(0.34 + 0.145 * g) * c.W, 0.84 * c.H];
   }
   function docsMeta(c) {
     var clin = [], docs = [];
@@ -633,28 +636,45 @@
     }
     return pos;
   }
+  var NAMES = ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'];
+  function clusterLabels(c) {
+    var slots = c.narrow
+      ? [[0.30, 0.32], [0.72, 0.42], [0.32, 0.57], [0.72, 0.71], [0.34, 0.85]]
+      : [[0.15, 0.35], [0.32, 0.66], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
+    var L = [], total = 200;
+    for (var g = 0; g < 5; g++) {
+      var r = c.U * 1.55 * Math.sqrt(COUNTS[g]) * 0.62;
+      L.push({ x: slots[g][0] * c.W, y: slots[g][1] * c.H + r + (c.narrow ? 16 : 22),
+               text: NAMES[g] + ' · ' + Math.round(COUNTS[g] * 100 / total) + '%' });
+    }
+    return L;
+  }
   var layouts = {
     docrow: function (c) {
       var m = docsMeta(c);
       return { pos: clusterPos(c), meta: {
         clinicians: m.clinicians, docs: m.docs,
-        labels: [{ x: c.narrow ? 0.84 * c.W : 0.5 * c.W, y: c.narrow ? 0.05 * c.H : 0.945 * c.H, text: 'the practice — each doctor declared their focus', muted: true }]
+        labels: clusterLabels(c).concat([{ x: c.narrow ? 0.84 * c.W : 0.63 * c.W, y: c.narrow ? 0.05 * c.H : 0.945 * c.H, text: 'the practice — each doctor declared their focus', muted: true }])
       } };
     },
-    matched: function (c) {
-      var m = docsMeta(c), pos = new Array(c.N);
-      for (var g = 0; g < 5; g++) {
-        var r = c.U * 1.55 * Math.sqrt(COUNTS[g]) * 0.62;
-        var p = docPos(c, g);
-        var cx = c.narrow ? p[0] - r - c.U * 3.2 : p[0];
-        var cy = c.narrow ? p[1] : p[1] - r - c.U * 3.4;
-        var pts = c.phyllo(cx, cy, COUNTS[g], c.U * 1.55, g * 7);
-        var gi = 0;
-        for (var d = 0; d < c.N; d++) if (c.groups[d] === g) pos[d] = pts[gi++];
-      }
-      return { pos: pos, meta: { clinicians: m.clinicians, docs: m.docs, labels: [] } };
+    matched: function (c) { return matchedAt(c, 1.55, []); },
+    retained: function (c) {
+      return matchedAt(c, 1.22, [{ x: c.narrow ? 0.5 * c.W : 0.63 * c.W, y: c.narrow ? 0.05 * c.H : 0.945 * c.H, text: 'twelve months on — still here', muted: true }]);
     }
   };
+  function matchedAt(c, pitch, labels) {
+    var m = docsMeta(c), pos = new Array(c.N);
+    for (var g = 0; g < 5; g++) {
+      var r = c.U * pitch * Math.sqrt(COUNTS[g]) * 0.62;
+      var p = docPos(c, g);
+      var cx = c.narrow ? p[0] - r - c.U * 3.2 : p[0];
+      var cy = c.narrow ? p[1] : p[1] - r - c.U * 3.4;
+      var pts = c.phyllo(cx, cy, COUNTS[g], c.U * pitch, g * 7);
+      var gi = 0;
+      for (var d = 0; d < c.N; d++) if (c.groups[d] === g) pos[d] = pts[gi++];
+    }
+    return { pos: pos, meta: { clinicians: m.clinicians, docs: m.docs, labels: labels } };
+  }
   DotField({
     theatre: '#story', canvas: '#df2',
     counts: COUNTS,
@@ -671,10 +691,10 @@
       { key: 'docrow', colorGroups: 'all', labels: true },
       { key: 'matched', colorGroups: 'all', labels: true },
       { key: 'matched', colorGroups: 'all', dim: { keep: [0], to: 0.15 },
-        cam: { z: 1.9, x: 0.16, y: 0.74 }, camNarrow: { z: 1.6, x: 0.68, y: 0.15 } },
+        cam: { z: 1.9, x: 0.35, y: 0.74 }, camNarrow: { z: 1.6, x: 0.68, y: 0.15 } },
       { key: 'matched', colorGroups: 'all', extra: 'outbound' },
-      { key: 'matched', colorGroups: 'all' },
-      { key: 'matched', colorGroups: 'all', dim: { keep: [], to: 0.18 } }
+      { key: 'retained', colorGroups: 'all', labels: true },
+      { key: 'retained', colorGroups: 'all', dim: { keep: [], to: 0.18 } }
     ]
   });
 })();
@@ -685,7 +705,7 @@
   var DOCS=[
     {name:"Dr Mai Tran", focus:"Family medicine · Vietnamese & English", tags:["mirror","family"],
      chips:{mirror:"Speaks Vietnamese",family:"Whole-family books"}, extra:"Migrant health focus", skin:"#c68b59", cloth:"#31456e", bg:"#e6effa"},
-    {name:"Dr Talia Faleolo", focus:"Metabolic health, food-first", tags:["table","judge"],
+    {name:"Dr Talia Faleolo", focus:"Metabolic health — lifestyle-first", tags:["table","judge"],
      chips:{table:"Pasifika food culture",judge:"Judgement-free weight care"}, extra:"Group cooking clinics", skin:"#8c5a33", cloth:"#274064", bg:"#fdeae2"},
     {name:"Dr Omar Haddad", focus:"Diabetes & heart health", tags:["table","mirror"],
      chips:{table:"Ramadan-aware titration",mirror:"Arabic speaker"}, extra:"Halal meal planning", skin:"#a06a3f", cloth:"#3b527d", bg:"#fdf3da"},
