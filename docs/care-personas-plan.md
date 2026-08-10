@@ -175,6 +175,14 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   assessments, 130,000 patients into GP-led care, $116M network benefit against ~$93M new
   Medicare outlay — so no national workforce headcount is assumed or invented.
 
+- **One-page executive summary (`executive-summary.html`):** both concepts side by side —
+  problem, mechanism, four headline numbers each, generalisability, guardrails, and both asks —
+  plus a "why the two belong together" note ($840k buys evidence for both). Print CSS targets
+  **A4 portrait at 11 mm margins and is verified to render as exactly one page** (measured by
+  generating the PDF and counting `/Type /Page` objects; the responsive column-stacking
+  breakpoint is scoped to `screen` so print keeps two columns). Screen view carries a
+  print/save-as-PDF button; linked from the hub and both explainer footers.
+
 ## Roadmap (v2)
 
-Real MBS item lookups · printable one-page executive summary for handing to a CMO on paper.
+Real MBS item lookups. The product is otherwise feature-complete for its purpose.

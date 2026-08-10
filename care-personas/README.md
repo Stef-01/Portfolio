@@ -8,6 +8,7 @@ segmentation (in the style of Surgo Ventures' vaccine persona explainer) to heal
 | `index.html` | Product hub — the shared method | Everyone |
 | `specialist-gp-pipeline.html` | **Explainer 01:** screen every referral for complexity; move the bottom 20% of the specialist caseload to accredited GPs with an eConsult backstop. GPs bill more, specialists bill more, waitlists halve. | Hospital networks, CMO |
 | `matched-family-gp.html` | **Explainer 02:** match patients to doctors who fit them (culture, food, judgement-free care, wearables, whole-family) via a 20-second conversation, then run outbound follow-up on EHR-predicted need. | Primary-care networks, payers |
+| `executive-summary.html` | **One-pager:** both concepts, their economics and both asks on a single sheet — prints to exactly one A4 page. | The room |
 
 This folder is **deliberately independent of the portfolio app** — plain HTML/CSS/JS, no build
 step, no framework. The only external requests are Google Fonts.
