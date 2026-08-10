@@ -618,7 +618,7 @@
     for (var g = 0; g < 5; g++) {
       var p = docPos(c, g);
       var s = DOCSPEC[g];
-      clin.push({ x: p[0], y: p[1], skin: s.skin, hair: s.hair, label: s.label, ring: HUES[g] });
+      clin.push({ x: p[0], y: p[1], skin: s.skin, hair: s.hair, label: s.label, ring: HUES[g], dimWith: g });
       docs.push(p);
     }
     return { clinicians: clin, docs: docs };
@@ -644,7 +644,9 @@
     var L = [], total = 200;
     for (var g = 0; g < 5; g++) {
       var r = c.U * 1.55 * Math.sqrt(COUNTS[g]) * 0.62;
+      // bound to the group so the label travels with its people, not over them
       L.push({ x: slots[g][0] * c.W, y: slots[g][1] * c.H + r + (c.narrow ? 16 : 22),
+               group: g, dy: r + (c.narrow ? 16 : 22),
                text: NAMES[g] + ' · ' + Math.round(COUNTS[g] * 100 / total) + '%' });
     }
     return L;

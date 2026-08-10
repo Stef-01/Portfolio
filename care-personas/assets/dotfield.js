@@ -1,15 +1,17 @@
 /* ============================================================
-   CARE PERSONAS — DotField v2 ("people, not dots")
-   A scroll-driven, procedural unit-PERSON theatre in the persona-
+   CARE PERSONAS — DotField v3.1 ("people, not dots")
+   A scroll-triggered, procedural unit-PERSON theatre in the persona-
    explainer tradition. Every unit is a small human figure — head,
    hair, shoulders, and (when the camera zooms close enough) a face.
    Figures take persona colours under a scan, amalgamate between
    pools/clusters/bars, and the camera zooms in and out of the story.
 
-   Clutter budget (enforced): fully user-paced (nothing moves unless
-   the reader scrolls) · one caption at a time · ≤5 persona hues +
-   neutral · no chrome on stage · dwell:travel 2:1 · reduced motion
-   gets one static composed frame.
+   Interaction model (see docs/rca-animation-postmortem.md): scroll
+   SELECTS a scene; crossing a step threshold fires a timed tween that
+   always completes, so the only resting states are the composed scenes.
+   Clutter budget: one caption at a time · ≤5 persona hues + neutral ·
+   no chrome on stage · zero motion after settle · reduced motion gets
+   one static composed frame.
    ============================================================ */
 (function () {
   'use strict';
@@ -123,7 +125,8 @@
         var pts = phyllo(cx, cy, counts[g], U * 1.55, g * 13);
         var gi = 0;
         for (var d = 0; d < N; d++) if (groups[d] === g) pos[d] = pts[gi++];
-        L.push({ x: cx, y: cy + pts.radius + (narrow ? 16 : 22), text: (opts.labels[g] || '') + ' · ' + Math.round(counts[g] * 100 / N) + '%' });
+        L.push({ x: cx, y: cy + pts.radius + (narrow ? 16 : 22), group: g, dy: pts.radius + (narrow ? 16 : 22),
+                 text: (opts.labels[g] || '') + ' · ' + Math.round(counts[g] * 100 / N) + '%' });
       }
       return { pos: pos, meta: { labels: L } };
     }
@@ -208,6 +211,10 @@
           var sx = offX + (tt * 1.3 - 0.15) * CW;
           f = smooth((sx - P[0]) / 60 + 0.5);
         }
+        // exact endpoints return the shared palette ref, keeping swept-past
+        // figures sprite-cacheable instead of allocating an identical blend
+        if (f >= 1) return col;
+        if (f <= 0) return neutral;
         return mixRgb(neutral, col, f);
       }
       return col;
@@ -230,26 +237,35 @@
     }
 
     /* ---------- the person glyph ---------- */
+    // body (bust + head + hair) onto any 2d context — shared by the live path
+    // and the sprite baker so both produce the same figure
+    function paintBody(c2, x, y, s, clothCss, skinCss, hairCss) {
+      c2.fillStyle = clothCss;
+      c2.beginPath();
+      c2.arc(x, y + 0.62 * s, 0.5 * s, Math.PI, 0);
+      c2.lineTo(x + 0.5 * s, y + 1.06 * s);
+      c2.lineTo(x - 0.5 * s, y + 1.06 * s);
+      c2.closePath();
+      c2.fill();
+      c2.fillStyle = skinCss;
+      c2.beginPath(); c2.arc(x, y - 0.14 * s, 0.36 * s, 0, 6.2832); c2.fill();
+      c2.fillStyle = hairCss;
+      c2.beginPath();
+      c2.arc(x, y - 0.14 * s, 0.37 * s, Math.PI, 0);
+      c2.arc(x, y - 0.06 * s, 0.29 * s, 0, Math.PI, true);
+      c2.closePath(); c2.fill();
+    }
+
+    // NOTE (measured 2026-08-10): an offscreen sprite cache for colour-stable
+    // figures was built and benchmarked here, and REJECTED. In Chromium's
+    // software rasterizer a scaled drawImage of this glyph costs ~3x its three
+    // path fills (1.75ms vs 0.60ms per 200 figures), and a native-size blit
+    // only reaches parity while adding ~13ms bake spikes per size bucket.
+    // The glyph is simply too cheap to out-blit. Keep it on the live path.
     function drawPerson(x, y, s, clothing, d, alpha) {
       // s = figure unit size on screen; total height ≈ 1.7s
       ctx.globalAlpha = alpha;
-      // shoulders / bust
-      ctx.fillStyle = css(clothing);
-      ctx.beginPath();
-      ctx.arc(x, y + 0.62 * s, 0.5 * s, Math.PI, 0);
-      ctx.lineTo(x + 0.5 * s, y + 1.06 * s);
-      ctx.lineTo(x - 0.5 * s, y + 1.06 * s);
-      ctx.closePath();
-      ctx.fill();
-      // head
-      ctx.fillStyle = css(skin[d]);
-      ctx.beginPath(); ctx.arc(x, y - 0.14 * s, 0.36 * s, 0, 6.2832); ctx.fill();
-      // hair cap
-      ctx.fillStyle = css(hair[d]);
-      ctx.beginPath();
-      ctx.arc(x, y - 0.14 * s, 0.37 * s, Math.PI, 0);
-      ctx.arc(x, y - 0.06 * s, 0.29 * s, 0, Math.PI, true);
-      ctx.closePath(); ctx.fill();
+      paintBody(ctx, x, y, s, css(clothing), css(skin[d]), css(hair[d]));
       // face appears when the camera is close enough to meet their eyes
       if (s > 15) {
         var fa = clamp((s - 15) / 8, 0, 1) * alpha;
@@ -301,7 +317,7 @@
       ctx.beginPath(); ctx.arc(x, y - 0.06 * s, 0.13 * s, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
       if (spec.label) {
         ctx.fillStyle = ink2; ctx.textAlign = 'center';
-        setFont('700 ' + Math.max(10, Math.round(0.5 * s)) + 'px Poppins, Inter, system-ui, sans-serif');
+        setFont('700 ' + clamp(Math.round(0.5 * s), 10, 15) + 'px Poppins, Inter, system-ui, sans-serif');
         ctx.fillText(spec.label, x, y + 1.5 * s);
       }
     }
@@ -336,6 +352,12 @@
         if (a && b) { spec = a; x = lerp(a.x, b.x, m); y = lerp(a.y, b.y, m); al = 1; }
         else if (a) { spec = a; x = a.x; y = a.y; al = 1 - m; }
         else { spec = b; x = b.x; y = b.y; al = m; }
+        // clinicians tied to a persona group recede with it when the scene dims
+        if (spec.dimWith != null) {
+          var dA = A.dim ? (A.dim.keep.indexOf(spec.dimWith) >= 0 ? 1 : A.dim.to) : 1;
+          var dB = B.dim ? (B.dim.keep.indexOf(spec.dimWith) >= 0 ? 1 : B.dim.to) : 1;
+          al *= lerp(dA, dB, m);
+        }
         if (al <= 0.02) continue;
         var p = project([x, y], cam);
         if (p[0] < -80 || p[0] > W + 80 || p[1] < -80 || p[1] > H + 80) continue;
@@ -358,6 +380,16 @@
     }
 
     /* ---------- labels ---------- */
+    // live centroids of each group at the currently rendered positions —
+    // filled during the dot loop, consumed by group-bound labels
+    var centX = new Array(G), centY = new Array(G), centN = new Array(G);
+    function labelPos(L, cam) {
+      if (L.group != null && centN[L.group]) {
+        return project([centX[L.group] / centN[L.group] + (L.dx || 0),
+                        centY[L.group] / centN[L.group] + (L.dy || 0)], cam);
+      }
+      return project([L.x, L.y], cam);
+    }
     function labelAlpha(scene, idx, label) {
       if (!scene.labels) return 0;
       var a = 1;
@@ -391,7 +423,17 @@
         ctx.globalAlpha = al;
         ctx.fillStyle = L.muted ? ink2 : ink;
         setFont(L.big ? F_BIG : F_SMALL);
-        var p = project([x, y], cam);
+        // group-bound labels ride their group's live centroid; unbound ones
+        // travel on the lerped anchor exactly as before
+        var p;
+        if (a && b && a.group != null && a.group === b.group && centN[a.group]) {
+          p = project([centX[a.group] / centN[a.group] + lerp(a.dx || 0, b.dx || 0, m),
+                       centY[a.group] / centN[a.group] + lerp(a.dy || 0, b.dy || 0, m)], cam);
+        } else if (!(a && b) && L.group != null && centN[L.group]) {
+          p = labelPos(L, cam);
+        } else {
+          p = project([x, y], cam);
+        }
         ctx.fillText(L.text, p[0], p[1]);
       }
       ctx.restore();
@@ -487,6 +529,7 @@
       var LAG = RM ? 0 : 0.25;              // fraction of travel spent staggering entries
       var SPAN = 1 - LAG;
       var bowMax = U * 3.5;
+      for (var g0 = 0; g0 < G; g0++) { centX[g0] = 0; centY[g0] = 0; centN[g0] = 0; }
       for (var d = 0; d < N; d++) {
         var pa = layA[d], pb = layB[d];
         var lm;
@@ -513,10 +556,12 @@
           }
         }
 
+        var gD = groups[d];
+        centX[gD] += x; centY[gD] += y; centN[gD]++;
         var q = project([x, y], cam);
         if (q[0] < -30 || q[0] > W + 30 || q[1] < -30 || q[1] > H + 30) continue;
         var ca = clothingOf(d, A, 1), cb = clothingOf(d, B, u);
-        var col = lm === 0 ? ca : lm === 1 ? cb : mixRgb(ca, cb, lm);
+        var col = (ca === cb || lm === 0) ? ca : lm === 1 ? cb : mixRgb(ca, cb, lm);
         var al = lerp(alphaOf(d, A), alphaOf(d, B), lm);
         drawPerson(q[0], q[1], s, col, d, al);
       }
@@ -603,8 +648,10 @@
     function startTween(to) {
       var from = vp === null ? to : vp;
       if (from === to) { tween = null; render(to, true); return; }
-      var extra = Math.max(0, Math.abs(to - from) - 1);
-      tween = { from: from, to: to, t0: performance.now(), dur: Math.min(1400, 850 + 350 * extra) };
+      // a long jump plays as ONE clean transition from the neighbouring scene,
+      // not a fast-forward through every intermediate morph
+      if (Math.abs(to - from) > 2) from = to - (to > from ? 1 : -1);
+      tween = { from: from, to: to, t0: performance.now(), dur: Math.min(1400, 850 + 350 * Math.max(0, Math.abs(to - from) - 1)) };
       if (!raf) raf = requestAnimationFrame(tickTween);
     }
     function tickTween(ts) {

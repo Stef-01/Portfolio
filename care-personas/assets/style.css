@@ -209,6 +209,9 @@ p{max-width:70ch}
 dialog.maths{border:none;border-radius:16px;padding:0;max-width:600px;width:calc(100vw - 40px);
   box-shadow:0 24px 80px rgba(15,24,52,.35);background:var(--paper);color:var(--ink)}
 dialog.maths::backdrop{background:rgba(15,24,52,.45)}
+/* no-showModal fallback (older Safari): fixed centre + shadow-cast backdrop */
+dialog.maths.maths-fallback[open]{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+  margin:0;z-index:60;box-shadow:0 24px 80px rgba(15,24,52,.35),0 0 0 100vmax rgba(15,24,52,.45)}
 .maths-in{padding:22px 26px 24px;position:relative}
 .maths-in h3{margin:0 0 2px;padding-right:30px}
 .maths-in .note{margin:0 0 6px}

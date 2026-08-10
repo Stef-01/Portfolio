@@ -13,12 +13,29 @@ segmentation (in the style of Surgo Ventures' vaccine persona explainer) to heal
 This folder is **deliberately independent of the portfolio app** — plain HTML/CSS/JS, no build
 step, no framework. The only external requests are Google Fonts.
 
-**Animation-first:** each explainer opens with a scroll-driven unit-dot theatre
-(`assets/dotfield.js`, no libraries) — 200 procedural dots take their persona colours under a
-scan sweep, amalgamate into clusters, then into the segmented bar; the camera zooms in and out
-of the story; everything is user-paced (nothing moves unless the reader scrolls), honours
-`prefers-reduced-motion` with a static composed frame, and is held to a numeric clutter budget
-documented in `docs/care-personas-plan.md`.
+**Animation-first:** each explainer opens with a scroll-triggered unit-person theatre
+(`assets/dotfield.js`, no libraries) — 200 procedurally drawn people take their persona colours
+under a scan sweep, form ranked queues and clusters, and play out the story's choreography while
+the camera zooms in and out. **Scroll selects the scene; crossing a step fires a timed tween
+that always completes** — parking the page anywhere settles on a composed scene, never a
+mid-transition frame (the interaction model of the reference explainer; see
+`docs/rca-animation-postmortem.md`). Honours `prefers-reduced-motion` with static composed
+frames, and is held to a numeric clutter budget documented in `docs/care-personas-plan.md`.
+
+## Testing
+
+`tests/theatre-qa.mjs` is the standing QA gate born of that RCA: it drives **real scrolling**
+(not test-API poses) at 390/1280/2000 px, parks 60% into transitions and byte-compares what
+settles against the composed target scene, then checks stillness after settle, completed scan
+sweeps at rest, one-caption-at-a-time discipline, mobile overflow and reduced-motion stillness.
+
+```sh
+node tests/theatre-qa.mjs          # full matrix
+node tests/theatre-qa.mjs --quick  # widest viewport only
+```
+
+Requires a Node ≥ 18 with Playwright + Chromium available (a global install works —
+`createRequire` honours `NODE_PATH`).
 
 ## Hosting
 

@@ -89,14 +89,18 @@ Brand mark (5 persona dots), headline, the shared method, two hub cards with min
 
 ## The dot-field theatre (animation-first layer)
 
-Both explainers open with a **scroll-driven unit-dot theatre** (`assets/dotfield.js`, ~9 KB, no
-libraries): 200 procedurally placed dots (each dot = 10 appointments / 1 patient) that morph
-through choreographed scenes as the reader scrolls — cloud → complexity/preference **scan sweep**
-(dots take persona colours) → **amalgamation** into 5 circle-packed clusters → amalgamation into
-the segmented bar → **camera zoom in** on the target segment → zoom out into the split/match/
-outbound choreography → stat count-ups. All layouts are procedural (phyllotaxis packing, seeded
-PRNG so they're stable across resizes); the camera is a projective transform interpolated per
-scene; every beat is **fully user-paced** — nothing moves unless the reader scrolls.
+Both explainers open with a **scroll-triggered unit-person theatre** (`assets/dotfield.js`, no
+libraries): 200 procedurally drawn people (skin/hair variety from a seeded PRNG; faces resolve
+when the camera comes close) that move through composed scenes — cloud → **scan sweep** (figures
+take persona colours) → ranked queue / persona clusters → the story's own choreography (queue
+separation and backfill in E01; doctor matching, outbound pulses and retention in E02) → stat
+count-ups. All layouts are procedural (phyllotaxis packing, stable across resizes); the camera
+is a projective transform; composition lives in a centred ≤1500 px content column with figure
+size derived from a legibility target. **Interaction model (post-RCA): scroll SELECTS a scene —
+crossing a step threshold fires a timed, eased tween (≤1.4 s) that always completes.** The only
+states that can persist on screen are the composed scenes themselves; in-scene effects play
+during the entry tween and rest in their completed pose (see
+`docs/rca-animation-postmortem.md`).
 
 Research basis: the original Surgo explainer is confirmed (designer/developer portfolio + on-page
 captions) to be a Scrollama + D3 **animated-circle unit visualization** whose circles re-sort from
@@ -112,8 +116,8 @@ grammar for the care-model domain.
 | Active hues per scene | 1 accent + gray context; ≤ 7 ceiling (Datawrapper); 5 persona hues when the segmentation IS the story (Surgo) | neutral-gray scenes until the scan; then the 5 validated persona hues + 1 accent |
 | Concurrent choreographies | 1 (Heer & Robertson staged transitions) | one morph at a time; extras animate only while dots hold |
 | Non-data elements on stage | ≤ 5–6 labels + caption, zero chrome | ≤ 5 persona labels + 1 caption; no gridlines/borders/axes on stage |
-| Dwell : travel | ≥ 2:1 of scroll distance | 67 : 33 per scene |
-| Idle motion at rest | zero autonomous/looping motion (WCAG 2.2.2) | scroll-driven only; single 0.9 s one-shot count-up |
+| Resting states | only composed scenes may persist (the reference's Scrollama+D3 trigger pattern) | scroll selects the scene; the entry tween always completes, so parking anywhere settles on a composed pose (byte-verified by `care-personas/tests/theatre-qa.mjs`) |
+| Idle motion at rest | zero autonomous/looping motion (WCAG 2.2.2) | zero after settle — motion is a single ≤1.4 s one-shot tween per step crossing, plus one 0.9 s count-up |
 | Reduced motion | static states / crossfades (WCAG 2.3.3, C39) | single static composed frame + instant stat values |
 | Text position | one fixed slot, 0 layout jumps (Bostock/Pudding) | fixed bottom-left slot every scene |
 | Camera moves per story | ≤ 1 per scene, ~3–5 per story | 2 per story (zoom in, zoom out) |
@@ -247,6 +251,31 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   generating the PDF and counting `/Type /Page` objects; the responsive column-stacking
   breakpoint is scoped to `screen` so print keeps two columns). Screen view carries a
   print/save-as-PDF button; linked from the hub and both explainer footers.
+
+- **Fix-all round (v3.1, 2026-08-10) — every deferred RCA item closed.**
+  *R4 closed for real:* labels can bind to a group (`{group, dx, dy}`) and ride its **live
+  centroid** through transitions — E02's persona labels now fly WITH their people into the
+  match scenes instead of hovering where the cluster used to be; E01's pool titles ride the
+  book as it grows; builtin cluster labels bound likewise. Offsets ease between scenes so
+  radius changes don't pop.
+  *Clinicians respect scene dimming* (`dimWith`): in E02's zoom, the four non-focus doctors
+  recede with their patients. *Clinician name font* clamped to 10–15 px (was scaling to ~27 px
+  under the zoom camera). *Multi-scene jumps* teleport to one scene short of the target and
+  play a single clean tween instead of a 1.4 s fast-forward through the whole story.
+  *`<dialog>` fallback:* the MBS pop-out now works without `showModal` (older Safari) — same
+  centred card, shadow-cast backdrop, Escape/×/backdrop-click all close it.
+  *Sprite cache — evaluated and REJECTED on measurement:* baking colour-stable figures to
+  offscreen sprites made the 12× CPU-throttle p95 **worse** (27.3 ms vs 22 ms live), because a
+  scaled `drawImage` costs ~3× the glyph's three path fills under software rasterization and
+  native-size blits only reach parity while adding bake spikes. Kept instead: scan endpoints
+  return shared palette refs and identical-colour transitions skip `mixRgb`, so at-rest and
+  same-colour frames allocate nothing. 12× p95 ≈ 22 ms, max 26–28 ms (spike-free).
+  *Process (A6) made real:* `care-personas/tests/theatre-qa.mjs` is a committed, dependency-free
+  harness that drives REAL scrolling at 390/1280/2000 px, parks 60% into transitions and
+  byte-compares the settled canvas against the composed scene, then checks stillness, completed
+  scan at rest, one-caption discipline, mobile overflow and reduced-motion stillness.
+  *Docs truthed up:* this plan's theatre description and budget table now describe the
+  trigger-tween model (the dwell:travel row died with the scrub).
 
 ## Roadmap (v2)
 

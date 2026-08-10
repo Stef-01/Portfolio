@@ -768,8 +768,10 @@
   function gpClin(c, g, rGp) { return { x: g.gp[0] - rGp - c.U * 2.8, y: g.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' }; }
   function gpZone(c, g, rGp) { return { x: g.gp[0], y: g.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 }; }
   function gpTitle(g, rGp, text, sub) {
-    var L = [{ x: g.gp[0], y: g.gp[1] - rGp - 30, text: text, big: true }];
-    if (sub) L.push({ x: g.gp[0], y: g.gp[1] - rGp - 12, text: sub, muted: true });
+    // bound to group 5 (the everyday book) so the title rides the pool as it
+    // grows and shrinks mid-tween instead of hovering at a stale radius
+    var L = [{ x: g.gp[0], y: g.gp[1] - rGp - 30, group: 5, dy: -(rGp + 30), text: text, big: true }];
+    if (sub) L.push({ x: g.gp[0], y: g.gp[1] - rGp - 12, group: 5, dy: -(rGp + 12), text: sub, muted: true });
     return L;
   }
   function queueChrome(c, g, extraLabels) {
@@ -961,6 +963,24 @@
 (function () {
   var dlg = document.getElementById('mathsDialog'), body = document.getElementById('mathsBody');
   if (!dlg || !body) return;
+  // older Safari ships <dialog> without showModal — fall back to a plain
+  // overlay driven by the [open] attribute and the same close paths
+  var modal = typeof dlg.showModal === 'function';
+  function show() {
+    if (modal) { dlg.showModal(); return; }
+    dlg.setAttribute('open', '');
+    dlg.classList.add('maths-fallback');
+  }
+  function hide() {
+    if (modal) { dlg.close(); return; }
+    dlg.removeAttribute('open');
+    dlg.classList.remove('maths-fallback');
+  }
+  if (!modal) {
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dlg.hasAttribute('open')) hide();
+    });
+  }
   function row(cells, cls) {
     return '<tr' + (cls ? ' class="' + cls + '"' : '') + '>' + cells.map(function (c, i) {
       return '<td' + (i > 0 ? ' class="num"' : '') + '>' + c + '</td>';
@@ -1016,13 +1036,13 @@
       '<h3 id="mathsTitle">' + m.title + '</h3><p class="note">' + m.note + '</p>' +
       '<table>' + HEAD + '<tbody>' + m.rows.join('') + '</tbody></table>' +
       '<p class="note" style="margin-top:12px">' + m.foot + '</p>';
-    body.querySelector('.maths-close').addEventListener('click', function () { dlg.close(); });
-    dlg.showModal();
+    body.querySelector('.maths-close').addEventListener('click', hide);
+    show();
   }
   document.querySelectorAll('.mchip').forEach(function (ch) {
     ch.addEventListener('click', function () { open(ch.getAttribute('data-maths')); });
   });
-  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) hide(); });
 })();
 
 /* Specialty switcher — the mechanism is specialty-agnostic; only the clinical
