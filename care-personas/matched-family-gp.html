@@ -608,10 +608,11 @@
   ];
   function docPos(c, g) {
     // desktop row starts right of the fixed caption column so no scene ever
-    // parks a doctor or their patients under the story text
+    // parks a doctor or their patients under the story text; narrow column
+    // starts below the caption block (top ~30%) for the same reason
     return c.narrow
-      ? [0.84 * c.W, (0.14 + 0.18 * g) * c.H]
-      : [(0.34 + 0.145 * g) * c.W, 0.84 * c.H];
+      ? [0.84 * c.W, (0.38 + 0.13 * g) * c.H]
+      : [(0.38 + 0.14 * g) * c.W, 0.84 * c.H];
   }
   function docsMeta(c) {
     var clin = [], docs = [];
@@ -626,8 +627,8 @@
   // replicate the engine's builtin cluster geometry so scene 3 -> 4 holds still
   function clusterPos(c) {
     var slots = c.narrow
-      ? [[0.30, 0.32], [0.72, 0.42], [0.32, 0.57], [0.72, 0.71], [0.34, 0.85]]
-      : [[0.15, 0.35], [0.32, 0.66], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
+      ? [[0.30, 0.36], [0.58, 0.44], [0.32, 0.60], [0.58, 0.72], [0.34, 0.86]]
+      : [[0.15, 0.35], [0.38, 0.55], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
     var pos = new Array(c.N);
     for (var g = 0; g < 5; g++) {
       var pts = c.phyllo(slots[g][0] * c.W, slots[g][1] * c.H, COUNTS[g], c.U * 1.55, g * 13);
@@ -639,8 +640,8 @@
   var NAMES = ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'];
   function clusterLabels(c) {
     var slots = c.narrow
-      ? [[0.30, 0.32], [0.72, 0.42], [0.32, 0.57], [0.72, 0.71], [0.34, 0.85]]
-      : [[0.15, 0.35], [0.32, 0.66], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
+      ? [[0.30, 0.36], [0.58, 0.44], [0.32, 0.60], [0.58, 0.72], [0.34, 0.86]]
+      : [[0.15, 0.35], [0.38, 0.55], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
     var L = [], total = 200;
     for (var g = 0; g < 5; g++) {
       var r = c.U * 1.55 * Math.sqrt(COUNTS[g]) * 0.62;
@@ -656,12 +657,12 @@
       var m = docsMeta(c);
       return { pos: clusterPos(c), meta: {
         clinicians: m.clinicians, docs: m.docs,
-        labels: clusterLabels(c).concat([{ x: c.narrow ? 0.84 * c.W : 0.63 * c.W, y: c.narrow ? 0.05 * c.H : 0.945 * c.H, text: 'the practice — each doctor declared their focus', muted: true }])
+        labels: clusterLabels(c).concat([{ x: c.narrow ? 0.5 * c.W : 0.66 * c.W, y: c.narrow ? 0.975 * c.H : 0.945 * c.H, text: 'the practice — each doctor declared their focus', muted: true }])
       } };
     },
     matched: function (c) { return matchedAt(c, 1.55, []); },
     retained: function (c) {
-      return matchedAt(c, 1.22, [{ x: c.narrow ? 0.5 * c.W : 0.63 * c.W, y: c.narrow ? 0.05 * c.H : 0.945 * c.H, text: 'twelve months on — still here', muted: true }]);
+      return matchedAt(c, 1.22, [{ x: c.narrow ? 0.5 * c.W : 0.66 * c.W, y: c.narrow ? 0.975 * c.H : 0.945 * c.H, text: 'twelve months on — still here', muted: true }]);
     }
   };
   function matchedAt(c, pitch, labels) {
@@ -693,7 +694,7 @@
       { key: 'docrow', colorGroups: 'all', labels: true },
       { key: 'matched', colorGroups: 'all', labels: true },
       { key: 'matched', colorGroups: 'all', dim: { keep: [0], to: 0.15 },
-        cam: { z: 1.9, x: 0.35, y: 0.74 }, camNarrow: { z: 1.6, x: 0.68, y: 0.15 } },
+        cam: { z: 1.9, x: 0.39, y: 0.74 }, camNarrow: { z: 1.6, x: 0.68, y: 0.38 } },
       { key: 'matched', colorGroups: 'all', extra: 'outbound' },
       { key: 'retained', colorGroups: 'all', labels: true },
       { key: 'retained', colorGroups: 'all', dim: { keep: [], to: 0.18 } }

@@ -117,8 +117,8 @@
     function builtinClusters() {
       var narrow = W < 680, W_ = CW;
       var slots = narrow
-        ? [[0.30, 0.32], [0.72, 0.42], [0.32, 0.57], [0.72, 0.71], [0.34, 0.85]]
-        : [[0.15, 0.35], [0.32, 0.66], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
+        ? [[0.30, 0.36], [0.58, 0.44], [0.32, 0.60], [0.58, 0.72], [0.34, 0.86]]
+        : [[0.15, 0.35], [0.38, 0.55], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
       var pos = new Array(N), L = [];
       for (var g = 0; g < G; g++) {
         var cx = slots[g % slots.length][0] * W_, cy = slots[g % slots.length][1] * H;
@@ -318,7 +318,9 @@
       if (spec.label) {
         ctx.fillStyle = ink2; ctx.textAlign = 'center';
         setFont('700 ' + clamp(Math.round(0.5 * s), 10, 15) + 'px Poppins, Inter, system-ui, sans-serif');
-        ctx.fillText(spec.label, x, y + 1.5 * s);
+        // a declared-focus ring extends to 1.35s below centre — drop the name
+        // under it instead of through it
+        ctx.fillText(spec.label, x, y + (spec.ring ? 1.68 : 1.5) * s);
       }
     }
     // A clinician who exists in both scenes should WALK to their new spot, not
@@ -352,11 +354,17 @@
         if (a && b) { spec = a; x = lerp(a.x, b.x, m); y = lerp(a.y, b.y, m); al = 1; }
         else if (a) { spec = a; x = a.x; y = a.y; al = 1 - m; }
         else { spec = b; x = b.x; y = b.y; al = m; }
-        // clinicians tied to a persona group recede with it when the scene dims
+        // clinicians tied to a persona group recede with it when the scene dims;
+        // untied clinicians recede only in dim-EVERYTHING scenes (keep: []),
+        // where the stats overlay takes the stage
         if (spec.dimWith != null) {
           var dA = A.dim ? (A.dim.keep.indexOf(spec.dimWith) >= 0 ? 1 : A.dim.to) : 1;
           var dB = B.dim ? (B.dim.keep.indexOf(spec.dimWith) >= 0 ? 1 : B.dim.to) : 1;
           al *= lerp(dA, dB, m);
+        } else {
+          var eA = A.dim && A.dim.keep.length === 0 ? A.dim.to : 1;
+          var eB = B.dim && B.dim.keep.length === 0 ? B.dim.to : 1;
+          al *= lerp(eA, eB, m);
         }
         if (al <= 0.02) continue;
         var p = project([x, y], cam);
@@ -450,6 +458,8 @@
       if (scene.extra === 'link' && M.link) {
         var A = M.link.a, B = M.link.b;
         var qx = (A[0] + B[0]) / 2, qy = Math.min(A[1], B[1]) - H * 0.16;
+        // narrow screens: keep the arc apex (and its label) below the caption
+        if (W < 680) qy = Math.max(qy, H * 0.42);
         var a2 = P(A[0], A[1]), b2 = P(B[0], B[1]), q2 = P(qx, qy);
         ctx.strokeStyle = 'rgba(138,147,168,.55)'; ctx.lineWidth = 1.5 * z;
         ctx.beginPath(); ctx.moveTo(a2[0], a2[1]); ctx.quadraticCurveTo(q2[0], q2[1], b2[0], b2[1]); ctx.stroke();
@@ -460,7 +470,9 @@
         ctx.fillStyle = accent;
         ctx.beginPath(); ctx.arc(pp[0], pp[1], 5 * z, 0, 6.2832); ctx.fill();
         ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
-        if (scene.linkLabel) {
+        if (scene.linkLabel && W >= 680) {
+          // narrow screens have no free band between caption and pool titles
+          // for this annotation — the caption itself carries the eConsult beat
           ctx.fillStyle = ink2; setFont(F_ANNO); ctx.textAlign = 'center';
           ctx.fillText(scene.linkLabel, q2[0], q2[1] - 10);
         }

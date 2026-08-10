@@ -733,13 +733,15 @@
    the front of the queue. Each figure ≈ 15 patients. */
 (function () {
   function geo(c) {
+    // narrow: captions sit in the top ~30% — everything on stage starts below;
+    // desktop: the queue title needs to clear the sticky topbar on short screens
     if (c.narrow) return {
-      gp: [0.26 * c.W, 0.60 * c.H], sp: [0.50 * c.W, 0.38 * c.H],
-      qx: 0.64 * c.W, y0: 0.30 * c.H, y1: 0.93 * c.H, rows: 40
+      gp: [0.26 * c.W, 0.70 * c.H], sp: [0.50 * c.W, 0.50 * c.H],
+      qx: 0.64 * c.W, y0: 0.42 * c.H, y1: 0.93 * c.H, rows: 40
     };
     return {
       gp: [0.20 * c.W, 0.46 * c.H], sp: [0.72 * c.W, 0.42 * c.H],
-      qx: 0.60 * c.W, y0: 0.12 * c.H, y1: 0.90 * c.H, rows: 40
+      qx: 0.60 * c.W, y0: Math.max(0.12 * c.H, 128), y1: 0.90 * c.H, rows: 40
     };
   }
   function packInto(c, pos, centre, members, seed) {
@@ -769,9 +771,11 @@
   function gpZone(c, g, rGp) { return { x: g.gp[0], y: g.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 }; }
   function gpTitle(g, rGp, text, sub) {
     // bound to group 5 (the everyday book) so the title rides the pool as it
-    // grows and shrinks mid-tween instead of hovering at a stale radius
-    var L = [{ x: g.gp[0], y: g.gp[1] - rGp - 30, group: 5, dy: -(rGp + 30), text: text, big: true }];
-    if (sub) L.push({ x: g.gp[0], y: g.gp[1] - rGp - 12, group: 5, dy: -(rGp + 12), text: sub, muted: true });
+    // grows and shrinks mid-tween instead of hovering at a stale radius;
+    // x floor keeps the longest sub-line inside the left edge on phones
+    var tx = Math.max(g.gp[0], 118);
+    var L = [{ x: tx, y: g.gp[1] - rGp - 30, group: 5, dx: tx - g.gp[0], dy: -(rGp + 30), text: text, big: true }];
+    if (sub) L.push({ x: tx, y: g.gp[1] - rGp - 12, group: 5, dx: tx - g.gp[0], dy: -(rGp + 12), text: sub, muted: true });
     return L;
   }
   function queueChrome(c, g, extraLabels) {

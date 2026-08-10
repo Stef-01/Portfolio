@@ -277,6 +277,27 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   *Docs truthed up:* this plan's theatre description and budget table now describe the
   trigger-tween model (the dwell:travel row died with the scrub).
 
+- **Composition sweep (v3.2, 2026-08-10) — every stage/caption collision closed.**
+  A full-surface capture (all 4 pages × 390/1280/2000 px, every resting scene plus every
+  below-theatre section) surfaced one root cause and a family of composition defects, all fixed:
+  *Root cause:* the generic `section{padding:84px 0 36px}` applied to the theatre too, so the
+  sticky stage pinned 84 px late — scene 0's caption hung below the fold on entry (clipped
+  outright at 800 px-tall viewports). `.theatre` now zeroes that padding; the stage pins at
+  exactly the story top on every viewport.
+  *Narrow (390):* E01's specialist queue and pool titles started inside the caption block —
+  geometry now starts below it (queue top 0.42 H, pools 0.50/0.70 H) and the eConsult arc apex
+  clamps below the caption; E02's doctor rail began at 0.14 H (rings colliding with the topbar
+  and headline) — now 0.30–0.86 H, with the narrow cluster column nudged off the rail and the
+  practice/retention captions moved to the stage foot.
+  *Short desktop (1280×800):* the queue title rendered under the opaque topbar (y0 now floors
+  at 128 px); clinicians now recede in dim-everything scenes so the stats overlay reads clean;
+  the orange cluster and doctor row no longer graze the caption column (slot 1 → [0.38, 0.64],
+  doc row → 0.38 + 0.14 g, zoom cameras retargeted).
+  *Detail:* doctor name labels drop below their declared-focus ring instead of through it;
+  quiz/demo chips and the model-reset button gained visible keyboard focus rings.
+  Verified: stage pin + caption-inside-fold probes at all three widths, full theatre-qa matrix
+  green, exec summary still exactly one printed page.
+
 ## Roadmap (v2)
 
 Real MBS item lookups. The product is otherwise feature-complete for its purpose.

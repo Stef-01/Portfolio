@@ -150,6 +150,7 @@ p{max-width:70ch}
 }
 .chip .dot{width:10px;height:10px;border-radius:50%;flex:none}
 .chip:hover{border-color:var(--navy)}
+.chip:focus-visible,.mreset:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
 .chip[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:#fff}
 @media (max-width:640px){ .bigbar .seg span{display:none} }
 
@@ -322,12 +323,18 @@ footer .fbrand{font-family:var(--disp);font-weight:800;letter-spacing:.14em;colo
 
 /* ---------- dot-field theatre (scroll-driven; JS-only, duplicated as static content below it) ---------- */
 .theatre{display:none}
-.js .theatre{display:block;position:relative}
+/* padding:0 overrides the generic section padding — with it, the sticky stage
+   pinned 84px late and scene 0's caption hung below the fold on entry */
+.js .theatre{display:block;position:relative;padding:0}
 .df-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--paper)}
 .df-stage canvas{position:absolute;inset:0;display:block}
 .df-step{
   position:absolute;left:6%;bottom:9%;max-width:540px;opacity:0;pointer-events:none;
-  transition:opacity .15s linear
+  transition:opacity .15s linear;
+  /* near-invisible backplate on the paper, solid where figures pass beneath —
+     captions stay readable at any viewport without fighting the geometry */
+  background:rgba(255,255,255,.9);padding:16px 20px 18px;margin-left:-20px;
+  border-radius:16px
 }
 .df-step .eyebrow{margin-bottom:8px}
 .df-step h3{font-family:var(--disp);font-weight:800;color:var(--navy);
