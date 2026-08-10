@@ -32,6 +32,7 @@
     <a href="#money">Money</a>
     <a href="#trial">Trial</a>
     <a href="#risks">Risks</a>
+    <a href="#scale">Scale</a>
     <a class="pill" href="matched-family-gp.html">Explainer 02 →</a>
   </nav>
 </header>
@@ -617,6 +618,70 @@
     </div>
   </section>
 
+  <!-- 08 GENERALISES -->
+  <section id="scale">
+    <div class="wrap reveal">
+      <p class="eyebrow">08 — Does it generalise?</p>
+      <h2>Every physician specialty has a bottom quintile</h2>
+      <p class="lede">Cardiology is the worked example, not the mechanism. Any specialty whose book
+      contains stable, protocol-governed follow-ups has the same mispricing — only the clinical
+      detail changes. Pick a specialty; the screen and the arithmetic stay identical.</p>
+
+      <div class="card" id="specSwitch" style="margin-top:24px">
+        <div class="chips" role="group" aria-label="Choose a specialty">
+          <button class="chip" data-spec="cardiology" aria-pressed="true">Cardiology</button>
+          <button class="chip" data-spec="endocrinology" aria-pressed="false">Endocrinology</button>
+          <button class="chip" data-spec="respiratory" aria-pressed="false">Respiratory</button>
+          <button class="chip" data-spec="gastroenterology" aria-pressed="false">Gastroenterology</button>
+          <button class="chip" data-spec="rheumatology" aria-pressed="false">Rheumatology</button>
+        </div>
+        <div class="msplit" style="margin-top:18px">
+          <div>
+            <h3 id="sName">Cardiology</h3>
+            <p class="note" style="margin:0 0 8px">Who sits in the bottom quintile</p>
+            <ul class="mathlist" id="sExamples" style="margin-top:0"></ul>
+            <p class="note" id="sEscalate" style="margin-top:12px"></p>
+          </div>
+          <div class="mouts" aria-live="polite">
+            <div class="tile"><p class="tlabel">Bottom-quintile share of the book</p><p class="tvalue" id="sShare">20%</p></div>
+            <div class="tile"><p class="tlabel">Clinic slots freed per FTE per year</p><p class="tvalue" id="sFreed">400</p></div>
+            <div class="tile"><p class="tlabel">Specialist consulting uplift per FTE</p><p class="tvalue" id="sUplift">+$35k</p></div>
+            <div class="tile"><p class="tlabel">Median wait, modelled</p><p class="tvalue" id="sWait">127 → 55 days</p></div>
+          </div>
+        </div>
+        <details>
+          <summary>View all five specialties as a table</summary>
+          <table>
+            <thead><tr><th>Specialty</th><th class="num">Bottom-quintile share</th><th class="num">Appts / FTE / yr</th><th class="num">Slots freed / FTE</th><th class="num">Uplift / FTE</th><th class="num">Wait (modelled)</th></tr></thead>
+            <tbody>
+              <tr><td>Cardiology</td><td class="num">20%</td><td class="num">2,000</td><td class="num">400</td><td class="num">+$35k</td><td class="num">127 → 55 days</td></tr>
+              <tr><td>Endocrinology</td><td class="num">24%</td><td class="num">2,100</td><td class="num">504</td><td class="num">+$44k</td><td class="num">148 → 62 days</td></tr>
+              <tr><td>Respiratory</td><td class="num">22%</td><td class="num">1,900</td><td class="num">418</td><td class="num">+$36k</td><td class="num">119 → 52 days</td></tr>
+              <tr><td>Gastroenterology</td><td class="num">18%</td><td class="num">2,200</td><td class="num">396</td><td class="num">+$34k</td><td class="num">156 → 68 days</td></tr>
+              <tr><td>Rheumatology</td><td class="num">21%</td><td class="num">1,800</td><td class="num">378</td><td class="num">+$33k</td><td class="num">172 → 74 days</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h3>What it's worth at national scale — stated per 1,000 specialist FTE</h3>
+        <p class="note" style="margin:2px 0 12px">No national headcount is assumed here. These are
+        per-1,000-FTE figures at the cardiology parameters above — multiply by whatever the real
+        workforce is in the specialties a jurisdiction chooses to start with.</p>
+        <div class="grid g4">
+          <div class="card tile"><p class="tlabel">Clinic appointments redirected out of hospital outpatients, per year</p><p class="tvalue">400,000</p></div>
+          <div class="card tile"><p class="tlabel">Additional new complex assessments, per year</p><p class="tvalue">240,000</p></div>
+          <div class="card tile"><p class="tlabel">Patients moved into structured GP-led care</p><p class="tvalue">130,000</p></div>
+          <div class="card tile"><p class="tlabel">Network-side benefit, per year</p><p class="tvalue">$116M</p><p class="tdelta">at $116k per FTE (the 6-FTE department figure, per head)</p></div>
+        </div>
+        <p class="note" style="margin-top:12px">The corresponding new Medicare outlay scales the
+        same way — roughly <b>$93M per 1,000 FTE per year</b>, buying the throughput above. This is
+        a throughput trade, and it should be argued as one.</p>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -811,12 +876,65 @@
     $('rWait').textContent = '127 → ' + wait + ' days';
   }
   Object.keys(ins).forEach(function (k) { ins[k].addEventListener('input', recompute); });
+  ins.share.setAttribute('aria-describedby', 'rSpec');
   $('mReset').addEventListener('click', function () {
     ins.share.value = defaults.share; ins.appts.value = defaults.appts;
     ins.fee.value = defaults.fee; ins.fte.value = defaults.fte;
     recompute();
   });
   recompute();
+})();
+
+/* Specialty switcher — the mechanism is specialty-agnostic; only the clinical
+   detail and the indicative parameters change. Figures match the table below it. */
+(function () {
+  var SPECS = {
+    cardiology: { name: 'Cardiology', share: '20%', freed: '400', uplift: '+$35k', wait: '127 → 55 days',
+      ex: ['Controlled AF on a DOAC, stable three years, echo unchanged',
+           'Post-ACS secondary prevention at eighteen months, lipids to target',
+           'Heart failure on settled guideline therapy, needing protocol titration only'],
+      esc: 'Escalation triggers: new arrhythmia, rising NT-proBNP, any admission, device concern.' },
+    endocrinology: { name: 'Endocrinology', share: '24%', freed: '504', uplift: '+$44k', wait: '148 → 62 days',
+      ex: ['Type 2 diabetes at target on a fixed regimen, no complications progressing',
+           'Treated hypothyroidism, stable TSH on unchanged replacement',
+           'Osteoporosis on established antiresorptive therapy, routine review'],
+      esc: 'Escalation triggers: hypoglycaemia, rapid HbA1c drift, new nephropathy or foot disease, pregnancy.' },
+    respiratory: { name: 'Respiratory', share: '22%', freed: '418', uplift: '+$36k', wait: '119 → 52 days',
+      ex: ['Well-controlled asthma on stable inhaled therapy, no recent oral steroids',
+           'Stable COPD on triple therapy, exacerbation-free for a year',
+           'Treated OSA, established on CPAP with good adherence data'],
+      esc: 'Escalation triggers: exacerbation needing steroids, falling spirometry, new hypoxia, haemoptysis.' },
+    gastroenterology: { name: 'Gastroenterology', share: '18%', freed: '396', uplift: '+$34k', wait: '156 → 68 days',
+      ex: ['Coeliac disease in remission on a gluten-free diet, routine serology',
+           'IBS on a settled management plan, no alarm features',
+           'Stable chronic liver disease on surveillance, no decompensation'],
+      esc: 'Escalation triggers: bleeding, weight loss, new anaemia, deranged LFTs, any alarm feature.' },
+    rheumatology: { name: 'Rheumatology', share: '21%', freed: '378', uplift: '+$33k', wait: '172 → 74 days',
+      ex: ['Rheumatoid arthritis in sustained remission on an unchanged DMARD',
+           'Gout on stable urate-lowering therapy, at target',
+           'Long-standing osteoarthritis on a settled non-surgical plan'],
+      esc: 'Escalation triggers: flare, new joint involvement, biologic decisions, drug-monitoring abnormality.' }
+  };
+  var box = document.getElementById('specSwitch');
+  if (!box) return;
+  var $ = function (id) { return document.getElementById(id); };
+  function show(key) {
+    var s = SPECS[key];
+    $('sName').textContent = s.name;
+    $('sShare').textContent = s.share;
+    $('sFreed').textContent = s.freed;
+    $('sUplift').textContent = s.uplift;
+    $('sWait').textContent = s.wait;
+    $('sExamples').innerHTML = s.ex.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+    $('sEscalate').textContent = s.esc;
+    box.querySelectorAll('.chip').forEach(function (c) {
+      c.setAttribute('aria-pressed', c.getAttribute('data-spec') === key ? 'true' : 'false');
+    });
+  }
+  box.querySelectorAll('.chip').forEach(function (c) {
+    c.addEventListener('click', function () { show(c.getAttribute('data-spec')); });
+  });
+  show('cardiology');
 })();
 </script>
 </body>

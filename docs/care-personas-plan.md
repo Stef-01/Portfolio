@@ -165,7 +165,16 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   segment; focus moves to the next question for keyboard users; entirely client-side with
   nothing stored. JS-gated with a static five-persona summary as the no-JS fallback.
 
+- **Specialty switcher + national scaling (Explainer 01, §08):** five specialties (cardiology,
+  endocrinology, respiratory, gastroenterology, rheumatology) each with their own bottom-quintile
+  exemplars, escalation triggers, share, freed slots, uplift and modelled wait — proving the
+  mechanism is specialty-agnostic. Every uplift figure reconciles exactly with the live scenario
+  model when driven to that specialty's parameters (verified programmatically; the respiratory
+  figure was corrected from $37k to $36k when the cross-check caught it). Scaling is stated
+  **per 1,000 specialist FTE** — 400,000 appointments redirected, 240,000 extra complex
+  assessments, 130,000 patients into GP-led care, $116M network benefit against ~$93M new
+  Medicare outlay — so no national workforce headcount is assumed or invented.
+
 ## Roadmap (v2)
 
-Specialty switcher (cardiology ⇄ endocrine ⇄ respiratory presets) · real MBS item lookups ·
-per-1M-population state scaling · printable one-page executive summaries.
+Real MBS item lookups · printable one-page executive summary for handing to a CMO on paper.
