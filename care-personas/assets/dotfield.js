@@ -84,6 +84,7 @@
 
     /* ---------- geometry ---------- */
     var W = 0, H = 0, DPR = 1, U = 9; // U = base unit (figure) size in px
+    var CW = 0, offX = 0; // content column: composition never stretches past 1500px
     var layouts = {}, meta = {};
     // ctx.font assignment parses a CSS font string — cache it, it's a hot path
     var curFont = '';
@@ -104,21 +105,21 @@
 
     // built-in layout builders (custom builders come via opts.layouts)
     function builtinCloud(spreadK, seed) {
-      var m = Math.min(W, H);
-      var pts = phyllo(W * 0.5, H * 0.46, N, U * (1.55 * spreadK), seed || 0);
+      var m = Math.min(CW, H);
+      var pts = phyllo(CW * 0.5, H * 0.46, N, U * (1.55 * spreadK), seed || 0);
       for (var i = 0; i < N; i++) {
         pts[i] = [pts[i][0] + jit[i][0] * m * 0.03 * spreadK, pts[i][1] + jit[i][1] * m * 0.03 * spreadK];
       }
       return { pos: pts, meta: { labels: [] } };
     }
     function builtinClusters() {
-      var narrow = W < 680;
+      var narrow = W < 680, W_ = CW;
       var slots = narrow
         ? [[0.30, 0.32], [0.72, 0.42], [0.32, 0.57], [0.72, 0.71], [0.34, 0.85]]
         : [[0.15, 0.35], [0.32, 0.66], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
       var pos = new Array(N), L = [];
       for (var g = 0; g < G; g++) {
-        var cx = slots[g % slots.length][0] * W, cy = slots[g % slots.length][1] * H;
+        var cx = slots[g % slots.length][0] * W_, cy = slots[g % slots.length][1] * H;
         var pts = phyllo(cx, cy, counts[g], U * 1.55, g * 13);
         var gi = 0;
         for (var d = 0; d < N; d++) if (groups[d] === g) pos[d] = pts[gi++];
@@ -128,8 +129,8 @@
     }
     function builtinBar() {
       var rows = 8, rowH = U * 1.9, colW = U * 1.35;
-      var bw = W * 0.84, bx = W * 0.08, by = H * 0.46 - rows * rowH / 2;
-      var gap = Math.max(2, W * 0.006);
+      var bw = CW * 0.84, bx = CW * 0.08, by = H * 0.46 - rows * rowH / 2;
+      var gap = Math.max(2, CW * 0.006);
       var pos = new Array(N), L = [], x0 = bx;
       for (var g = 0; g < G; g++) {
         var gw = bw * counts[g] / N - gap;
@@ -144,16 +145,18 @@
         L.push({ x: x0 + gw / 2, y: by - (W < 680 ? 14 : 20), text: (W < 680 ? '' : (opts.labels[g] || '') + ' · ') + Math.round(counts[g] * 100 / N) + '%' });
         x0 += gw + gap;
       }
-      var doc = W < 680 ? [0.5 * W, 0.72 * H] : [0.80 * W, 0.28 * H];
+      var doc = W < 680 ? [0.5 * CW, 0.72 * H] : [0.80 * CW, 0.28 * H];
       return { pos: pos, meta: { labels: L, doc: doc } };
     }
 
     var builderCtx = null;
     function buildLayouts() {
-      var m = Math.min(W, H);
-      U = clamp(m * 0.013, 6.5, 11);
+      CW = Math.min(W, 1500);
+      offX = (W - CW) / 2;
+      // legibility target: figure height ~2.5% of the stage's limiting dimension
+      U = clamp(Math.min(CW, H) * 0.0145, 6.5, 16);
       builderCtx = {
-        W: W, H: H, N: N, U: U, narrow: W < 680,
+        W: CW, H: H, N: N, U: U, narrow: W < 680,
         groups: groups, counts: counts, idxInGroup: idxInGroup,
         phyllo: phyllo, jit: jit
       };
@@ -170,9 +173,21 @@
       scenes.forEach(function (s) { needed[s.key] = 1; });
       for (var name in needed) {
         var out = defs[name](builderCtx);
+        if (offX > 0) shiftX(out, offX);
         layouts[name] = out.pos;
         meta[name] = out.meta || {};
       }
+    }
+    function shiftX(out, dx) {
+      var i;
+      for (i = 0; i < out.pos.length; i++) if (out.pos[i]) out.pos[i][0] += dx;
+      var M = out.meta || {};
+      (M.labels || []).forEach(function (l) { l.x += dx; });
+      (M.clinicians || []).forEach(function (c2) { c2.x += dx; });
+      (M.zones || []).forEach(function (z) { z.x += dx; });
+      (M.docs || []).forEach(function (d2) { d2[0] += dx; });
+      if (M.doc) M.doc[0] += dx;
+      if (M.link) { M.link.a[0] += dx; M.link.b[0] += dx; }
     }
 
     /* ---------- colour & alpha ---------- */
@@ -190,7 +205,7 @@
           var sy = (tt * 1.3 - 0.15) * H;
           f = smooth((sy - P[1]) / 60 + 0.5);
         } else {
-          var sx = (tt * 1.3 - 0.15) * W;
+          var sx = offX + (tt * 1.3 - 0.15) * CW;
           f = smooth((sx - P[0]) / 60 + 0.5);
         }
         return mixRgb(neutral, col, f);
@@ -208,7 +223,7 @@
     function camOf(scene) {
       var c = (scene && scene.cam) || { z: 1, x: 0.5, y: 0.46 };
       if (scene && scene.camNarrow && W < 680) c = scene.camNarrow;
-      return [c.z, c.x * W, c.y * H];
+      return [c.z, offX + c.x * CW, c.y * H];
     }
     function project(p, cam) {
       return [(p[0] - cam[1]) * cam[0] + W * 0.5, (p[1] - cam[2]) * cam[0] + H * 0.46];
@@ -453,9 +468,9 @@
       lastP = p;
       var si = Math.min(Math.floor(p), SC - 2);
       var t = p - si;
-      var DWELL = 0.5; // half of each scene's scroll span is travel — legibility over strict 2:1
-      var u = t < DWELL ? 0 : clamp((t - DWELL) / (1 - DWELL), 0, 1); // raw travel
-      var m = RM ? (t < DWELL ? 0 : 1) : ease(u);   // scene-level progress (camera, labels, zones)
+      // trigger-tween model: p only rests at integers, so the whole unit span is travel
+      var u = clamp(t, 0, 1);
+      var m = RM ? (t < 0.5 ? 0 : 1) : ease(u);   // scene-level progress (camera, labels, zones)
       var A = scenes[si], B = scenes[si + 1];
       var layA = layouts[A.key], layB = layouts[B.key];
       var camA = camOf(A), camB = camOf(B);
@@ -469,9 +484,9 @@
       // moment within the travel window and walks a slightly bowed path. Every
       // figure is still exactly at rest at u=0 and u=1, so scenes stay static.
       var s = U * cam[0];
-      var LAG = RM ? 0 : 0.34;              // fraction of travel spent staggering entries
+      var LAG = RM ? 0 : 0.25;              // fraction of travel spent staggering entries
       var SPAN = 1 - LAG;
-      var bowMax = U * 5.5;
+      var bowMax = U * 3.5;
       for (var d = 0; d < N; d++) {
         var pa = layA[d], pb = layB[d];
         var lm;
@@ -500,7 +515,7 @@
 
         var q = project([x, y], cam);
         if (q[0] < -30 || q[0] > W + 30 || q[1] < -30 || q[1] > H + 30) continue;
-        var ca = clothingOf(d, A, tt), cb = clothingOf(d, B, 0);
+        var ca = clothingOf(d, A, 1), cb = clothingOf(d, B, u);
         var col = lm === 0 ? ca : lm === 1 ? cb : mixRgb(ca, cb, lm);
         var al = lerp(alphaOf(d, A), alphaOf(d, B), lm);
         drawPerson(q[0], q[1], s, col, d, al);
@@ -508,7 +523,7 @@
       ctx.globalAlpha = 1;
       drawCliniciansPair(A, B, m, cam, si);
       drawLabelsPair(A, B, m, cam, si);
-      drawExtras(A, tt, 1 - m, cam); drawExtras(B, 0, m, cam);
+      drawExtras(A, 1, 1 - m, cam); drawExtras(B, u, m, cam);
 
       if (staticMode) return; // overlays are pinned by the static composition
 
@@ -579,29 +594,34 @@
       return span > 0 ? clamp(-top / span, 0, 1) * (SC - 1) : 0;
     }
 
-    // Smoothness: discrete wheel/scroll events would otherwise jump the story in
-    // steps. The rendered progress chases the scroll target with critical
-    // damping, so motion is fluid between events and settles (≈300 ms) the
-    // moment the reader stops — still fully user-paced.
-    var raf = null, cur = null, lastTs = 0;
-    function chase(ts) {
-      var dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
-      lastTs = ts;
-      var target = progress();
-      if (cur === null) cur = target;
-      var d = target - cur;
-      if (Math.abs(d) < 0.0006) {
-        cur = target; render(cur, true); raf = null; return;
-      }
-      cur += d * (1 - Math.exp(-dt * 8.5));
-      render(cur, true);
-      raf = requestAnimationFrame(chase);
+    // Trigger-tween model (the fix for scrub-smear): scroll SELECTS a scene —
+    // crossing a step threshold fires a timed tween that ALWAYS completes, so
+    // the only resting states are the composed scenes themselves. Scrolling
+    // back triggers the reverse. After settle there is zero motion.
+    var raf = null, vp = null, tween = null;
+    function sceneFromScroll() { return clamp(Math.round(progress()), 0, SC - 1); }
+    function startTween(to) {
+      var from = vp === null ? to : vp;
+      if (from === to) { tween = null; render(to, true); return; }
+      var extra = Math.max(0, Math.abs(to - from) - 1);
+      tween = { from: from, to: to, t0: performance.now(), dur: Math.min(1400, 850 + 350 * extra) };
+      if (!raf) raf = requestAnimationFrame(tickTween);
+    }
+    function tickTween(ts) {
+      raf = null;
+      if (!tween) return;
+      var k = clamp((ts - tween.t0) / tween.dur, 0, 1);
+      vp = lerp(tween.from, tween.to, k); // per-dot & camera easing live inside render()
+      render(vp, true);
+      if (k >= 1) { tween = null; vp = Math.round(vp); return; }
+      raf = requestAnimationFrame(tickTween);
     }
     function schedule() {
       if (override !== null) return;
-      if (raf) return;
-      lastTs = performance.now();
-      raf = requestAnimationFrame(chase);
+      var t = sceneFromScroll();
+      if (vp === null) { vp = t; render(t, true); return; }
+      if (tween) { if (tween.to !== t) startTween(t); }
+      else if (vp !== t) startTween(t);
     }
 
     if (RM) {
@@ -619,21 +639,25 @@
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { render(rmScene, true); });
     } else {
       theatre.style.height = (SC * 100) + 'vh';
-      sizes(); render(0, true);
+      sizes();
+      vp = sceneFromScroll();
+      render(vp, true);
       window.addEventListener('scroll', schedule, { passive: true });
       // geometry changed, so the frame must be rebuilt even at the same scroll position
       window.addEventListener('resize', function () {
-        sizes(); render(override !== null ? override : progress(), true);
+        sizes();
+        if (override !== null) render(override, true);
+        else { tween = null; vp = sceneFromScroll(); render(vp, true); }
       });
       // repaint canvas typography once the webfonts arrive
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {
-        render(override !== null ? override : progress(), true);
+        render(override !== null ? override : (vp === null ? 0 : vp), true);
       });
     }
 
     var api = {
-      set: function (p) { override = p; render(p, true); },
-      release: function () { override = null; schedule(); },
+      set: function (p) { override = p; tween = null; render(p, true); },
+      release: function () { override = null; vp = null; schedule(); },
       progress: function () { return lastP; },
       scenes: SC,
       canvas: canvas

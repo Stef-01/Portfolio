@@ -213,6 +213,17 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   the storyboard grew, 27.6 ms originally); dwell-freeze, stillness-at-rest and reduced-motion
   invariants re-verified; zero caption/canvas collisions and zero overflow at 390 px re-verified
   scene-by-scene.
+- **Engine v3 — trigger-tween rebuild (see `docs/rca-animation-postmortem.md`):** a ten-stage
+  RCA traced the "clunky/poor animation" verdict to six root causes, chief among them the
+  scrub-driven morph model (every mid-transition frame was a legal resting state) and a figure
+  scale capped at a dev-viewport constant. The engine now works like the reference explainer
+  actually does: **scroll selects the scene, crossing a threshold fires a timed tween that
+  always completes** (≤1.4 s, reverse on scroll-back, zero motion after settle), scenes at rest
+  display their *completed* state (scan finished, packet docked), figures scale to a legibility
+  target inside a centred ≤1500 px content column, and stagger/bows were tightened into
+  coherent flocking. Verified byte-exact: parking mid-transition on a 2000×950 viewport now
+  settles on the composed scene pose; figure height 18.7→23.4 px there; stillness, RM,
+  overflow, collisions and throttle all re-verified.
 - **Critical-appraisal round (v2.3):** four presentation defects found and fixed.
   *E01:* the two horizontal specialist rows became **one vertical queue** (two-abreast, most
   complex at the top) so the bottom 20% sit literally at the bottom; the stats overlay was
