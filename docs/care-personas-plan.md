@@ -158,9 +158,14 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   specialist uplift, per-GP gain and GP headcount, network benefit, trial payback, new Medicare
   outlay, median wait — using exactly the arithmetic of the static cards; defaults reproduce the
   canonical figures. Keyboard-accessible ranges, `aria-live` outputs, reset button.
+- **Persona quiz (Explainer 02, §09):** "Which care-match persona are you?" — five questions,
+  one screen at a time, closing the story the way the reference explainer closes its own. The
+  result card carries the persona avatar (ringed in its validated hue), population share, a
+  first-person blurb, and a jump to the full persona card. Tally ties break toward the larger
+  segment; focus moves to the next question for keyboard users; entirely client-side with
+  nothing stored. JS-gated with a static five-persona summary as the no-JS fallback.
 
 ## Roadmap (v2)
 
 Specialty switcher (cardiology ⇄ endocrine ⇄ respiratory presets) · real MBS item lookups ·
-per-1M-population state scaling · printable one-page executive summaries · a "which persona are
-you?" patient-facing quiz for Explainer 02.
+per-1M-population state scaling · printable one-page executive summaries.

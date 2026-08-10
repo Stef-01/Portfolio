@@ -263,6 +263,23 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .cadence .visit{position:absolute;top:31px;width:20px;height:20px;border-radius:50%;transform:translateX(-50%);border:2px solid var(--paper);box-shadow:0 0 0 1.5px var(--line)}
 .cadence .vlab{position:absolute;top:2px;transform:translateX(-50%);font-size:11.5px;font-weight:700;color:var(--navy);white-space:nowrap}
 
+/* ---------- persona quiz (interactive card is JS-only; static fallback otherwise) ---------- */
+.quizcard{max-width:720px;display:none}
+.js .quizcard{display:block}
+.quizfallback{max-width:720px}
+.js .quizfallback{display:none}
+.qprog{font-family:var(--disp);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:0 0 10px}
+.qtext{font-size:20px;margin:0 0 16px}
+.qopts{margin-top:0}
+.qopts .chip{padding:10px 18px;font-size:14px;line-height:1.4;text-align:left}
+.qresult{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.qresult .av{width:88px;height:88px;border-radius:50%;flex:none}
+.qresult .rbody{flex:1;min-width:220px}
+.qresult .rname{font-family:var(--disp);font-weight:800;font-size:24px;color:var(--navy);margin:0}
+.qresult .rshare{font-size:13px;font-weight:600;color:var(--ink-2);margin:2px 0 10px}
+.qresult .rblurb{font-size:15px;color:var(--ink-2);margin:0 0 14px;max-width:52ch}
+.qresult .ractions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
 /* ---------- hub cards ---------- */
 .hub{grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr));margin-top:30px}
 .hubcard .avarow{margin:0}
