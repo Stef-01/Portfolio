@@ -224,6 +224,13 @@ dialog.maths.maths-fallback[open]{position:fixed;left:50%;top:50%;transform:tran
   font:700 22px/1 var(--disp);color:var(--mut);cursor:pointer;padding:6px}
 .maths-close:hover{color:var(--navy)}
 
+/* ---------- aligned-vs-misaligned contrast lists ---------- */
+.contrast{list-style:none;margin:10px 0 0;padding:0}
+.contrast li{position:relative;padding:5px 0 5px 26px;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.contrast li::before{position:absolute;left:0;top:5px;font-weight:800;font-family:var(--disp)}
+.contrast li.no::before{content:"✕";color:#c8503f}
+.contrast li.yes::before{content:"✓";color:var(--good)}
+
 /* ---------- tables ---------- */
 details{margin-top:14px}
 summary{cursor:pointer;font-size:13.5px;color:var(--accent);font-weight:600}

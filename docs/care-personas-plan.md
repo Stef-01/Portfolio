@@ -354,6 +354,31 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   were referred" instead of claiming "most complex first". Full theatre-qa matrix green;
   captions still ≤30 words.
 
+- **Alignment-mechanism revision (v4.2, 2026-08-11) — why concordance works, made explicit.**
+  User appraisal: the match story showed *who* patients get but not *what changes in the room* —
+  the actual mechanism by which a culture- and language-aligned GP reduces disengagement.
+  Three layers added, all Hoa-consistent:
+  *Theatre (E02 now 20 scenes):* a "two consultations" pair. After the mismatch, a cross-marked
+  card shows what she was told — "Cut the rice" (rice is dinner, every night), the weight
+  lecture, a plan in English her daughter translates at 9 pm, the herbal tonic waved away — under
+  "She nods, goes home, and nothing changes. Advice that collides with her food, her language and
+  her beliefs can't be followed — only endured." After her match, the tick-marked mirror: diabetes
+  explained through the meals she actually cooks (swaps, not bans); **asks what she believes
+  caused it and builds the plan from her answer** (explanatory models); her tonic checked
+  alongside the metformin; Vietnamese first — under "a plan understood is a plan she can follow."
+  *Persona cards:* every persona gained an "In the room, that means" block — first-language
+  consults with no child interpreter and diagnosis explained inside the patient's own aetiology
+  (wind/heat/worry) for the Mirror Seeker; cuisine-internal prescribing, fasting-aware dose
+  re-timing and festival obligations treated as fixed points for the Table Matcher; lecture-free
+  disclosure-first consults for the No-Judgement Seeker; trends-on-screen-first titration for the
+  Data Devotee; family-in-the-room decision-making for the Continuity Craver.
+  *Section block:* "Same diagnosis, two consultations" — a five-row misaligned/aligned contrast
+  (theory of illness reconciled vs overridden; cuisine banned vs built-in; fasting/festivals as
+  lapses vs fixed points; remedies underground vs reconciled; child interpreters and trampled
+  decision rules vs elders present, no shame tax), each side ending in its outcome: quiet
+  non-adherence vs "the patient can repeat the plan back in their own words."
+  Full theatre-qa matrix green (20-scene E02, rmScene 14); captions still ≤30 words.
+
 ## Roadmap (v2)
 
 Real MBS item lookups. The product is otherwise feature-complete for its purpose.
