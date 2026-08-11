@@ -332,6 +332,28 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   *Measured after:* zero scenes with a dead top half (was four), painted ink 2.6–8.8% (was
   2.2–3.8%), full `theatre-qa.mjs` matrix green at 390/1280/2000 for both storyboards.
 
+- **Loop-closure revision (v4.1, 2026-08-11) — the payoff for the complex nine made visible.**
+  User appraisal: after the routine work moved to the GP, the story never showed the genuinely
+  complex patients *reaching the cardiologist earlier* — the reason the whole mechanism exists.
+  Three fixes, all verified frame-by-frame:
+  *The colour thread no longer breaks.* From the rank scene onward the cohort groups (GP-manages
+  green, palmed-off orange, genuinely-specialist dark blue) stayed neutral — the identity chain
+  snapped exactly where the mechanism began. All mechanism scenes now colour the cohort
+  (`TRACK`), so the viewer can follow the same nine from the breakdown into the queue and out.
+  *The rank scene names the rise:* "The nine from this book rise straight to the top" — and the
+  ranked layout puts them there, directly under the cardiologist.
+  *A new scene 14 closes the loop* (E01 is now 18 scenes): same backfill layout, camera glides to
+  the front of the queue, everything but the nine recedes, and a ticked card revisits the same
+  three conditions from the breakdown — "New cardiomyopathy — echo in week three · Resistant
+  hypertension — work-up under way · Valve disease — surgical opinion booked" — under the caption
+  "The complex nine are seen in 55 days, not 127" (consistent with the −57% wait stat). On
+  phones the card compacts to a single tick: "Straight to the cardiologist."
+  *Supporting corrections:* the backfill layout keeps the nine at the front (the twenty
+  waitlist arrivals slot in behind them), the false "including the nine" backfill caption is
+  gone, and the unsorted-arrival scenes now subtitle the queue "unsorted — in the order they
+  were referred" instead of claiming "most complex first". Full theatre-qa matrix green;
+  captions still ≤30 words.
+
 ## Roadmap (v2)
 
 Real MBS item lookups. The product is otherwise feature-complete for its purpose.

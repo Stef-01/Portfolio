@@ -103,11 +103,12 @@
       <div class="df-step"><p class="eyebrow">Today</p><h3>All eighteen go to the same queue.</h3><p>There is one referral pathway, so the protocol case and the puzzle case are sent to the same clinic on the same form.</p></div>
       <div class="df-step"><p class="eyebrow">The clog</p><h3>So the clinic fills with work a GP could have done.</h3><p>Half of every new-patient list is medication optimisation — the most expensive titration service in the health system.</p></div>
       <div class="df-step"><p class="eyebrow">The harm</p><h3>And the people who genuinely needed it wait behind them.</h3><p>127 days to a first appointment. Some are lost to follow-up; others deteriorate while they queue.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 1 — rank</p><h3>So rank the queue by complexity instead.</h3><p>The complexity screen scores every referral and follow-up, 0–100. Most complex at the top.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 1 — rank</p><h3>So rank the queue by complexity instead.</h3><p>The complexity screen scores every referral, 0–100. The nine from this book rise straight to the top.</p></div>
       <div class="df-step"><p class="eyebrow">Step 2 — separate</p><h3>The bottom 20% are stable.</h3><p>They need medication optimisation, not a specialist — a protocol already says the next dose.</p></div>
       <div class="df-step"><p class="eyebrow">Step 3 — look closer</p><h3>These patients can be GP-managed.</h3><p>Followed up with eConsults: any question back inside 72 hours, and the specialist stays in the loop.</p></div>
       <div class="df-step"><p class="eyebrow">Step 4 — the move</p><h3>Twenty move back to the GP.</h3><p>The nine who never needed to go, plus the stable end of the specialist's own pool. Capped panels, named specialist of record.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 5 — the backfill</p><h3>The queue moves up.</h3><p>Twenty more-complex patients, waiting in general practice, take the freed specialist slots — including the nine who genuinely needed a cardiologist.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 5 — the backfill</p><h3>The queue moves up.</h3><p>Twenty complex patients, waiting in general practice, take the freed slots. Nobody routine is ahead of them any more.</p></div>
+      <div class="df-step"><p class="eyebrow">The loop closes</p><h3>The complex nine are seen in 55 days, not 127.</h3><p>With the routine end gone to the GP, the front of the queue moves at specialist speed.</p></div>
       <div class="df-step"><p class="eyebrow">Step 6 — the incentive</p><h3>The GP is paid properly for the borderline cases.</h3><p>Longer consults plus care plans — about $449 more per patient per year — with eConsult backup.</p></div>
       <div class="df-step"><p class="eyebrow">Step 7 — the payoff</p><h3>The specialist pool is now fully complex.</h3><p>Whole-of-training work all day — and the waitlist just moved.</p></div>
       <div class="df-step"><p class="eyebrow">The result</p><h3>Everyone bills better.</h3><p></p></div>
@@ -935,13 +936,17 @@
     backfill: function (c) {
       var g = geo(c), pos = new Array(c.N);
       var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF, 0, GP_ABLE]), 0);
+      // the nine keep the front of the queue; the twenty off the waitlist
+      // slot in behind them, and everyone routine is gone
+      var nine = members(c, [SPEC_REAL]);
+      for (var n9 = 0; n9 < nine.length; n9++) pos[nine[n9]] = queueXY(c, g, n9, 0);
       var w = members(c, [6]);
-      for (var i = 0; i < w.length; i++) pos[w[i]] = queueXY(c, g, i, 0);
-      var ranks = specRanks(c, [SPEC_REAL, 4, 3, 2, 1]);
-      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d] + 20, 0);
+      for (var i = 0; i < w.length; i++) pos[w[i]] = queueXY(c, g, 9 + i, 0);
+      var ranks = specRanks(c, [4, 3, 2, 1]);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d] + 29, 0);
       return { pos: pos, meta: {
         labels: gpTitle(g, rGp, "THE GP'S BOOK", 'grown by twenty, better paid').concat(queueChrome(c, g, [
-          { x: g.qx + (c.narrow ? -0.30 : 0.19) * c.W, y: g.y0 + (g.y1 - g.y0) * 0.12,
+          { x: g.qx + (c.narrow ? -0.30 : 0.26) * c.W, y: g.y0 + (g.y1 - g.y0) * 0.22,
             text: c.narrow ? 'twenty new, complex' : 'twenty new complex patients, off the waitlist', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
@@ -964,6 +969,8 @@
   };
 
   var ALL5 = [0, 1, 2, 3, 4];
+  // the cohort keeps its colours to the last frame — the thread the story hangs on
+  var TRACK = ALL5.concat([GP_COMF, GP_ABLE, SPEC_REAL]);
   var COHORT_ON = [GP_COMF, GP_ABLE, SPEC_REAL];
   // the nine who wait longest in today's queue
   function WAITING(d, g) { return g === SPEC_REAL; }
@@ -1017,16 +1024,28 @@
                   rows: ['Some are lost to follow-up entirely',
                          'Others arrive with a condition that moved while they queued',
                          'A few arrive through the emergency department instead'] }] },
-      { key: 'line', labels: true, colorGroups: ALL5, scan: { groups: ALL5, axis: 'y' } },
-      { key: 'linesep', labels: true, colorGroups: ALL5, dim: { keep: BOTTOM, to: 0.35 } },
-      { key: 'linesep', colorGroups: ALL5, dim: { keep: BOTTOM, to: 0.10 },
+      { key: 'line', labels: true, colorGroups: TRACK, scan: { groups: ALL5, axis: 'y' } },
+      { key: 'linesep', labels: true, colorGroups: TRACK, dim: { keep: BOTTOM, to: 0.35 } },
+      { key: 'linesep', colorGroups: TRACK, dim: { keep: BOTTOM, to: 0.10 },
         cam: { z: 2.2, x: 0.62, y: 0.88 }, camNarrow: { z: 1.6, x: 0.66, y: 0.90 } },
-      { key: 'moved1', labels: true, colorGroups: ALL5, dim: { keep: BOTTOM, to: 0.5 } },
-      { key: 'backfill', labels: true, colorGroups: ALL5.concat([6]), dim: { keep: [6], to: 0.45 } },
-      { key: 'exchange', labels: true, colorGroups: ALL5.concat([6]), extra: 'link',
+      { key: 'moved1', labels: true, colorGroups: TRACK, dim: { keep: BOTTOM, to: 0.5 } },
+      { key: 'backfill', labels: true, colorGroups: TRACK.concat([6]), dim: { keep: [6], to: 0.45 } },
+      // THE LOOP CLOSES: same nine from the breakdown, now at the front —
+      // same layout as the last scene, so only the camera and focus move
+      { key: 'backfill', colorGroups: TRACK.concat([6]),
+        dim: { keep: [SPEC_REAL], to: 0.18 },
+        cam: { z: 1.9, x: 0.57, y: 0.11 }, camNarrow: { z: 1.5, x: 0.66, y: 0.10 },
+        cards: [{ at: { g: SPEC_REAL, i: 5 }, title: 'The nine from this book', mark: 'tick',
+                  sub: 'front of the queue at last',
+                  rows: ['New cardiomyopathy — echo in week three',
+                         'Resistant hypertension — work-up under way',
+                         'Valve disease — surgical opinion booked'] }],
+        cardsNarrow: [{ at: { g: SPEC_REAL, i: 5 }, small: true, mark: 'tick',
+                  rows: ['Straight to the cardiologist'] }] },
+      { key: 'exchange', labels: true, colorGroups: TRACK.concat([6]), extra: 'link',
         linkLabel: 'eConsult · answered in 72 h' },
-      { key: 'exchange', labels: true, colorGroups: ALL5.concat([6]), dim: { keep: [2, 3, 4, 6], to: 0.30 } },
-      { key: 'exchange', colorGroups: [0, GP_ABLE, 6], dim: { keep: [], to: 0.15 } }
+      { key: 'exchange', labels: true, colorGroups: TRACK.concat([6]), dim: { keep: [2, 3, 4, 6, SPEC_REAL], to: 0.30 } },
+      { key: 'exchange', colorGroups: [0, GP_ABLE, SPEC_REAL, 6], dim: { keep: [], to: 0.15 } }
     ]
   });
 })();
