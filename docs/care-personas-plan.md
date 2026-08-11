@@ -95,8 +95,9 @@ when the camera comes close) that move through composed scenes — cloud → **s
 take persona colours) → ranked queue / persona clusters → the story's own choreography (queue
 separation and backfill in E01; doctor matching, outbound pulses and retention in E02) → stat
 count-ups. All layouts are procedural (phyllotaxis packing, stable across resizes); the camera
-is a projective transform; composition lives in a centred ≤1500 px content column with figure
-size derived from a legibility target. **Interaction model (post-RCA): scroll SELECTS a scene —
+is a projective transform that can lock onto one named person; composition lives inside the
+**stage box** — a rect that excludes the caption column, caps at 1150 px and insets from the
+topbar and stage floor — with figure size derived from a legibility target against that box. **Interaction model (post-RCA): scroll SELECTS a scene —
 crossing a step threshold fires a timed, eased tween (≤1.4 s) that always completes.** The only
 states that can persist on screen are the composed scenes themselves; in-scene effects play
 during the entry tween and rest in their completed pose (see
@@ -112,10 +113,10 @@ grammar for the care-model domain.
 
 | Metric | Budget (source) | This build |
 |---|---|---|
-| Focus text per scene | ≤ 30 words (Flourish/ONA one-idea-per-step; Surgo measured 24–41) | 10–16 words, one block; windows sized so two captions never co-exist |
+| Focus text per scene | ≤ 30 words (Flourish/ONA one-idea-per-step; Surgo measured 24–41) | 11–30 words, one block, longest measured 30; windows sized so two captions never co-exist |
 | Active hues per scene | 1 accent + gray context; ≤ 7 ceiling (Datawrapper); 5 persona hues when the segmentation IS the story (Surgo) | neutral-gray scenes until the scan; then the 5 validated persona hues + 1 accent |
 | Concurrent choreographies | 1 (Heer & Robertson staged transitions) | one morph at a time; extras animate only while dots hold |
-| Non-data elements on stage | ≤ 5–6 labels + caption, zero chrome | ≤ 5 persona labels + 1 caption; no gridlines/borders/axes on stage |
+| Non-data elements on stage | ≤ 5–6 labels + caption, zero chrome | ≤ 5 persona labels + 1 caption + at most 1 narrative card; no gridlines/borders/axes on stage |
 | Resting states | only composed scenes may persist (the reference's Scrollama+D3 trigger pattern) | scroll selects the scene; the entry tween always completes, so parking anywhere settles on a composed pose (byte-verified by `care-personas/tests/theatre-qa.mjs`) |
 | Idle motion at rest | zero autonomous/looping motion (WCAG 2.2.2) | zero after settle — motion is a single ≤1.4 s one-shot tween per step crossing, plus one 0.9 s count-up |
 | Reduced motion | static states / crossfades (WCAG 2.3.3, C39) | single static composed frame + instant stat values |
@@ -297,6 +298,39 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   quiz/demo chips and the model-reset button gained visible keyboard focus rings.
   Verified: stage pin + caption-inside-fold probes at all three widths, full theatre-qa matrix
   green, exec summary still exactly one printed page.
+
+- **Narrative rebuild (v4, 2026-08-11) — a person before the population; scenes roughly doubled.**
+  A second post-mortem (`docs/rca-animation-postmortem.md`, post-mortem #2) measured what the
+  "still looks terrible" screenshot showed: four consecutive Explainer-02 scenes had **zero
+  painted pixels in the top half** of a 2000×950 stage, with 11–12 of 20 horizontal bands empty
+  and doctor rings running off the bottom edge. Three root causes: no composition frame (R7),
+  caption and graphic sharing one surface (R8), and no human anywhere in the story (R9).
+  *The stage box (A7/A8):* the engine now computes one rect — caption column excluded, capped at
+  1150 px, inset from topbar and floor — and every layout is authored in a plain `box.w × box.h`
+  rect translated into it. The caption is a real column (`clamp(300px, 28vw, 460px)`, vertically
+  centred; a top band when narrow), and the box begins where the column ends.
+  *Persona units in a 3-over-2 grid (A9)* fill both axes at roughly twice the previous size.
+  *Narrative cards + focus camera (A10):* a card pins plain-language lines to one named person
+  (rows reveal during the entry tween; marks are bullet, tick, or struck-through cross),
+  `cam: { on: 'focus' }` tracks a chosen individual at any viewport, and per-person
+  `fadeDot`/`greyDot` hooks isolate one figure from two hundred.
+  *Both stories rewritten (A11).* **E02 (10 → 18 scenes)** follows one patient: her four
+  requirements as bullet points, her neighbours' different ones, the whole population's, the
+  directory that stores none of them, the stranger she books with every line struck through, the
+  52% who stop coming back — then rewind, ask first, and match on exactly what they said.
+  **E01 (9 → 17 scenes)** opens inside the GP's book: heart failure and hypertension are 30% of
+  it; the GP already manages half comfortably; the referred half splits cleanly into nine that a
+  GP could hold with a 72-hour answer and condition-specific upskilling (mild fluid overload in
+  known HF, hypertension needing a third agent, post-discharge titration) and nine that genuinely
+  need whole-of-training care (new cardiomyopathy, resistant hypertension, valve disease) — then
+  all eighteen posted down one unsorted pathway, the clinic filling with titration, and the nine
+  who needed a cardiologist waiting at the back for 127 days.
+  *Arithmetic reconciled:* with the cohort in the queue the ranked line is 99 figures, so the
+  bottom 20% is now the nine palmed-off plus the pool's stable end (20 figures) and every caption,
+  label and backfill count moves from sixteen to twenty; the genuinely-specialist nine rank at the
+  top of the sorted queue, not the bottom.
+  *Measured after:* zero scenes with a dead top half (was four), painted ink 2.6–8.8% (was
+  2.2–3.8%), full `theatre-qa.mjs` matrix green at 390/1280/2000 for both storyboards.
 
 ## Roadmap (v2)
 

@@ -95,11 +95,19 @@
     <div class="df-stage">
       <canvas id="df1"></canvas>
       <div class="df-step"><p class="eyebrow">Two pools</p><h3>Two clinicians. Two patient pools.</h3><p>A GP's book of everyday medicine. A cardiologist's referred pool. Each figure is about fifteen patients.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 1 — rank</p><h3>Line the specialist's patients up by complexity.</h3><p>The complexity screen scores every referral and follow-up, 0–100. Most complex at the top.</p></div>
+      <div class="df-step"><p class="eyebrow">Inside the book</p><h3>Three in ten of the GP's book is heart failure or hypertension.</h3><p>One condition family, thirty-six figures — the single biggest block of chronic work in general practice.</p></div>
+      <div class="df-step"><p class="eyebrow">Split one — already theirs</p><h3>Half of them the GP already manages, comfortably.</h3><p>Stable hypertension, stable heart failure on settled therapy. Never referred, never questioned.</p></div>
+      <div class="df-step"><p class="eyebrow">Split two — referred out</p><h3>The other half get sent to the specialist.</h3><p>Eighteen figures leave the book. Ask what is actually in that group and it splits again — cleanly, in half.</p></div>
+      <div class="df-step"><p class="eyebrow">The half that didn't need to go</p><h3>Nine of them a GP could manage — with backup.</h3><p>A titration protocol already says the next dose. What's missing is a fast answer and condition-specific upskilling.</p></div>
+      <div class="df-step"><p class="eyebrow">The half that did</p><h3>Nine of them genuinely need the specialist.</h3><p>New cardiomyopathy. Resistant hypertension with a suspected secondary cause. Valve disease heading for intervention. Whole-of-training work.</p></div>
+      <div class="df-step"><p class="eyebrow">Today</p><h3>All eighteen go to the same queue.</h3><p>There is one referral pathway, so the protocol case and the puzzle case are sent to the same clinic on the same form.</p></div>
+      <div class="df-step"><p class="eyebrow">The clog</p><h3>So the clinic fills with work a GP could have done.</h3><p>Half of every new-patient list is medication optimisation — the most expensive titration service in the health system.</p></div>
+      <div class="df-step"><p class="eyebrow">The harm</p><h3>And the people who genuinely needed it wait behind them.</h3><p>127 days to a first appointment. Some are lost to follow-up; others deteriorate while they queue.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 1 — rank</p><h3>So rank the queue by complexity instead.</h3><p>The complexity screen scores every referral and follow-up, 0–100. Most complex at the top.</p></div>
       <div class="df-step"><p class="eyebrow">Step 2 — separate</p><h3>The bottom 20% are stable.</h3><p>They need medication optimisation, not a specialist — a protocol already says the next dose.</p></div>
       <div class="df-step"><p class="eyebrow">Step 3 — look closer</p><h3>These patients can be GP-managed.</h3><p>Followed up with eConsults: any question back inside 72 hours, and the specialist stays in the loop.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 4 — the move</p><h3>Sixteen move to the GP.</h3><p>Accredited GPs take them on — capped panels, a named specialist of record for every patient.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 5 — the backfill</p><h3>The queue moves up.</h3><p>Sixteen more-complex patients, waiting in general practice, take the freed specialist slots.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 4 — the move</p><h3>Twenty move back to the GP.</h3><p>The nine who never needed to go, plus the stable end of the specialist's own pool. Capped panels, named specialist of record.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 5 — the backfill</p><h3>The queue moves up.</h3><p>Twenty more-complex patients, waiting in general practice, take the freed specialist slots — including the nine who genuinely needed a cardiologist.</p></div>
       <div class="df-step"><p class="eyebrow">Step 6 — the incentive</p><h3>The GP is paid properly for the borderline cases.</h3><p>Longer consults plus care plans — about $449 more per patient per year — with eConsult backup.</p></div>
       <div class="df-step"><p class="eyebrow">Step 7 — the payoff</p><h3>The specialist pool is now fully complex.</h3><p>Whole-of-training work all day — and the waitlist just moved.</p></div>
       <div class="df-step"><p class="eyebrow">The result</p><h3>Everyone bills better.</h3><p></p></div>
@@ -725,151 +733,228 @@
 <script src="assets/site.js"></script>
 <script src="assets/dotfield.js"></script>
 <script>
-/* Ranked-queue story: a GP's book (120 figures) and a cardiologist's referred
-   pool (80 figures, groups 0-4 = the five personas). The specialist's patients
-   form ONE VERTICAL QUEUE ranked by complexity — most complex at the top,
-   so the bottom 20% sit literally at the bottom. They separate, move to the
-   GP, and sixteen complex patients waiting in general practice (group 6) join
-   the front of the queue. Each figure ≈ 15 patients. */
+/* The cohort story, then the queue story. Inside one GP's book, 30% of the
+   patients are heart failure or hypertension (groups 7/8/9 below). The GP
+   already manages half of them; of the half that get referred, half again are
+   protocol work a GP could hold with fast specialist backup, and half genuinely
+   need whole-of-training care. Today both halves are sent down one pathway, so
+   the clinic fills with titration while the puzzle cases wait. Then the ranked
+   queue, the move, the backfill and the eConsult loop. Every layout composes
+   inside the engine's stage box. Each figure is about fifteen patients. */
 (function () {
-  function geo(c) {
-    // narrow: captions sit in the top ~30% — everything on stage starts below;
-    // desktop: the queue title needs to clear the sticky topbar on short screens
-    if (c.narrow) return {
-      gp: [0.26 * c.W, 0.70 * c.H], sp: [0.50 * c.W, 0.50 * c.H],
-      qx: 0.64 * c.W, y0: 0.42 * c.H, y1: 0.93 * c.H, rows: 40
-    };
-    return {
-      gp: [0.20 * c.W, 0.46 * c.H], sp: [0.72 * c.W, 0.42 * c.H],
-      qx: 0.60 * c.W, y0: Math.max(0.12 * c.H, 128), y1: 0.90 * c.H, rows: 40
-    };
-  }
-  function packInto(c, pos, centre, members, seed) {
-    var pts = c.phyllo(centre[0], centre[1], members.length, c.U * 1.55, seed);
-    for (var i = 0; i < members.length; i++) pos[members[i]] = pts[i];
-    return pts.radius;
-  }
-  function membersOf(c, want) {
+  // 0-4 specialist-pool personas · 5 the rest of the GP's book · 6 complex
+  // patients waiting in general practice · 7/8/9 the HF-hypertension cohort
+  var COUNTS = [11, 6, 28, 16, 20, 84, 20, 18, 9, 9];
+  var GP_COMF = 7, GP_ABLE = 8, SPEC_REAL = 9;
+  var HUES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4',
+              null, '#1c5cab', '#1baf7a', '#eb6834', '#1c5cab'];
+  var BOOK = [5, 7, 8, 9];                  // everyone in the GP's book
+  var COHORT = [7, 8, 9];                   // the HF / hypertension cohort
+  var POOL = [0, 1, 2, 3, 4];               // the cardiologist's existing pool
+
+  function POOLDOT(d, g) { return g <= 4; }   // hidden while we are inside the book
+  function ONLY_COHORT(d, g) { return g < 7; }  // the two halves, alone on stage
+  function members(c, want) {
     var out = [];
     for (var d = 0; d < c.N; d++) if (want.indexOf(c.groups[d]) >= 0) out.push(d);
     return out;
   }
-  function specRanks(c, order) {
-    var ranks = {}, r = 0;
-    order.forEach(function (g) {
-      for (var d = 0; d < c.N; d++) if (c.groups[d] === g) ranks[d] = r++;
-    });
-    return ranks;
+  function packInto(c, pos, centre, list, seed, pitch) {
+    var pts = c.phyllo(centre[0], centre[1], list.length, c.U * (pitch || 1.55), seed);
+    for (var i = 0; i < list.length; i++) pos[list[i]] = pts[i];
+    return pts.radius;
   }
-  // one vertical queue, two figures per row so eighty fit legibly
-  function queueXY(c, g, rank, dx) {
-    var pitch = (g.y1 - g.y0) / g.rows;
-    var row = Math.floor(rank / 2), col = rank % 2;
-    return [g.qx + (col === 0 ? -c.U * 0.85 : c.U * 0.85) + (dx || 0), g.y0 + pitch * (row + 0.5)];
+  function geo(c) {
+    if (c.narrow) return {
+      gp: [0.30 * c.W, 0.30 * c.H], sp: [0.62 * c.W, 0.72 * c.H],
+      qx: 0.62 * c.W, y0: 0.06 * c.H, y1: 0.98 * c.H, rows: 50
+    };
+    return {
+      gp: [0.21 * c.W, 0.50 * c.H], sp: [0.74 * c.W, 0.50 * c.H],
+      qx: 0.62 * c.W, y0: 0.02 * c.H, y1: 0.98 * c.H, rows: 50
+    };
   }
-  function gpClin(c, g, rGp) { return { x: g.gp[0] - rGp - c.U * 2.8, y: g.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' }; }
+  function gpClin(c, g, rGp) { return { x: g.gp[0] - rGp - c.U * 3.0, y: g.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' }; }
   function gpZone(c, g, rGp) { return { x: g.gp[0], y: g.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 }; }
   function gpTitle(g, rGp, text, sub) {
-    // bound to group 5 (the everyday book) so the title rides the pool as it
-    // grows and shrinks mid-tween instead of hovering at a stale radius;
-    // x floor keeps the longest sub-line inside the left edge on phones
-    var tx = Math.max(g.gp[0], 118);
-    var L = [{ x: tx, y: g.gp[1] - rGp - 30, group: 5, dx: tx - g.gp[0], dy: -(rGp + 30), text: text, big: true }];
-    if (sub) L.push({ x: tx, y: g.gp[1] - rGp - 12, group: 5, dx: tx - g.gp[0], dy: -(rGp + 12), text: sub, muted: true });
+    var L = [{ x: g.gp[0], y: g.gp[1] - rGp - 30, group: 5, dy: -(rGp + 30), text: text, big: true }];
+    if (sub) L.push({ x: g.gp[0], y: g.gp[1] - rGp - 12, group: 5, dy: -(rGp + 12), text: sub, muted: true });
     return L;
-  }
-  function queueChrome(c, g, extraLabels) {
-    var L = [
-      { x: g.qx, y: g.y0 - (c.narrow ? 26 : 44), text: 'THE SPECIALIST QUEUE', big: true },
-      { x: g.qx, y: g.y0 - (c.narrow ? 10 : 24), text: 'most complex first', muted: true }
-    ];
-    return L.concat(extraLabels || []);
   }
   function cardClin(c, g) {
     return c.narrow
-      ? { x: 0.87 * c.W, y: g.y0 + c.U * 2, skin: 1, hair: 6, label: 'cardiologist' }
-      : { x: g.qx - 0.09 * c.W, y: g.y0 + c.U, skin: 1, hair: 6, label: 'the cardiologist' };
+      ? { x: 0.90 * c.W, y: g.y0 + c.U * 2, skin: 1, hair: 6, label: 'cardiologist' }
+      : { x: g.qx - 0.17 * c.W, y: g.y0 + c.U * 3, skin: 1, hair: 6, label: 'the cardiologist' };
   }
-  var ORDER = [4, 3, 2, 1, 0];
+  function queueChrome(c, g, extra, sub) {
+    return [{ x: g.qx, y: g.y0 - 6, text: 'THE SPECIALIST QUEUE', big: true },
+            { x: g.qx, y: g.y0 + 12, text: sub || 'most complex first', muted: true }].concat(extra || []);
+  }
+  // one vertical queue, two abreast, so the bottom of it is literally the bottom
+  function queueXY(c, g, rank, dx) {
+    var pitch = (g.y1 - (g.y0 + 26)) / g.rows;
+    var row = Math.floor(rank / 2), col = rank % 2;
+    return [g.qx + (col === 0 ? -c.U * 0.85 : c.U * 0.85) + (dx || 0), g.y0 + 26 + pitch * (row + 0.5)];
+  }
+  function specRanks(c, order) {
+    var ranks = {}, r = 0;
+    order.forEach(function (gg) {
+      for (var d = 0; d < c.N; d++) if (c.groups[d] === gg) ranks[d] = r++;
+    });
+    return ranks;
+  }
+  var ORDER = [9, 4, 3, 2, 1, 0, 8];        // most complex first, palmed-off last
+  var BOTTOM = [0, 8];                      // the bottom 20 of 99 — score, not label
+
+  // ---- the cohort scenes: the GP's book, opened up -------------------------
+  // the book as one pool; the cohort optionally lifted into its own block
+  function bookLayout(c, mode) {
+    var g = geo(c), pos = new Array(c.N);
+    var rSp = packInto(c, pos, g.sp, members(c, POOL), 5);
+    var rGp;
+    if (mode === 'whole') {
+      rGp = packInto(c, pos, g.gp, members(c, BOOK).concat(members(c, [6])), 0);
+    } else {
+      rGp = packInto(c, pos, g.gp, members(c, [5]).concat(members(c, [6])), 0);
+      var bx = c.narrow ? 0.68 * c.W : 0.62 * c.W;
+      var lx = c.narrow ? 0.32 * c.W : 0.30 * c.W, rx = c.narrow ? 0.86 * c.W : 0.85 * c.W;
+      if (mode === 'cohort') {
+        packInto(c, pos, [bx, 0.5 * c.H], members(c, COHORT), 3, 1.7);
+      } else if (mode === 'split') {
+        packInto(c, pos, [bx, 0.22 * c.H], members(c, [GP_COMF]), 3, 1.7);
+        packInto(c, pos, [bx, 0.74 * c.H], members(c, [GP_ABLE, SPEC_REAL]), 4, 1.7);
+      } else {                                   // 'three' — all three named
+        packInto(c, pos, [c.narrow ? 0.62 * c.W : 0.57 * c.W, 0.20 * c.H], members(c, [GP_COMF]), 3, 2.3);
+        packInto(c, pos, [lx, 0.68 * c.H], members(c, [GP_ABLE]), 4, 2.3);
+        packInto(c, pos, [rx, 0.68 * c.H], members(c, [SPEC_REAL]), 6, 2.3);
+      }
+    }
+    return { pos: pos, g: g, rGp: rGp, rSp: rSp };
+  }
+  function poolMeta(c, g, rSp) {
+    return { x: g.sp[0] + rSp + c.U * 3.0, y: g.sp[1] - c.U, skin: 1, hair: 6, label: 'the cardiologist' };
+  }
 
   var layouts = {
     pools: function (c) {
+      var b = bookLayout(c, 'whole'), g = b.g;
+      return { pos: b.pos, meta: {
+        labels: gpTitle(g, b.rGp, "ONE GP'S BOOK", 'mostly everyday medicine').concat([
+          { x: g.sp[0], y: g.sp[1] - b.rSp - 30, text: "ONE CARDIOLOGIST'S POOL", big: true },
+          { x: g.sp[0], y: g.sp[1] - b.rSp - 12, text: 'referred for complexity', muted: true }]),
+        clinicians: [gpClin(c, g, b.rGp), poolMeta(c, g, b.rSp)],
+        zones: [gpZone(c, g, b.rGp), { x: g.sp[0], y: g.sp[1], r: b.rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }]
+      } };
+    },
+    cohort: function (c) {
+      var b = bookLayout(c, 'cohort'), g = b.g, bx = c.narrow ? 0.68 * c.W : 0.60 * c.W;
+      return { pos: b.pos, meta: {
+        labels: gpTitle(g, b.rGp, "ONE GP'S BOOK", '120 patients').concat([
+          { x: c.narrow ? 0.5 * c.W : bx, y: 0.5 * c.H, group: GP_COMF, dy: -c.U * 8.5,
+            text: c.narrow ? 'HF & HYPERTENSION — 30%' : 'HEART FAILURE & HYPERTENSION — 30%', big: true },
+          { x: bx, y: 0.5 * c.H, group: GP_COMF, dy: c.U * 9.5, text: '36 figures · one condition family', muted: true }]),
+        clinicians: [gpClin(c, g, b.rGp), poolMeta(c, g, b.rSp)],
+        zones: [gpZone(c, g, b.rGp)]
+      } };
+    },
+    split: function (c) {
+      var b = bookLayout(c, 'split'), g = b.g, bx = c.narrow ? 0.68 * c.W : 0.60 * c.W;
+      return { pos: b.pos, meta: {
+        labels: gpTitle(g, b.rGp, "ONE GP'S BOOK").concat([
+          { x: bx, y: 0.22 * c.H, group: GP_COMF, dy: c.U * 8, text: 'the GP already manages these 18', muted: true },
+          { x: bx, y: 0.74 * c.H, group: GP_ABLE, dy: c.U * 9, text: 'these 18 are referred out', muted: true }]),
+        clinicians: [gpClin(c, g, b.rGp), poolMeta(c, g, b.rSp)],
+        zones: [gpZone(c, g, b.rGp)]
+      } };
+    },
+    three: function (c) {
+      var b = bookLayout(c, 'three');
+      var lx = c.narrow ? 0.32 * c.W : 0.30 * c.W, rx = c.narrow ? 0.86 * c.W : 0.85 * c.W;
+      return { pos: b.pos, meta: {
+        labels: [
+          { x: c.narrow ? 0.62 * c.W : 0.57 * c.W, y: 0.20 * c.H, group: GP_COMF, dy: c.U * 9, text: 'GP manages · 18', muted: true },
+          { x: lx, y: 0.68 * c.H, group: GP_ABLE, dy: c.U * 8, text: 'could be GP-managed · 9', muted: true },
+          { x: rx, y: 0.68 * c.H, group: SPEC_REAL, dy: c.U * 8, text: 'genuinely specialist · 9', muted: true }],
+        clinicians: [], zones: []
+      } };
+    },
+    // today: both halves are posted into the same queue
+    sendall: function (c) {
       var g = geo(c), pos = new Array(c.N);
-      var rGp = packInto(c, pos, g.gp, membersOf(c, [5, 6]), 0);
-      var rSp = packInto(c, pos, g.sp, membersOf(c, [0, 1, 2, 3, 4]), 5);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF]).concat(members(c, [6])), 0);
+      // today there is no sort: the eighteen simply arrive at the back, so a
+      // protocol case and a puzzle case end up side by side behind everyone
+      var ranks = specRanks(c, [4, 3, 2, 1, 0, 8, 9]);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "ONE GP'S BOOK", 'mostly everyday medicine').concat([
-          { x: g.sp[0], y: g.sp[1] - rSp - 30, text: "ONE CARDIOLOGIST'S POOL", big: true },
-          { x: g.sp[0], y: g.sp[1] - rSp - 12, text: 'referred for complexity', muted: true }]),
-        clinicians: [gpClin(c, g, rGp),
-          { x: g.sp[0] + rSp + c.U * 2.8, y: g.sp[1] - c.U, skin: 1, hair: 6, label: 'the cardiologist' }],
-        zones: [gpZone(c, g, rGp), { x: g.sp[0], y: g.sp[1], r: rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }]
+        labels: gpTitle(g, rGp, "THE GP'S BOOK", 'minus the eighteen')
+          .concat(queueChrome(c, g, [], 'unsorted — in the order they were referred')),
+        clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
+        zones: [gpZone(c, g, rGp)]
       } };
     },
     line: function (c) {
       var g = geo(c), pos = new Array(c.N);
-      var rGp = packInto(c, pos, g.gp, membersOf(c, [5, 6]), 0);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF]).concat(members(c, [6])), 0);
       var ranks = specRanks(c, ORDER);
       for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "ONE GP'S BOOK").concat(queueChrome(c, g, [
-          { x: g.qx, y: g.y1 + 20, text: 'least complex — stable', muted: true }])),
+        labels: gpTitle(g, rGp, "THE GP'S BOOK").concat(queueChrome(c, g, [
+          { x: g.qx, y: g.y1 + 4, text: 'least complex — stable', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
       } };
     },
     linesep: function (c) {
       var g = geo(c), pos = new Array(c.N);
-      var rGp = packInto(c, pos, g.gp, membersOf(c, [5, 6]), 0);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF]).concat(members(c, [6])), 0);
       var ranks = specRanks(c, ORDER), dx = c.U * 5;
       for (var d in ranks) {
-        var grp = c.groups[d];
-        pos[d] = queueXY(c, g, ranks[d], (grp === 0 || grp === 1) ? dx : 0);
+        pos[d] = queueXY(c, g, ranks[d], BOTTOM.indexOf(c.groups[d]) >= 0 ? dx : 0);
       }
-      var sepY = g.y0 + (g.y1 - g.y0) * 0.90;
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "ONE GP'S BOOK").concat(queueChrome(c, g, [
-          { x: c.narrow ? g.qx - 0.27 * c.W : g.qx + 0.215 * c.W, y: sepY, text: c.narrow ? 'bottom 20% — stable' : 'the bottom 20% — stable, protocol-driven', muted: true }])),
+        labels: gpTitle(g, rGp, "THE GP'S BOOK").concat(queueChrome(c, g, [
+          { x: g.qx + (c.narrow ? -0.30 : 0.20) * c.W, y: g.y0 + (g.y1 - g.y0) * 0.90,
+            text: c.narrow ? 'bottom 20% — stable' : 'the bottom 20% — stable, protocol-driven', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
-        zones: [gpZone(c, g, rGp)]
+        zones: []
       } };
     },
     moved1: function (c) {
       var g = geo(c), pos = new Array(c.N);
-      var gpMembers = membersOf(c, [5, 6]).concat(membersOf(c, [0, 1]));
-      var rGp = packInto(c, pos, g.gp, gpMembers, 0);
-      var ranks = specRanks(c, [4, 3, 2]);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF, 6, 0, GP_ABLE]), 0);
+      var ranks = specRanks(c, [SPEC_REAL, 4, 3, 2, 1]);
       for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "THE GP'S BOOK +16", 'billed properly, eConsult-backed').concat(queueChrome(c, g, [
-          { x: g.qx, y: g.y0 + (g.y1 - g.y0) * 0.90, text: 'sixteen slots freed', muted: true }])),
+        labels: gpTitle(g, rGp, "THE GP'S BOOK +20", 'billed properly, eConsult-backed').concat(queueChrome(c, g, [
+          { x: g.qx, y: g.y0 + (g.y1 - g.y0) * 0.88, text: 'slots freed', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
       } };
     },
     backfill: function (c) {
       var g = geo(c), pos = new Array(c.N);
-      var rGp = packInto(c, pos, g.gp, membersOf(c, [5]).concat(membersOf(c, [0, 1])), 0);
-      var w = membersOf(c, [6]);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF, 0, GP_ABLE]), 0);
+      var w = members(c, [6]);
       for (var i = 0; i < w.length; i++) pos[w[i]] = queueXY(c, g, i, 0);
-      var ranks = specRanks(c, [4, 3, 2]);
-      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d] + 16, 0);
+      var ranks = specRanks(c, [SPEC_REAL, 4, 3, 2, 1]);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d] + 20, 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "THE GP'S BOOK", '120 patients, better paid').concat(queueChrome(c, g, [
-          { x: c.narrow ? g.qx - 0.30 * c.W : g.qx + 0.155 * c.W, y: g.y0 + (g.y1 - g.y0) * 0.10, text: c.narrow ? 'sixteen new, complex' : 'sixteen new complex patients, off the waitlist', muted: true }])),
+        labels: gpTitle(g, rGp, "THE GP'S BOOK", 'grown by twenty, better paid').concat(queueChrome(c, g, [
+          { x: g.qx + (c.narrow ? -0.30 : 0.19) * c.W, y: g.y0 + (g.y1 - g.y0) * 0.12,
+            text: c.narrow ? 'twenty new, complex' : 'twenty new complex patients, off the waitlist', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
         zones: [gpZone(c, g, rGp)]
       } };
     },
     exchange: function (c) {
       var g = geo(c), pos = new Array(c.N);
-      var rGp = packInto(c, pos, g.gp, membersOf(c, [5]).concat(membersOf(c, [0, 1])), 0);
-      var rSp = packInto(c, pos, g.sp, membersOf(c, [4, 3, 2]).concat(membersOf(c, [6])), 5);
-      var gc = gpClin(c, g, rGp);
-      var sc = { x: g.sp[0] + rSp + c.U * 2.8, y: g.sp[1] - c.U, skin: 1, hair: 6, label: 'the cardiologist' };
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF, 0, GP_ABLE]), 0);
+      var rSp = packInto(c, pos, g.sp, members(c, [4, 3, 2, 1, 6, SPEC_REAL]), 5);
+      var gc = gpClin(c, g, rGp), sc = poolMeta(c, g, rSp);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "THE GP'S BOOK — GROWN", '+16 pipeline patients, billed properly').concat([
-          { x: g.sp[0], y: g.sp[1] - rSp - 30, text: "THE SPECIALIST'S POOL — CONCENTRATED", big: true },
+        labels: gpTitle(g, rGp, "THE GP'S BOOK — GROWN", '+20 pipeline patients, billed properly').concat([
+          { x: g.sp[0], y: g.sp[1] - rSp - 30, text: c.narrow ? 'THE SPECIALIST POOL' : "THE SPECIALIST'S POOL — CONCENTRATED", big: true },
           { x: g.sp[0], y: g.sp[1] - rSp - 12, text: 'fully complex — same size, better sorted', muted: true }]),
         clinicians: [gc, sc],
         zones: [gpZone(c, g, rGp), { x: g.sp[0], y: g.sp[1], r: rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }],
@@ -878,26 +963,70 @@
     }
   };
 
+  var ALL5 = [0, 1, 2, 3, 4];
+  var COHORT_ON = [GP_COMF, GP_ABLE, SPEC_REAL];
+  // the nine who wait longest in today's queue
+  function WAITING(d, g) { return g === SPEC_REAL; }
+
   DotField({
     theatre: '#story', canvas: '#df1',
-    counts: [10, 6, 28, 16, 20, 104, 16],
-    groupColors: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', null, '#1c5cab'],
+    counts: COUNTS,
+    groupColors: HUES,
     neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
-    labels: ['Steady State', 'Titration', 'Juggler', 'Puzzle', 'High-Stakes', '', 'Waiting complex'],
+    labels: ['Steady State', 'Titration', 'Juggler', 'Puzzle', 'High-Stakes', '', 'Waiting complex',
+             'GP manages', 'Could be GP-managed', 'Genuinely specialist'],
     layouts: layouts,
-    rmScene: 6,
+    rmScene: 10,
     scenes: [
       { key: 'pools', labels: true },
-      { key: 'line', labels: true, colorGroups: [0, 1, 2, 3, 4], scan: { groups: [0, 1, 2, 3, 4], axis: 'y' } },
-      { key: 'linesep', labels: true, colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.35 } },
-      { key: 'linesep', colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.10 },
-        cam: { z: 2.1, x: 0.645, y: 0.83 }, camNarrow: { z: 1.6, x: 0.70, y: 0.86 } },
-      { key: 'moved1', labels: true, colorGroups: [0, 1, 2, 3, 4], dim: { keep: [0, 1], to: 0.5 } },
-      { key: 'backfill', labels: true, colorGroups: [0, 1, 2, 3, 4, 6], dim: { keep: [6], to: 0.45 } },
-      { key: 'exchange', labels: true, colorGroups: [0, 1, 2, 3, 4, 6], extra: 'link', linkLabel: 'eConsult · answered in 72 h' },
-      { key: 'exchange', labels: true, colorGroups: [0, 1, 2, 3, 4, 6], dim: { keep: [2, 3, 4, 6], to: 0.30 },
-        cam: { z: 1.15, x: 0.60, y: 0.44 }, camNarrow: { z: 1.05, x: 0.5, y: 0.40 } },
-      { key: 'exchange', colorGroups: [0, 1, 6], dim: { keep: [], to: 0.15 } }
+      { key: 'cohort', labels: true, colorGroups: COHORT_ON, fadeDot: POOLDOT, fadeTo: 0,
+        scan: { groups: COHORT_ON, axis: 'y' } },
+      { key: 'split', labels: true, colorGroups: [GP_COMF], fadeDot: POOLDOT, fadeTo: 0,
+        dim: { keep: [GP_COMF], to: 0.45 } },
+      { key: 'split', labels: true, colorGroups: COHORT_ON, fadeDot: POOLDOT, fadeTo: 0,
+        dim: { keep: COHORT_ON, to: 0.4 } },
+      // the two halves of the referred group, one at a time
+      { key: 'three', labels: true, colorGroups: COHORT_ON, fadeDot: ONLY_COHORT, fadeTo: 0,
+        dim: { keep: [GP_ABLE], to: 0.32 },
+        cam: { z: 1.1, x: 0.57, y: 0.48 }, camNarrow: { z: 1.0, x: 0.58, y: 0.48 },
+        cards: [{ at: { g: GP_ABLE, i: 4 }, title: 'Could be GP-managed', mark: 'want',
+                  sub: 'with fast specialist backup',
+                  rows: ['Mild fluid overload in known heart failure',
+                         'Hypertension needing a third agent',
+                         'Post-discharge titration against a written protocol'] }] },
+      { key: 'three', labels: true, colorGroups: COHORT_ON, fadeDot: ONLY_COHORT, fadeTo: 0,
+        dim: { keep: [SPEC_REAL], to: 0.32 },
+        cam: { z: 1.1, x: 0.57, y: 0.48 }, camNarrow: { z: 1.0, x: 0.58, y: 0.48 },
+        cards: [{ at: { g: SPEC_REAL, i: 4 }, side: 'left', title: 'Genuinely specialist', mark: 'tick',
+                  sub: 'whole-of-training work',
+                  rows: ['New cardiomyopathy of unclear cause',
+                         'Resistant hypertension, secondary cause suspected',
+                         'Valve disease heading for intervention'] }] },
+      { key: 'sendall', labels: true, colorGroups: COHORT_ON.concat(ALL5) },
+      { key: 'sendall', labels: true, colorGroups: COHORT_ON.concat(ALL5),
+        dim: { keep: [GP_ABLE, 0], to: 0.28 },
+        cards: [{ at: { g: GP_ABLE, i: 4 }, title: 'What fills the clinic', mark: 'cross',
+                  sub: 'done by the most expensive clinician',
+                  rows: ['Adjusting a diuretic dose',
+                         'Adding a third antihypertensive',
+                         'Repeating an echo that has not changed'] }] },
+      { key: 'sendall', labels: true, colorGroups: COHORT_ON.concat(ALL5),
+        dim: { keep: [SPEC_REAL], to: 0.30 },
+        cards: [{ at: { g: SPEC_REAL, i: 4 }, title: 'What the wait costs them', mark: 'cross',
+                  sub: '127 days to a first appointment',
+                  rows: ['Some are lost to follow-up entirely',
+                         'Others arrive with a condition that moved while they queued',
+                         'A few arrive through the emergency department instead'] }] },
+      { key: 'line', labels: true, colorGroups: ALL5, scan: { groups: ALL5, axis: 'y' } },
+      { key: 'linesep', labels: true, colorGroups: ALL5, dim: { keep: BOTTOM, to: 0.35 } },
+      { key: 'linesep', colorGroups: ALL5, dim: { keep: BOTTOM, to: 0.10 },
+        cam: { z: 2.2, x: 0.62, y: 0.88 }, camNarrow: { z: 1.6, x: 0.66, y: 0.90 } },
+      { key: 'moved1', labels: true, colorGroups: ALL5, dim: { keep: BOTTOM, to: 0.5 } },
+      { key: 'backfill', labels: true, colorGroups: ALL5.concat([6]), dim: { keep: [6], to: 0.45 } },
+      { key: 'exchange', labels: true, colorGroups: ALL5.concat([6]), extra: 'link',
+        linkLabel: 'eConsult · answered in 72 h' },
+      { key: 'exchange', labels: true, colorGroups: ALL5.concat([6]), dim: { keep: [2, 3, 4, 6], to: 0.30 } },
+      { key: 'exchange', colorGroups: [0, GP_ABLE, 6], dim: { keep: [], to: 0.15 } }
     ]
   });
 })();

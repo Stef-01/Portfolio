@@ -86,12 +86,21 @@
 
     /* ---------- geometry ---------- */
     var W = 0, H = 0, DPR = 1, U = 9; // U = base unit (figure) size in px
-    var CW = 0, offX = 0; // content column: composition never stretches past 1500px
+    // THE STAGE BOX. The caption owns a column of the stage; the graphic owns
+    // the rest. Layouts compose in a plain box.w x box.h rect starting at 0,0
+    // and are translated into the box, so no layout ever has to dodge text and
+    // no composition is anchored to a viewport edge. (Post-mortem #2: content
+    // was pinned to absolute viewport fractions, leaving the top half of wide
+    // stages empty and running rings off the bottom edge.)
+    var box = { x0: 0, y0: 0, x1: 0, y1: 0, w: 0, h: 0, cx: 0, cy: 0 };
     var layouts = {}, meta = {};
     // ctx.font assignment parses a CSS font string — cache it, it's a hot path
     var curFont = '';
     function setFont(f) { if (f !== curFont) { curFont = f; ctx.font = f; } }
     var F_BIG = '', F_SMALL = '', F_ANNO = '600 12px Inter, system-ui, sans-serif', F_TINY = '700 11px Inter, system-ui, sans-serif';
+    var F_CARD = '600 13px Inter, system-ui, sans-serif';
+    var F_CARDT = '700 14.5px Poppins, Inter, system-ui, sans-serif';
+    var F_CARDS = '600 11px Inter, system-ui, sans-serif';
 
     function phyllo(cx, cy, count, pitch, startI) {
       var out = [], golden = 2.399963;
@@ -107,21 +116,22 @@
 
     // built-in layout builders (custom builders come via opts.layouts)
     function builtinCloud(spreadK, seed) {
-      var m = Math.min(CW, H);
-      var pts = phyllo(CW * 0.5, H * 0.46, N, U * (1.55 * spreadK), seed || 0);
+      var m = Math.min(box.w, box.h);
+      var pts = phyllo(box.w * 0.5, box.h * 0.5, N, U * (1.55 * spreadK), seed || 0);
       for (var i = 0; i < N; i++) {
         pts[i] = [pts[i][0] + jit[i][0] * m * 0.03 * spreadK, pts[i][1] + jit[i][1] * m * 0.03 * spreadK];
       }
       return { pos: pts, meta: { labels: [] } };
     }
     function builtinClusters() {
-      var narrow = W < 680, W_ = CW;
+      var narrow = W < 680, W_ = box.w, H_ = box.h;
+      // desktop: a 3-over-2 grid fills both axes of the box; narrow: a column
       var slots = narrow
-        ? [[0.30, 0.36], [0.58, 0.44], [0.32, 0.60], [0.58, 0.72], [0.34, 0.86]]
-        : [[0.15, 0.35], [0.38, 0.55], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
+        ? [[0.28, 0.10], [0.28, 0.30], [0.28, 0.50], [0.28, 0.70], [0.28, 0.90]]
+        : [[0.17, 0.26], [0.50, 0.26], [0.83, 0.26], [0.33, 0.74], [0.67, 0.74]];
       var pos = new Array(N), L = [];
       for (var g = 0; g < G; g++) {
-        var cx = slots[g % slots.length][0] * W_, cy = slots[g % slots.length][1] * H;
+        var cx = slots[g % slots.length][0] * W_, cy = slots[g % slots.length][1] * H_;
         var pts = phyllo(cx, cy, counts[g], U * 1.55, g * 13);
         var gi = 0;
         for (var d = 0; d < N; d++) if (groups[d] === g) pos[d] = pts[gi++];
@@ -132,8 +142,8 @@
     }
     function builtinBar() {
       var rows = 8, rowH = U * 1.9, colW = U * 1.35;
-      var bw = CW * 0.84, bx = CW * 0.08, by = H * 0.46 - rows * rowH / 2;
-      var gap = Math.max(2, CW * 0.006);
+      var bw = box.w * 0.9, bx = box.w * 0.05, by = box.h * 0.5 - rows * rowH / 2;
+      var gap = Math.max(2, box.w * 0.006);
       var pos = new Array(N), L = [], x0 = bx;
       for (var g = 0; g < G; g++) {
         var gw = bw * counts[g] / N - gap;
@@ -148,18 +158,30 @@
         L.push({ x: x0 + gw / 2, y: by - (W < 680 ? 14 : 20), text: (W < 680 ? '' : (opts.labels[g] || '') + ' · ') + Math.round(counts[g] * 100 / N) + '%' });
         x0 += gw + gap;
       }
-      var doc = W < 680 ? [0.5 * CW, 0.72 * H] : [0.80 * CW, 0.28 * H];
+      var doc = W < 680 ? [0.5 * box.w, 0.78 * box.h] : [0.82 * box.w, 0.20 * box.h];
       return { pos: pos, meta: { labels: L, doc: doc } };
     }
 
     var builderCtx = null;
     function buildLayouts() {
-      CW = Math.min(W, 1500);
-      offX = (W - CW) / 2;
-      // legibility target: figure height ~2.5% of the stage's limiting dimension
-      U = clamp(Math.min(CW, H) * 0.0145, 6.5, 16);
+      var narrow = W < 680;
+      // caption column — must track the .df-step width rule in the stylesheet
+      var capW = narrow ? 0 : clamp(W * 0.28, 300, 460);
+      var bx0 = narrow ? W * 0.05 : W * 0.055 + capW + W * 0.025;
+      var bx1 = W - (narrow ? W * 0.05 : W * 0.05);
+      var maxW = 1150;                       // ultrawide gains margin, not sprawl
+      if (bx1 - bx0 > maxW) {
+        var mid = (bx0 + bx1) / 2;
+        bx0 = mid - maxW / 2; bx1 = mid + maxW / 2;
+      }
+      var by0 = H * (narrow ? 0.32 : 0.085);  // narrow: caption sits on top
+      var by1 = H * (narrow ? 0.965 : 0.94);
+      box = { x0: bx0, y0: by0, x1: bx1, y1: by1,
+              w: bx1 - bx0, h: by1 - by0, cx: (bx0 + bx1) / 2, cy: (by0 + by1) / 2 };
+      // legibility target: figure height ~3% of the box's limiting dimension
+      U = clamp(Math.min(box.w, box.h) * 0.0175, 6.5, 16);
       builderCtx = {
-        W: CW, H: H, N: N, U: U, narrow: W < 680,
+        W: box.w, H: box.h, N: N, U: U, narrow: narrow,
         groups: groups, counts: counts, idxInGroup: idxInGroup,
         phyllo: phyllo, jit: jit
       };
@@ -176,21 +198,23 @@
       scenes.forEach(function (s) { needed[s.key] = 1; });
       for (var name in needed) {
         var out = defs[name](builderCtx);
-        if (offX > 0) shiftX(out, offX);
+        shiftXY(out, box.x0, box.y0);
         layouts[name] = out.pos;
         meta[name] = out.meta || {};
       }
+      focusCache = {};
     }
-    function shiftX(out, dx) {
+    // layouts are authored in box-local coordinates; this moves them onto the stage
+    function shiftXY(out, dx, dy) {
       var i;
-      for (i = 0; i < out.pos.length; i++) if (out.pos[i]) out.pos[i][0] += dx;
+      for (i = 0; i < out.pos.length; i++) if (out.pos[i]) { out.pos[i][0] += dx; out.pos[i][1] += dy; }
       var M = out.meta || {};
-      (M.labels || []).forEach(function (l) { l.x += dx; });
-      (M.clinicians || []).forEach(function (c2) { c2.x += dx; });
-      (M.zones || []).forEach(function (z) { z.x += dx; });
-      (M.docs || []).forEach(function (d2) { d2[0] += dx; });
-      if (M.doc) M.doc[0] += dx;
-      if (M.link) { M.link.a[0] += dx; M.link.b[0] += dx; }
+      (M.labels || []).forEach(function (l) { l.x += dx; l.y += dy; });
+      (M.clinicians || []).forEach(function (c2) { c2.x += dx; c2.y += dy; });
+      (M.zones || []).forEach(function (z) { z.x += dx; z.y += dy; });
+      (M.docs || []).forEach(function (d2) { d2[0] += dx; d2[1] += dy; });
+      if (M.doc) { M.doc[0] += dx; M.doc[1] += dy; }
+      if (M.link) { M.link.a[0] += dx; M.link.a[1] += dy; M.link.b[0] += dx; M.link.b[1] += dy; }
     }
 
     /* ---------- colour & alpha ---------- */
@@ -201,14 +225,15 @@
       if (!col) return neutral;
       var on = scene.colorGroups && (scene.colorGroups === 'all' || scene.colorGroups.indexOf(g) >= 0);
       if (!on) return neutral;
+      if (scene.greyDot && scene.greyDot(d, g)) return neutral;
       if (scene.scan && (scene.scan.groups === 'all' || scene.scan.groups.indexOf(g) >= 0)) {
         var P = layouts[scene.key][d];
         var f;
         if (scene.scan.axis === 'y') {
-          var sy = (tt * 1.3 - 0.15) * H;
+          var sy = box.y0 + (tt * 1.3 - 0.15) * box.h;
           f = smooth((sy - P[1]) / 60 + 0.5);
         } else {
-          var sx = offX + (tt * 1.3 - 0.15) * CW;
+          var sx = box.x0 + (tt * 1.3 - 0.15) * box.w;
           f = smooth((sx - P[0]) / 60 + 0.5);
         }
         // exact endpoints return the shared palette ref, keeping swept-past
@@ -223,17 +248,38 @@
       if (!scene) return 1;
       var a = scene.key === 'spread' ? 0.6 : 1;
       if (scene.dim) a = scene.dim.keep.indexOf(groups[d]) >= 0 ? 1 : scene.dim.to;
+      if (scene.fadeDot && scene.fadeDot(d, groups[d])) a *= (scene.fadeTo != null ? scene.fadeTo : 0.30);
       return a;
     }
 
     /* ---------- camera ---------- */
     function camOf(scene) {
-      var c = (scene && scene.cam) || { z: 1, x: 0.5, y: 0.46 };
+      var c = (scene && scene.cam) || { z: 1, x: 0.5, y: 0.5 };
       if (scene && scene.camNarrow && W < 680) c = scene.camNarrow;
-      return [c.z, offX + c.x * CW, c.y * H];
+      // { on: 'focus' } tracks one named person wherever the layout puts them,
+      // so a close-up never needs coordinates hand-tuned per viewport
+      if (c.on === 'focus' && scene.focus != null) {
+        var P = (layouts[scene.key] || [])[dotIndexOf(scene.focus)];
+        if (P) return [c.z, P[0] + (c.dx || 0) * U, P[1] + (c.dy || 0) * U];
+      }
+      return [c.z, box.x0 + c.x * box.w, box.y0 + c.y * box.h];
     }
     function project(p, cam) {
-      return [(p[0] - cam[1]) * cam[0] + W * 0.5, (p[1] - cam[2]) * cam[0] + H * 0.46];
+      return [(p[0] - cam[1]) * cam[0] + box.cx, (p[1] - cam[2]) * cam[0] + box.cy];
+    }
+    // resolve { g, i } (the i-th member of group g) or a raw index to a dot
+    var focusCache = {};
+    function dotIndexOf(ref) {
+      if (ref == null) return 0;
+      if (typeof ref === 'number') return ref;
+      var k = ref.g + ':' + (ref.i || 0);
+      if (focusCache[k] != null) return focusCache[k];
+      var seen = 0, out = 0;
+      for (var d = 0; d < N; d++) if (groups[d] === ref.g) {
+        if (seen === (ref.i || 0)) { out = d; break; }
+        seen++;
+      }
+      return (focusCache[k] = out);
     }
 
     /* ---------- the person glyph ---------- */
@@ -447,9 +493,144 @@
       ctx.restore();
     }
 
+    /* ---------- narrative cards ----------
+       A card pins plain-language detail to ONE person on stage: what they told
+       you, what they got, whether it matched. Rows reveal in sequence during
+       the entry tween and are all present at rest. */
+    function roundRect(x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+    function wrapText(text, maxW) {
+      var words = String(text).split(' '), out = [], cur = '';
+      for (var i = 0; i < words.length; i++) {
+        var t = cur ? cur + ' ' + words[i] : words[i];
+        if (cur && ctx.measureText(t).width > maxW) { out.push(cur); cur = words[i]; }
+        else cur = t;
+      }
+      if (cur) out.push(cur);
+      return out;
+    }
+    var MARKC = { tick: '#1baf7a', cross: '#c8503f', dot: '#8a93a8', want: '#2a78d6' };
+    function drawMark(kind, x, y, r, col) {
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      if (kind === 'tick') {
+        ctx.strokeStyle = col; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x - r, y); ctx.lineTo(x - r * 0.2, y + r * 0.75);
+        ctx.lineTo(x + r, y - r * 0.8); ctx.stroke();
+      } else if (kind === 'cross') {
+        ctx.strokeStyle = col; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x - r * 0.8, y - r * 0.8); ctx.lineTo(x + r * 0.8, y + r * 0.8);
+        ctx.moveTo(x + r * 0.8, y - r * 0.8); ctx.lineTo(x - r * 0.8, y + r * 0.8); ctx.stroke();
+      } else {
+        ctx.fillStyle = col;
+        ctx.beginPath(); ctx.arc(x, y, r * 0.42, 0, 6.2832); ctx.fill();
+      }
+    }
+    function drawCard(spec, tt, alpha, cam) {
+      var lay = layouts[spec._key] || [];
+      var anchor = spec.at != null ? lay[dotIndexOf(spec.at)] : null;
+      if (spec.atXY) anchor = [box.x0 + spec.atXY[0] * box.w, box.y0 + spec.atXY[1] * box.h];
+      if (!anchor) return;
+      var pos = project(anchor, cam);
+      var small = !!spec.small;
+      var CW2 = small ? clamp(box.w * 0.20, 140, 210) : clamp(box.w * 0.30, 210, 315);
+      var PADX = small ? 10 : 14, PADY = small ? 9 : 13;
+      var LH = small ? 15 : 19, GAPR = small ? 3 : 6, MARKW = small ? 13 : 17;
+      setFont(small ? F_CARDS : F_CARD);
+      var rows = (spec.rows || []).map(function (r) {
+        var o = typeof r === 'string' ? { t: r } : r;
+        return { t: o.t, mark: o.mark || spec.mark || 'dot', strike: !!o.strike, hi: !!o.hi,
+                 lines: wrapText(o.t, CW2 - PADX * 2 - MARKW) };
+      });
+      // titles and subs wrap too — an unwrapped title overflows a narrow card
+      var titleLines = [], subLines = [];
+      if (spec.title) { setFont(F_CARDT); titleLines = wrapText(spec.title, CW2 - PADX * 2); }
+      if (spec.sub) { setFont(F_CARDS); subLines = wrapText(spec.sub, CW2 - PADX * 2); }
+      var titleH = titleLines.length * 19 + subLines.length * 15;
+      var bodyH = 0;
+      rows.forEach(function (r) { bodyH += r.lines.length * LH + GAPR; });
+      var cardH = PADY * 2 + titleH + (titleH ? 6 : 0) + bodyH;
+
+      var s2 = U * cam[0];
+      var gap = Math.max(16, 1.4 * s2);
+      var x = spec.side === 'left' ? pos[0] - gap - CW2 : pos[0] + gap;
+      if (x + CW2 > box.x1 - 2) x = pos[0] - gap - CW2;
+      if (x < box.x0 - 6) x = pos[0] + gap;
+      x = clamp(x, box.x0 - 6, Math.max(box.x0 - 6, W - CW2 - 8));
+      var y = clamp(pos[1] - cardH / 2, box.y0 + 2, Math.max(box.y0 + 2, box.y1 - cardH - 2));
+
+      var ca = alpha * clamp((tt - 0.03) / 0.16, 0, 1);
+      if (ca <= 0.02) return;
+      ctx.save();
+      ctx.globalAlpha = ca;
+      // leader line from the person to the card
+      ctx.strokeStyle = 'rgba(138,147,168,.7)'; ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(pos[0] + (x > pos[0] ? 0.55 * s2 : -0.55 * s2), pos[1]);
+      ctx.lineTo(x > pos[0] ? x : x + CW2, clamp(pos[1], y + 14, y + cardH - 14));
+      ctx.stroke();
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = 'rgba(27,40,70,.18)'; ctx.lineWidth = 1;
+      roundRect(x, y, CW2, cardH, small ? 9 : 13); ctx.fill(); ctx.stroke();
+
+      ctx.textAlign = 'left';
+      var ty = y + PADY, ti;
+      if (titleLines.length) {
+        setFont(F_CARDT); ctx.fillStyle = ink;
+        for (ti = 0; ti < titleLines.length; ti++) { ctx.fillText(titleLines[ti], x + PADX, ty + 13); ty += 19; }
+      }
+      if (subLines.length) {
+        setFont(F_CARDS); ctx.fillStyle = ink2;
+        for (ti = 0; ti < subLines.length; ti++) { ctx.fillText(subLines[ti], x + PADX, ty + 11); ty += 15; }
+      }
+      if (titleH) ty += 6;
+      setFont(small ? F_CARDS : F_CARD);
+      for (var i = 0; i < rows.length; i++) {
+        // rows land one after another while the scene arrives
+        var ra = clamp((tt - 0.18 - i * 0.13) / 0.2, 0, 1);
+        if (spec.instant) ra = 1;
+        if (ra <= 0.01) { ty += rows[i].lines.length * LH + GAPR; continue; }
+        ctx.globalAlpha = ca * ra;
+        var r0 = rows[i], mid = ty + LH * 0.5;
+        if (r0.hi) {
+          ctx.fillStyle = 'rgba(42,120,214,.10)';
+          roundRect(x + PADX - 6, ty - 3, CW2 - PADX * 2 + 12, r0.lines.length * LH + 4, 6); ctx.fill();
+        }
+        drawMark(r0.mark, x + PADX + 5, mid, small ? 4 : 5.5, MARKC[r0.mark] || MARKC.dot);
+        ctx.fillStyle = r0.strike ? '#8a93a8' : (r0.mark === 'tick' ? ink : ink2);
+        for (var k = 0; k < r0.lines.length; k++) {
+          var lyy = ty + LH * (k + 1) - (small ? 4 : 5);
+          ctx.fillText(r0.lines[k], x + PADX + MARKW, lyy);
+          if (r0.strike) {
+            var wpx = ctx.measureText(r0.lines[k]).width;
+            ctx.strokeStyle = 'rgba(138,147,168,.9)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(x + PADX + MARKW, lyy - 4);
+            ctx.lineTo(x + PADX + MARKW + wpx, lyy - 4); ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = ca;
+        ty += r0.lines.length * LH + GAPR;
+      }
+      ctx.restore();
+    }
+
     /* ---------- extras ---------- */
     function drawExtras(scene, tt, alpha, cam) {
-      if (!scene || !scene.extra || alpha <= 0.02) return;
+      if (!scene || alpha <= 0.02) return;
+      var cardList = (W < 680 && scene.cardsNarrow) ? scene.cardsNarrow : scene.cards;
+      if (cardList) {
+        for (var ci = 0; ci < cardList.length; ci++) {
+          cardList[ci]._key = scene.key;
+          drawCard(cardList[ci], tt, alpha, cam);
+        }
+      }
+      if (!scene.extra) return;
       var M = meta[scene.key] || {};
       ctx.save(); ctx.globalAlpha = alpha;
       var z = cam[0];
@@ -457,9 +638,8 @@
 
       if (scene.extra === 'link' && M.link) {
         var A = M.link.a, B = M.link.b;
-        var qx = (A[0] + B[0]) / 2, qy = Math.min(A[1], B[1]) - H * 0.16;
-        // narrow screens: keep the arc apex (and its label) below the caption
-        if (W < 680) qy = Math.max(qy, H * 0.42);
+        var qx = (A[0] + B[0]) / 2, qy = Math.min(A[1], B[1]) - box.h * 0.11;
+        if (qy < box.y0 + 30) qy = box.y0 + 30;
         var a2 = P(A[0], A[1]), b2 = P(B[0], B[1]), q2 = P(qx, qy);
         ctx.strokeStyle = 'rgba(138,147,168,.55)'; ctx.lineWidth = 1.5 * z;
         ctx.beginPath(); ctx.moveTo(a2[0], a2[1]); ctx.quadraticCurveTo(q2[0], q2[1], b2[0], b2[1]); ctx.stroke();
@@ -475,6 +655,30 @@
           // for this annotation — the caption itself carries the eConsult beat
           ctx.fillStyle = ink2; setFont(F_ANNO); ctx.textAlign = 'center';
           ctx.fillText(scene.linkLabel, q2[0], q2[1] - 10);
+        }
+      }
+      if (scene.extra === 'badlink' && M.link) {
+        var la = P(M.link.a[0], M.link.a[1]), lb = P(M.link.b[0], M.link.b[1]);
+        var app = clamp(tt / 0.5, 0, 1);
+        var ex = lerp(la[0], lb[0], app), ey = lerp(la[1], lb[1], app);
+        ctx.save();
+        ctx.setLineDash([6, 6]);
+        ctx.strokeStyle = 'rgba(138,147,168,.9)'; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(la[0], la[1]); ctx.lineTo(ex, ey); ctx.stroke();
+        ctx.restore();
+        if (app >= 1) {
+          var mx = (la[0] + lb[0]) / 2, my = (la[1] + lb[1]) / 2;
+          var ca2 = clamp((tt - 0.5) / 0.3, 0, 1);
+          ctx.globalAlpha = alpha * ca2;
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath(); ctx.arc(mx, my, 13, 0, 6.2832); ctx.fill();
+          ctx.strokeStyle = 'rgba(200,80,63,.9)'; ctx.lineWidth = 1.4; ctx.stroke();
+          drawMark('cross', mx, my, 6, '#c8503f');
+          ctx.globalAlpha = alpha;
+        }
+        if (scene.linkLabel) {
+          ctx.fillStyle = ink2; setFont(F_ANNO); ctx.textAlign = 'center';
+          ctx.fillText(scene.linkLabel, (la[0] + lb[0]) / 2, Math.min(la[1], lb[1]) - 26);
         }
       }
       if (scene.extra === 'match' && M.doc) {

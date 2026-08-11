@@ -328,18 +328,18 @@ footer .fbrand{font-family:var(--disp);font-weight:800;letter-spacing:.14em;colo
 .js .theatre{display:block;position:relative;padding:0}
 .df-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--paper)}
 .df-stage canvas{position:absolute;inset:0;display:block}
+/* The caption owns a column of the stage and the graphic owns the rest —
+   the width here IS the engine's caption column (see buildLayouts), so text
+   and figures can never occupy the same ground. */
 .df-step{
-  position:absolute;left:6%;bottom:9%;max-width:540px;opacity:0;pointer-events:none;
-  transition:opacity .15s linear;
-  /* near-invisible backplate on the paper, solid where figures pass beneath —
-     captions stay readable at any viewport without fighting the geometry */
-  background:rgba(255,255,255,.9);padding:16px 20px 18px;margin-left:-20px;
-  border-radius:16px
+  position:absolute;left:5.5%;top:50%;transform:translateY(-50%);bottom:auto;
+  box-sizing:border-box;width:clamp(300px,28vw,460px);
+  opacity:0;pointer-events:none;transition:opacity .15s linear
 }
 .df-step .eyebrow{margin-bottom:8px}
 .df-step h3{font-family:var(--disp);font-weight:800;color:var(--navy);
-  font-size:clamp(24px,3.6vw,42px);line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
-.df-step p{font-size:15.5px;color:var(--ink-2);margin:0;max-width:46ch}
+  font-size:clamp(23px,2.6vw,36px);line-height:1.12;margin:0 0 8px;letter-spacing:-.01em}
+.df-step p{font-size:15.5px;color:var(--ink-2);margin:0;max-width:42ch}
 .df-hint{position:absolute;left:50%;bottom:3.5%;transform:translateX(-50%);
   font-family:var(--disp);font-size:12px;font-weight:700;letter-spacing:.16em;
   text-transform:uppercase;color:var(--mut);pointer-events:none}
@@ -352,7 +352,9 @@ footer .fbrand{font-family:var(--disp);font-weight:800;letter-spacing:.14em;colo
 .df-stat .l{font-size:13px;color:var(--ink-2);margin-top:6px}
 .theatre.df-static{height:100vh}
 @media (max-width:680px){
-  .df-step{left:7%;right:7%;top:11%;bottom:auto}
+  /* narrow: caption is a band across the top, graphic fills below it */
+  .df-step{left:6%;right:6%;top:9%;width:auto;transform:none;bottom:auto}
+  .df-step h3{font-size:clamp(22px,6.4vw,29px)}
   .df-hint{bottom:2.5%}
 }
 @media print{ .theatre{display:none} }

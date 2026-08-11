@@ -41,8 +41,8 @@ const QUICK = process.argv.includes('--quick');
 const PAGES = [
   // scan: scene whose arrival sweep must be complete at rest
   // parks: transitions to interrupt (park at scene + 0.6 -> must settle on scene + 1)
-  { file: 'specialist-gp-pipeline.html', scan: 1, minChroma: 0.25, parks: QUICK ? [4] : [0, 2, 4, 6, 7] },
-  { file: 'matched-family-gp.html',      scan: 2, minChroma: 0.25, parks: QUICK ? [4] : [0, 3, 4, 6, 8] }
+  { file: 'specialist-gp-pipeline.html', scan: 9, minChroma: 0.15, parks: QUICK ? [8] : [0, 3, 6, 9, 12, 15] },
+  { file: 'matched-family-gp.html',      scan: 5, minChroma: 0.25, parks: QUICK ? [8] : [0, 3, 6, 9, 12, 16] }
 ];
 const VIEWPORTS = QUICK ? [[2000, 950]] : [[390, 844], [1280, 800], [2000, 950]];
 

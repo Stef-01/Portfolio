@@ -90,15 +90,23 @@
   <section class="theatre" id="story" aria-hidden="true">
     <div class="df-stage">
       <canvas id="df2"></canvas>
-      <div class="df-step"><p class="eyebrow">The population</p><h3>The loosely attached.</h3><p>Every figure is a patient without “their” doctor.</p></div>
+      <div class="df-step"><p class="eyebrow">The population</p><h3>Two hundred people without a doctor of their own.</h3><p>Every figure is a patient who never found “their” GP.</p></div>
       <div class="df-step"><p class="eyebrow">Today</p><h3>The system calls them hard to reach.</h3><p>They're not hiding. The front door doesn't fit.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 1 — ask</p><h3>Ask what they need in a doctor.</h3><p>Twenty seconds. Chips, not forms.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 2 — see them</p><h3>Five personas, not one problem.</h3><p>Each one bookable — with the right match.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 3 — the doctors</p><h3>Doctors declare what they bring.</h3><p>Culture and language. Lived experience of your condition. Openness to lifestyle-first, non-drug care.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 4 — the match</p><h3>Match them — by colour.</h3><p>Every patient flows to the doctor wearing their colour: same culture, same condition experience, same philosophy of care.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 5 — look closer</p><h3>The doctor actually understands them.</h3><p>The first visit starts from recognition, not translation.</p></div>
-      <div class="df-step"><p class="eyebrow">Step 6 — the engine</p><h3>Then the follow-up finds them.</h3><p>“Dr Nguyen is free Thursday 2:40 — reply YES to book.”</p></div>
-      <div class="df-step"><p class="eyebrow">Step 7 — the payoff</p><h3>Disengagement collapses.</h3><p>Patients who feel understood stay: 48% → 81% still in care at twelve months.</p></div>
+      <div class="df-step"><p class="eyebrow">Meet one</p><h3>Start with a single patient.</h3><p>Hoa, 54. Type 2 diabetes for three years, and no regular doctor.</p></div>
+      <div class="df-step"><p class="eyebrow">What she needs</p><h3>She already knows what she needs.</h3><p>Four things, and she can name all of them. Nobody has ever asked in a way the system can store.</p></div>
+      <div class="df-step"><p class="eyebrow">And so does everyone</p><h3>So does the person beside her. And the next.</h3><p>Different lines, every time. This is not a preference — it is a requirement for showing up.</p></div>
+      <div class="df-step"><p class="eyebrow">At scale</p><h3>Two hundred people, two hundred preference sets.</h3><p>Sort them and they aren't noise. They are the segmentation.</p></div>
+      <div class="df-step"><p class="eyebrow">Today's front door</p><h3>So she opens a directory and sorts by “next available”.</h3><p>Distance, availability, maybe a star rating. Not one field for anything she actually said.</p></div>
+      <div class="df-step"><p class="eyebrow">The mismatch</p><h3>She books a stranger. None of it transfers.</h3><p>She explains her food, her language and her weight to someone new — or she doesn't, and gets advice that ignores them.</p></div>
+      <div class="df-step"><p class="eyebrow">The cost</p><h3>Within a year, half have stopped coming back.</h3><p>Not lost to the system by accident. Sorted out of it by a front door that never asked.</p></div>
+      <div class="df-step"><p class="eyebrow">Rewind</p><h3>Same people. Same preferences. Ask first.</h3><p>Twenty seconds of chips, not a form: language, food, judgement, data, family.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 1 — see them</p><h3>Five care-match personas, not one “hard to reach” bucket.</h3><p>Each one is bookable — with the right match.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 2 — the doctors</p><h3>Doctors declare what they bring.</h3><p>Culture and language. Lived experience of the condition. Openness to lifestyle-first, non-drug care.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 3 — the match</p><h3>Every patient flows to the doctor wearing their colour.</h3><p>Same culture, same condition experience, same philosophy of care.</p></div>
+      <div class="df-step"><p class="eyebrow">Her match</p><h3>Now every line is answered.</h3><p>The first visit starts from recognition, not translation.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 4 — the engine</p><h3>Then the follow-up finds them.</h3><p>“Dr Nguyen is free Thursday 2:40 — reply YES to book.” Outbound, on the cadence the record predicts.</p></div>
+      <div class="df-step"><p class="eyebrow">Twelve months on</p><h3>They're still here.</h3><p>The same crowd, tighter around the same doctors.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 5 — the payoff</p><h3>Disengagement collapses.</h3><p>Patients who feel understood stay: 48% → 81% still in care at twelve months.</p></div>
       <div class="df-step"><p class="eyebrow">The result</p><h3>The family GP, rebuilt.</h3><p></p></div>
       <div class="df-stats">
         <div class="df-stat"><div class="v"><span data-countup="70" data-pre="+" data-suf="%">+0%</span></div><div class="l">visits per year when the doctor fits (1.7 → 2.9)</div></div>
@@ -592,13 +600,16 @@
 <script src="assets/site.js"></script>
 <script src="assets/dotfield.js"></script>
 <script>
-/* Colour-match story: 200 loosely attached patients in five care-match
-   personas. Five doctors appear, each wearing a ring in the colour of the
-   patients they declared for — culture, condition experience, lifestyle-first
-   care — and every patient flows to the doctor wearing their colour. */
+/* The one-patient story. A population, then ONE person inside it: her
+   preferences become plain-language lines on a card; pull back and everyone
+   carries different lines; today those lines are thrown away at the front
+   door and half the population disengages; rewind, ask first, and match on
+   exactly what they said. Every layout composes inside the engine's stage box
+   (see docs/rca-animation-postmortem.md, post-mortem #2). */
 (function () {
   var COUNTS = [36, 28, 48, 24, 64];
   var HUES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'];
+  var NAMES = ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'];
   var DOCSPEC = [
     { skin: 4, hair: 0, label: 'your culture' },
     { skin: 2, hair: 3, label: 'lifestyle-first' },
@@ -606,98 +617,178 @@
     { skin: 5, hair: 1, label: 'data-literate' },
     { skin: 3, hair: 6, label: 'whole family' }
   ];
-  function docPos(c, g) {
-    // desktop row starts right of the fixed caption column so no scene ever
-    // parks a doctor or their patients under the story text; narrow column
-    // starts below the caption block (top ~30%) for the same reason
+  var HOA = { g: 0, i: 0 };                 // the patient the story follows
+  function LEAVER(d) { return (d * 7 + 3) % 100 < 52; }   // deterministic 52%
+
+  function idxOf(c, g, i) {
+    var seen = 0;
+    for (var d = 0; d < c.N; d++) if (c.groups[d] === g) { if (seen === i) return d; seen++; }
+    return 0;
+  }
+  // five persona units: a 3-over-2 grid on desktop fills both axes of the box;
+  // a single column with the doctor rail on the right when narrow
+  function slots(c) {
     return c.narrow
-      ? [0.84 * c.W, (0.38 + 0.13 * g) * c.H]
-      : [(0.38 + 0.14 * g) * c.W, 0.84 * c.H];
+      ? [[0.30, 0.10], [0.30, 0.30], [0.30, 0.50], [0.30, 0.70], [0.30, 0.90]]
+      : [[0.17, 0.26], [0.50, 0.26], [0.83, 0.26], [0.33, 0.74], [0.67, 0.74]];
   }
-  function docsMeta(c) {
-    var clin = [], docs = [];
-    for (var g = 0; g < 5; g++) {
-      var p = docPos(c, g);
-      var s = DOCSPEC[g];
-      clin.push({ x: p[0], y: p[1], skin: s.skin, hair: s.hair, label: s.label, ring: HUES[g], dimWith: g });
-      docs.push(p);
-    }
-    return { clinicians: clin, docs: docs };
+  function radiusOf(c, g, pitch) { return c.U * pitch * Math.sqrt(COUNTS[g]) * 0.62; }
+  // where this persona's crowd sits and where their doctor stands
+  function unit(c, g, pitch) {
+    var S = slots(c)[g], cx = S[0] * c.W, cy = S[1] * c.H, r = radiusOf(c, g, pitch);
+    if (c.narrow) return { px: cx, py: cy, dx: 0.84 * c.W, dy: cy, r: r };
+    var half = (r + c.U * 3.6) / 2;
+    return { px: cx, py: cy - half, dx: cx, dy: cy + half, r: r };
   }
-  // replicate the engine's builtin cluster geometry so scene 3 -> 4 holds still
-  function clusterPos(c) {
-    var slots = c.narrow
-      ? [[0.30, 0.36], [0.58, 0.44], [0.32, 0.60], [0.58, 0.72], [0.34, 0.86]]
-      : [[0.15, 0.35], [0.38, 0.55], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
-    var pos = new Array(c.N);
+  function gather(c, pitch, withDocs, labelled, extraLabels) {
+    var pos = new Array(c.N), clin = [], docs = [], L = [];
     for (var g = 0; g < 5; g++) {
-      var pts = c.phyllo(slots[g][0] * c.W, slots[g][1] * c.H, COUNTS[g], c.U * 1.55, g * 13);
+      var un = unit(c, g, pitch);
+      var pts = c.phyllo(un.px, un.py, COUNTS[g], c.U * pitch, g * 13);
       var gi = 0;
       for (var d = 0; d < c.N; d++) if (c.groups[d] === g) pos[d] = pts[gi++];
+      if (withDocs) {
+        var sp = DOCSPEC[g];
+        clin.push({ x: un.dx, y: un.dy, skin: sp.skin, hair: sp.hair, label: sp.label,
+                    ring: HUES[g], dimWith: g });
+        docs.push([un.dx, un.dy]);
+      }
+      if (labelled) {
+        var off = un.r + (c.narrow ? 15 : 20);
+        L.push({ x: un.px, y: un.py + off, group: g, dy: off,
+                 text: NAMES[g] + ' · ' + Math.round(COUNTS[g] * 100 / 200) + '%' });
+      }
     }
-    return pos;
+    return { pos: pos, meta: { clinicians: clin, docs: docs, labels: L.concat(extraLabels || []) } };
   }
-  var NAMES = ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'];
-  function clusterLabels(c) {
-    var slots = c.narrow
-      ? [[0.30, 0.36], [0.58, 0.44], [0.32, 0.60], [0.58, 0.72], [0.34, 0.86]]
-      : [[0.15, 0.35], [0.38, 0.55], [0.53, 0.35], [0.73, 0.66], [0.88, 0.33]];
-    var L = [], total = 200;
-    for (var g = 0; g < 5; g++) {
-      var r = c.U * 1.55 * Math.sqrt(COUNTS[g]) * 0.62;
-      // bound to the group so the label travels with its people, not over them
-      L.push({ x: slots[g][0] * c.W, y: slots[g][1] * c.H + r + (c.narrow ? 16 : 22),
-               group: g, dy: r + (c.narrow ? 16 : 22),
-               text: NAMES[g] + ' · ' + Math.round(COUNTS[g] * 100 / total) + '%' });
+
+  function jitter(c, pts) {
+    var m = Math.min(c.W, c.H);
+    for (var i = 0; i < c.N; i++) {
+      pts[i] = [pts[i][0] + c.jit[i][0] * m * 0.028, pts[i][1] + c.jit[i][1] * m * 0.028];
     }
-    return L;
+    return pts;
+  }
+  function crowdPos(c, pitch, seed) {
+    return jitter(c, c.phyllo(c.W * 0.5, c.H * 0.5, c.N, c.U * pitch, seed || 0));
   }
   var layouts = {
-    docrow: function (c) {
-      var m = docsMeta(c);
-      return { pos: clusterPos(c), meta: {
-        clinicians: m.clinicians, docs: m.docs,
-        labels: clusterLabels(c).concat([{ x: c.narrow ? 0.5 * c.W : 0.66 * c.W, y: c.narrow ? 0.975 * c.H : 0.945 * c.H, text: 'the practice — each doctor declared their focus', muted: true }])
+    crowd: function (c) { return { pos: crowdPos(c, 2.0, 0), meta: { labels: [] } }; },
+    wide: function (c) { return { pos: crowdPos(c, 2.5, 7), meta: { labels: [] } }; },
+    // today's path: the same crowd, plus the stranger she ends up booking
+    oldmatch: function (c) {
+      var pos = crowdPos(c, 2.0, 0), h = pos[idxOf(c, 0, 0)];
+      var doc = [h[0] + c.U * (c.narrow ? 12 : 16), h[1] + c.U * (c.narrow ? 7 : 0)];
+      return { pos: pos, meta: {
+        clinicians: [{ x: doc[0], y: doc[1], skin: 1, hair: 2, label: 'next available' }],
+        link: { a: [h[0], h[1]], b: [doc[0], doc[1] - c.U * 0.8] }
       } };
     },
-    matched: function (c) { return matchedAt(c, 1.55, []); },
+    // the cost: just over half of every persona pushed out of the practice
+    drift: function (c) {
+      var pos = new Array(c.N);
+      for (var g = 0; g < 5; g++) {
+        var un = unit(c, g, 1.75);
+        var pts = c.phyllo(un.px, un.py, COUNTS[g], c.U * 1.75, g * 13);
+        var gi = 0;
+        for (var d = 0; d < c.N; d++) if (c.groups[d] === g) {
+          var q = pts[gi++];
+          if (LEAVER(d)) {
+            var ang = Math.atan2(q[1] - un.py, q[0] - un.px);
+            var push = c.U * 7 + Math.abs(c.jit[d][0]) * c.U * 14;
+            q = [q[0] + Math.cos(ang) * push, q[1] + Math.sin(ang) * push];
+          }
+          pos[d] = [clamp(q[0], 6, c.W - 6), clamp(q[1], 6, c.H - 6)];
+        }
+      }
+      function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+      return { pos: pos, meta: { labels: [] } };
+    },
+    personas: function (c) { return gather(c, 1.75, false, true); },
+    docrow: function (c) {
+      return gather(c, 1.75, true, true, c.narrow ? [] : [{
+        x: 0.5 * c.W, y: 1.02 * c.H,
+        text: 'the practice — each doctor declared their focus', muted: true }]);
+    },
+    matched: function (c) { return gather(c, 1.45, true, true); },
     retained: function (c) {
-      return matchedAt(c, 1.22, [{ x: c.narrow ? 0.5 * c.W : 0.66 * c.W, y: c.narrow ? 0.975 * c.H : 0.945 * c.H, text: 'twelve months on — still here', muted: true }]);
+      return gather(c, 1.15, true, true, c.narrow ? [] : [{
+        x: 0.5 * c.W, y: 1.02 * c.H,
+        text: 'twelve months on — still here', muted: true }]);
     }
   };
-  function matchedAt(c, pitch, labels) {
-    var m = docsMeta(c), pos = new Array(c.N);
-    for (var g = 0; g < 5; g++) {
-      var r = c.U * pitch * Math.sqrt(COUNTS[g]) * 0.62;
-      var p = docPos(c, g);
-      var cx = c.narrow ? p[0] - r - c.U * 3.2 : p[0];
-      var cy = c.narrow ? p[1] : p[1] - r - c.U * 3.4;
-      var pts = c.phyllo(cx, cy, COUNTS[g], c.U * pitch, g * 7);
-      var gi = 0;
-      for (var d = 0; d < c.N; d++) if (c.groups[d] === g) pos[d] = pts[gi++];
-    }
-    return { pos: pos, meta: { clinicians: m.clinicians, docs: m.docs, labels: labels } };
-  }
+
+  var NOT_HER = function (d) { return d !== 0; };
+  var TRIO = [30, 36, 74];                  // her, and two people nothing like her
+  var NOT_TRIO = function (d) { return TRIO.indexOf(d) < 0; };
+  var HER_LINES = ['Speaks Vietnamese at home',
+                   'Cooks for four — advice has to fit the table',
+                   'Has been lectured about her weight once too often',
+                   'Checks her blood pressure on a watch'];
+
   DotField({
     theatre: '#story', canvas: '#df2',
     counts: COUNTS,
     groupColors: HUES,
     neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
-    labels: ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'],
+    labels: NAMES,
     layouts: layouts,
-    rmScene: 5,
+    rmScene: 12,
     scenes: [
-      { key: 'cloud' },
-      { key: 'spread' },
-      { key: 'cloud', colorGroups: 'all', scan: { groups: 'all', axis: 'x' } },
-      { key: 'clusters', colorGroups: 'all', labels: true },
+      { key: 'crowd' },
+      { key: 'wide' },
+      // one person, held still while the camera comes all the way in
+      { key: 'crowd', focus: HOA, fadeDot: NOT_HER, fadeTo: 0.11,
+        cam: { on: 'focus', z: 4.2 }, camNarrow: { on: 'focus', z: 4.0 } },
+      { key: 'crowd', focus: HOA, fadeDot: NOT_HER, fadeTo: 0.11,
+        cam: { on: 'focus', z: 4.2, dx: 4 }, camNarrow: { on: 'focus', z: 4.0, dx: 4 },
+        cards: [{ at: HOA, title: 'Hoa, 54', sub: 'type 2 diabetes · three years',
+                  mark: 'want', rows: HER_LINES }],
+        cardsNarrow: [{ at: HOA, small: true, title: 'Hoa, 54', mark: 'want', rows: HER_LINES }] },
+      // pull back: her neighbours want different things
+      { key: 'crowd', fadeDot: NOT_TRIO, fadeTo: 0.42,
+        cam: { z: 1.25, x: 0.5, y: 0.5 }, camNarrow: { z: 1.0, x: 0.5, y: 0.5 },
+        cards: [
+          { at: { g: 0, i: 30 }, small: true, side: 'left', mark: 'want',
+            rows: ['Wants a doctor who speaks her language'] },
+          { at: { g: 1, i: 0 }, small: true, mark: 'want',
+            rows: ['Wants food advice that survives Ramadan'] },
+          { at: { g: 2, i: 10 }, small: true, mark: 'want',
+            rows: ['Wants to be weighed without the lecture'] }
+        ],
+        cardsNarrow: [{ at: { g: 1, i: 0 }, small: true, mark: 'want',
+            rows: ['The next person wants something else entirely'] }] },
+      { key: 'crowd', colorGroups: 'all', scan: { groups: 'all', axis: 'x' } },
+      // today: the directory knows none of it
+      { key: 'crowd', colorGroups: 'all', focus: HOA, fadeDot: NOT_HER, fadeTo: 0.13,
+        cam: { on: 'focus', z: 2.4, dx: 4 }, camNarrow: { on: 'focus', z: 2.0, dx: 3 },
+        cards: [{ at: HOA, title: 'Online directory', sub: 'sorted by: next available',
+                  mark: 'dot', side: 'right',
+                  rows: [{ t: 'Dr Whitfield — Thursday 9:10 am', hi: true },
+                         { t: 'Dr Osei — next Tuesday' },
+                         { t: 'Dr Lindqvist — in two weeks' }] }] },
+      { key: 'oldmatch', colorGroups: 'all', focus: HOA, extra: 'badlink',
+        fadeDot: NOT_HER, fadeTo: 0.13,
+        cam: { on: 'focus', z: 2.4, dx: 4 }, camNarrow: { on: 'focus', z: 1.7, dx: 6, dy: 4 },
+        cards: [{ at: HOA, side: 'left', title: 'What transferred', mark: 'cross',
+                  rows: HER_LINES.map(function (t) { return { t: t, strike: true }; }) }] },
+      { key: 'drift', colorGroups: 'all', greyDot: LEAVER, fadeDot: LEAVER },
+      // rewind and ask first
+      { key: 'crowd', colorGroups: 'all' },
+      { key: 'personas', colorGroups: 'all', labels: true },
       { key: 'docrow', colorGroups: 'all', labels: true },
       { key: 'matched', colorGroups: 'all', labels: true },
-      { key: 'matched', colorGroups: 'all', dim: { keep: [0], to: 0.15 },
-        cam: { z: 1.9, x: 0.39, y: 0.74 }, camNarrow: { z: 1.6, x: 0.68, y: 0.38 } },
+      { key: 'matched', colorGroups: 'all', focus: HOA, dim: { keep: [0], to: 0.14 },
+        cam: { on: 'focus', z: 2.0, dx: 5 }, camNarrow: { on: 'focus', z: 1.7, dx: -3 },
+        cards: [{ at: HOA, side: 'right', title: 'Dr Mai Tran', mark: 'tick',
+                  sub: 'declared: Vietnamese · migrant health · lifestyle-first',
+                  rows: HER_LINES }],
+        cardsNarrow: [{ at: HOA, small: true, mark: 'tick', title: 'Dr Mai Tran',
+                  rows: ['Every line answered'] }] },
       { key: 'matched', colorGroups: 'all', extra: 'outbound' },
       { key: 'retained', colorGroups: 'all', labels: true },
-      { key: 'retained', colorGroups: 'all', dim: { keep: [], to: 0.18 } }
+      { key: 'retained', colorGroups: 'all', labels: true, dim: { keep: [], to: 0.30 } },
+      { key: 'retained', colorGroups: 'all', dim: { keep: [], to: 0.16 } }
     ]
   });
 })();
