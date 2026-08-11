@@ -211,7 +211,9 @@
       var M = out.meta || {};
       (M.labels || []).forEach(function (l) { l.x += dx; l.y += dy; });
       (M.clinicians || []).forEach(function (c2) { c2.x += dx; c2.y += dy; });
-      (M.zones || []).forEach(function (z) { z.x += dx; z.y += dy; });
+      (M.zones || []).forEach(function (z) {
+        if (z.rw) { z.rx += dx; z.ry += dy; } else { z.x += dx; z.y += dy; }
+      });
       (M.docs || []).forEach(function (d2) { d2[0] += dx; d2[1] += dy; });
       if (M.doc) { M.doc[0] += dx; M.doc[1] += dy; }
       if (M.link) { M.link.a[0] += dx; M.link.a[1] += dy; M.link.b[0] += dx; M.link.b[1] += dy; }
@@ -425,10 +427,19 @@
       if (!scene || alpha <= 0.02) return;
       var Z = (meta[scene.key] || {}).zones || [];
       for (var i = 0; i < Z.length; i++) {
-        var p = project([Z[i].x, Z[i].y], cam);
         ctx.globalAlpha = alpha * (Z[i].alpha || 0.06);
         ctx.fillStyle = Z[i].color || '#2a78d6';
-        ctx.beginPath(); ctx.arc(p[0], p[1], Z[i].r * cam[0], 0, 6.2832); ctx.fill();
+        if (Z[i].rw) {
+          // soft track behind a column of people — the queue's answer to the
+          // pools' discs, so every crowd stands on the same kind of ground
+          var a2 = project([Z[i].rx, Z[i].ry], cam);
+          var w2 = Z[i].rw * cam[0], h2 = Z[i].rh * cam[0];
+          roundRect(a2[0], a2[1], w2, h2, Math.min(w2 / 2, Z[i].rad * cam[0] || 12));
+          ctx.fill();
+        } else {
+          var p = project([Z[i].x, Z[i].y], cam);
+          ctx.beginPath(); ctx.arc(p[0], p[1], Z[i].r * cam[0], 0, 6.2832); ctx.fill();
+        }
       }
       ctx.globalAlpha = 1;
     }
@@ -477,6 +488,7 @@
         ctx.globalAlpha = al;
         ctx.fillStyle = L.muted ? ink2 : ink;
         setFont(L.big ? F_BIG : F_SMALL);
+        if ('letterSpacing' in ctx) ctx.letterSpacing = L.big ? '1.4px' : '0px';
         // group-bound labels ride their group's live centroid; unbound ones
         // travel on the lerped anchor exactly as before
         var p;
@@ -490,6 +502,7 @@
         }
         ctx.fillText(L.text, p[0], p[1]);
       }
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
       ctx.restore();
     }
 
@@ -516,7 +529,7 @@
       if (cur) out.push(cur);
       return out;
     }
-    var MARKC = { tick: '#1baf7a', cross: '#c8503f', dot: '#8a93a8', want: '#2a78d6' };
+    var MARKC = { tick: '#0b7d3e', cross: '#c8503f', dot: '#8a93a8', want: '#2a78d6' };
     function drawMark(kind, x, y, r, col) {
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       if (kind === 'tick') {
@@ -567,6 +580,8 @@
 
       var ca = alpha * clamp((tt - 0.03) / 0.16, 0, 1);
       if (ca <= 0.02) return;
+      // the card settles upward into place, like the page's reveal rhythm
+      y += (1 - ease(ca)) * 10;
       ctx.save();
       ctx.globalAlpha = ca;
       // leader line from the person to the card
@@ -575,9 +590,14 @@
       ctx.moveTo(pos[0] + (x > pos[0] ? 0.55 * s2 : -0.55 * s2), pos[1]);
       ctx.lineTo(x > pos[0] ? x : x + CW2, clamp(pos[1], y + 14, y + cardH - 14));
       ctx.stroke();
+      // same card language as the page: line-colour border, soft elevation
+      ctx.shadowColor = 'rgba(15,24,52,0.14)';
+      ctx.shadowBlur = 22; ctx.shadowOffsetY = 7;
       ctx.fillStyle = '#ffffff';
-      ctx.strokeStyle = 'rgba(27,40,70,.18)'; ctx.lineWidth = 1;
-      roundRect(x, y, CW2, cardH, small ? 9 : 13); ctx.fill(); ctx.stroke();
+      roundRect(x, y, CW2, cardH, small ? 11 : 16); ctx.fill();
+      ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      ctx.strokeStyle = '#e3e7f0'; ctx.lineWidth = 1;
+      roundRect(x, y, CW2, cardH, small ? 11 : 16); ctx.stroke();
 
       ctx.textAlign = 'left';
       var ty = y + PADY, ti;

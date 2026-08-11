@@ -379,6 +379,21 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   non-adherence vs "the patient can repeat the plan back in their own words."
   Full theatre-qa matrix green (20-scene E02, rmScene 14); captions still ≤30 words.
 
+- **Aesthetic-harmony polish (v4.3, 2026-08-11) — one surface language for canvas and page.**
+  Screenshot-verified round unifying the theatre's drawn chrome with the page's card system:
+  *Cards:* narrative cards now share the page's exact border (#e3e7f0), radii (16/11px), and a
+  softer lifted shadow (rgba(15,24,52,.14), blur 22, offset 7) with a 10px entry rise — the same
+  object at rest whether drawn on canvas or laid out in HTML. *Colour:* one success green
+  everywhere — `--good` and the canvas tick mark both #0b7d3e (was two greens). *Type:* big
+  canvas labels adopt the page kickers' letter-spacing (1.4px, progressive enhancement via
+  `ctx.letterSpacing`). *Composition:* E01's specialist queue gained a faint rounded track
+  (#1c5cab at 5.5% alpha) behind all queue scenes, giving the column the same "zone" treatment
+  the pools always had; the ranked queue's "least complex — stable" endpoint label moved clear of
+  the bottom figure (was overprinting it); the backfill annotation became a two-line stack pulled
+  inside the stage at 1280px (single line clipped the canvas edge) and is dropped at narrow
+  widths where the caption already states it and the stage has no room. Verified by eyeballing
+  1500/1280/390px captures of every touched scene; full theatre-qa matrix green.
+
 ## Roadmap (v2)
 
 Real MBS item lookups. The product is otherwise feature-complete for its purpose.

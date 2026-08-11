@@ -777,6 +777,12 @@
   }
   function gpClin(c, g, rGp) { return { x: g.gp[0] - rGp - c.U * 3.0, y: g.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' }; }
   function gpZone(c, g, rGp) { return { x: g.gp[0], y: g.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 }; }
+  // a faint track behind the queue — the queue's counterpart to the pools'
+  // soft discs, so every crowd stands on the same kind of ground
+  function queueZone(c, g) {
+    return { rx: g.qx - c.U * 2.6, ry: g.y0 + 20, rw: c.U * 5.2, rh: g.y1 - g.y0 - 8,
+             rad: c.U * 2.6, color: '#1c5cab', alpha: 0.055 };
+  }
   function gpTitle(g, rGp, text, sub) {
     var L = [{ x: g.gp[0], y: g.gp[1] - rGp - 30, group: 5, dy: -(rGp + 30), text: text, big: true }];
     if (sub) L.push({ x: g.gp[0], y: g.gp[1] - rGp - 12, group: 5, dy: -(rGp + 12), text: sub, muted: true });
@@ -891,7 +897,7 @@
         labels: gpTitle(g, rGp, "THE GP'S BOOK", 'minus the eighteen')
           .concat(queueChrome(c, g, [], 'unsorted — in the order they were referred')),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
-        zones: [gpZone(c, g, rGp)]
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
       } };
     },
     line: function (c) {
@@ -901,9 +907,9 @@
       for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
       return { pos: pos, meta: {
         labels: gpTitle(g, rGp, "THE GP'S BOOK").concat(queueChrome(c, g, [
-          { x: g.qx, y: g.y1 + 4, text: 'least complex — stable', muted: true }])),
+          { x: g.qx, y: g.y1 + c.U * 1.9, text: 'least complex — stable', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
-        zones: [gpZone(c, g, rGp)]
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
       } };
     },
     linesep: function (c) {
@@ -918,7 +924,7 @@
           { x: g.qx + (c.narrow ? -0.30 : 0.20) * c.W, y: g.y0 + (g.y1 - g.y0) * 0.90,
             text: c.narrow ? 'bottom 20% — stable' : 'the bottom 20% — stable, protocol-driven', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
-        zones: []
+        zones: [queueZone(c, g)]
       } };
     },
     moved1: function (c) {
@@ -930,7 +936,7 @@
         labels: gpTitle(g, rGp, "THE GP'S BOOK +20", 'billed properly, eConsult-backed').concat(queueChrome(c, g, [
           { x: g.qx, y: g.y0 + (g.y1 - g.y0) * 0.88, text: 'slots freed', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
-        zones: [gpZone(c, g, rGp)]
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
       } };
     },
     backfill: function (c) {
@@ -945,11 +951,13 @@
       var ranks = specRanks(c, [4, 3, 2, 1]);
       for (var d in ranks) pos[d] = queueXY(c, g, ranks[d] + 29, 0);
       return { pos: pos, meta: {
-        labels: gpTitle(g, rGp, "THE GP'S BOOK", 'grown by twenty, better paid').concat(queueChrome(c, g, [
-          { x: g.qx + (c.narrow ? -0.30 : 0.26) * c.W, y: g.y0 + (g.y1 - g.y0) * 0.22,
-            text: c.narrow ? 'twenty new, complex' : 'twenty new complex patients, off the waitlist', muted: true }])),
+        labels: gpTitle(g, rGp, "THE GP'S BOOK", 'grown by twenty, better paid').concat(queueChrome(c, g, c.narrow ? [] : [
+          { x: g.qx + 0.20 * c.W, y: g.y0 + (g.y1 - g.y0) * 0.22,
+            text: 'twenty new complex patients', muted: true },
+          { x: g.qx + 0.20 * c.W, y: g.y0 + (g.y1 - g.y0) * 0.22 + 18,
+            text: 'straight off the waitlist', muted: true }])),
         clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
-        zones: [gpZone(c, g, rGp)]
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
       } };
     },
     exchange: function (c) {

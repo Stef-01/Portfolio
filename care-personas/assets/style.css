@@ -31,7 +31,7 @@
   --today:#8a93a8; --pipe:#2a78d6;
 
   --accent:#eb6834;      /* CTA coral-orange */
-  --good:#006300;
+  --good:#0b7d3e;      /* success green, shared by page ticks and canvas ticks */
   --hl:rgba(237,161,0,.32); /* marker-highlight wash */
 
   --disp:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
