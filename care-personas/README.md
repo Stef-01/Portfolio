@@ -18,7 +18,7 @@ step, no framework. The only external requests are Google Fonts.
 under a scan sweep, form ranked queues and clusters, and play out the story's choreography while
 the camera zooms in and out. **Each story starts with one person**: the camera locks onto a single
 figure, their needs appear as plain-language lines on a card, and the argument widens from there
-to the whole population (Explainer 02: 18 scenes; Explainer 01: 17). **Scroll selects the scene; crossing a step fires a timed tween
+to the whole population (Explainer 02: 20 scenes; Explainer 01: 18). **Scroll selects the scene; crossing a step fires a timed tween
 that always completes** — parking the page anywhere settles on a composed scene, never a
 mid-transition frame (the interaction model of the reference explainer; see
 `docs/rca-animation-postmortem.md`). Honours `prefers-reduced-motion` with static composed
