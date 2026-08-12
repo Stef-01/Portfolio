@@ -394,6 +394,17 @@ dependency: Google Fonts. Canonical home: https://github.com/Stef-01/GP-specialt
   widths where the caption already states it and the stage has no room. Verified by eyeballing
   1500/1280/390px captures of every touched scene; full theatre-qa matrix green.
 
+- **Hub & one-pager carry the newest beats (v4.4, 2026-08-12).** The two pages that frame the
+  explainers predated the v4.1/v4.2 narrative revisions. Hub card 01 now ends on the concrete
+  payoff ("the genuinely complex are seen in 55 days, not 127" — was the vaguer "the waitlist
+  halves"); hub card 02 and the executive summary's Concept 02 mechanism gained the alignment
+  thesis in one line ("explained in the patient's first language, inside their food and beliefs —
+  a plan understood is a plan followed"). Print re-verified: the executive summary still renders
+  to exactly one A4 page (headless print-to-PDF page count = 1). Card-shadow render cost
+  A/B-benchmarked against the pre-polish engine at 12× CPU throttle across three card scenes:
+  medians flat (~17–18 ms), tails within run-to-run noise (+4.6%/−12%/+8%) — constant shadow
+  kept, decision noted in `drawCard`.
+
 ## Roadmap (v2)
 
 Real MBS item lookups. The product is otherwise feature-complete for its purpose.

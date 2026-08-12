@@ -590,7 +590,10 @@
       ctx.moveTo(pos[0] + (x > pos[0] ? 0.55 * s2 : -0.55 * s2), pos[1]);
       ctx.lineTo(x > pos[0] ? x : x + CW2, clamp(pos[1], y + 14, y + cardH - 14));
       ctx.stroke();
-      // same card language as the page: line-colour border, soft elevation
+      // same card language as the page: line-colour border, soft elevation.
+      // The blur costs ~sub-ms per frame at real speed (A/B-measured at 12x
+      // throttle: medians flat, tails within run noise) — kept constant
+      // through the tween for visual continuity rather than gated.
       ctx.shadowColor = 'rgba(15,24,52,0.14)';
       ctx.shadowBlur = 22; ctx.shadowOffsetY = 7;
       ctx.fillStyle = '#ffffff';
