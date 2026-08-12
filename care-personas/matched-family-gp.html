@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Explainer 02 — The Matched Family GP. Five care-match personas, one 20-second conversation: match patients to doctors who fit them, then run outbound follow-up like a sales team runs pipeline. Indicative economics for primary-care networks.">
+<title>The Matched Family GP · Care Personas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <a class="logo" href="index.html" aria-label="Care Personas home">
+    <svg width="36" height="22" viewBox="0 0 40 24" aria-hidden="true">
+      <circle cx="6" cy="12" r="5.5" fill="#2a78d6" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="13" cy="12" r="5.5" fill="#eb6834" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="20" cy="12" r="5.5" fill="#1baf7a" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="27" cy="12" r="5.5" fill="#eda100" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="34" cy="12" r="5.5" fill="#e87ba4" stroke="#fff" stroke-width="1.4"/>
+    </svg>
+    <span class="word">CARE PERSONAS</span>
+  </a>
+  <nav class="topnav" aria-label="Sections">
+    <a href="#problem">Problem</a>
+    <a href="#personas">Personas</a>
+    <a href="#match">Match engine</a>
+    <a href="#outbound">Outbound</a>
+    <a href="#money">Money</a>
+    <a href="#pilot">Pilot</a>
+    <a href="#guardrails">Guardrails</a>
+    <a href="#quiz">Quiz</a>
+    <a class="pill" href="specialist-gp-pipeline.html">Explainer 01 →</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section id="top" class="wrap" style="padding-top:72px">
+    <div class="avarow" aria-hidden="true">
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#e6effa"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#31456e"/><path d="M27 42 a21 21 0 0 1 42 0 v12 c0 9-9.5 13-21 13 s-21-4-21-13 Z" fill="#46608f"/><circle cx="48" cy="43" r="13" fill="#c68b59"/><circle cx="43" cy="44" r="1.8" fill="#201209"/><circle cx="53" cy="44" r="1.8" fill="#201209"/><path d="M44.5 50 q3.5 3 7 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#fdeae2"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#274064"/><rect x="44" y="52" width="8" height="10" fill="#8c5a33"/><circle cx="48" cy="40" r="17" fill="#8c5a33"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#201209"/><path d="M31 40 a17 17 0 0 0 34 0 h-5 a12 12 0 0 1 -24 0 Z" fill="#201209"/><circle cx="42" cy="40" r="1.8" fill="#f5e9dc"/><circle cx="54" cy="40" r="1.8" fill="#f5e9dc"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#e4f6ef"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#5d6f94"/><rect x="44" y="52" width="8" height="10" fill="#f2c9a0"/><circle cx="48" cy="40" r="17" fill="#f2c9a0"/><path d="M27 58 v-18 a21 21 0 0 1 42 0 v18 h-8 v-16 a13 13 0 0 0 -26 0 v16 Z" fill="#7a3b1e"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#fdf3da"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#3b527d"/><rect x="44" y="52" width="8" height="10" fill="#eeb98d"/><circle cx="48" cy="40" r="17" fill="#eeb98d"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#3a2a1c"/><circle cx="42" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><circle cx="54" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><path d="M47.5 41 h1" stroke="#16244a" stroke-width="1.6"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 48.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#fbe9f1"/><path d="M14 96 C14 74 26 63 42 63 C58 63 70 74 70 96 Z" fill="#4a5674"/><circle cx="42" cy="20" r="6" fill="#201209"/><circle cx="42" cy="38" r="15" fill="#c68b59"/><path d="M27 38 a15 15 0 0 1 30 0 h-5 a10 10 0 0 0 -20 0 Z" fill="#201209"/><circle cx="37" cy="39" r="1.7" fill="#201209"/><circle cx="47" cy="39" r="1.7" fill="#201209"/><path d="M38.5 45 q3.5 3 7 0" stroke="#201209" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M56 96 c0-12 7-18 16-18 s16 6 16 18 Z" fill="#5d6f94"/><circle cx="72" cy="68" r="10" fill="#d29a6b"/><path d="M62 68 a10 10 0 0 1 20 0 h-4 a6 6 0 0 0 -12 0 Z" fill="#3a2a1c"/><circle cx="69" cy="69" r="1.4" fill="#201209"/><circle cx="75" cy="69" r="1.4" fill="#201209"/><path d="M70 73 q2 1.8 4 0" stroke="#201209" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+    </div>
+    <p class="eyebrow">Care Personas · Explainer 02 · For primary-care networks &amp; payers</p>
+    <h1>Meet the five personas who never found their family GP</h1>
+    <p class="standfirst">Let patients say — in <span class="hl">20 seconds</span> — what they need in a doctor.
+    Match them against profiles of clinicians who asked for exactly those patients. Then run
+    follow-up the way a sales team runs pipeline: proactively, personally, and on the clock the
+    EHR already knows.</p>
+    <p class="note">All dollars indicative AUD, rounded from published MBS schedule fees. All rates
+    are illustrative modelling assumptions, stated openly.</p>
+
+    <div class="grid g2" style="margin-top:40px;align-items:stretch">
+      <div class="card">
+        <p class="tlabel note" style="margin:0 0 2px">The conversation it takes to match a patient with a
+        doctor who fits — <b>because the doctors were asked first</b></p>
+        <p class="hero-fig">20<small>seconds</small></p>
+        <p class="note" style="margin-top:12px">“What matters to you in a doctor?” — background &amp; language,
+        food culture, judgement-free care, wearable data, the whole family. Then: instant options.</p>
+      </div>
+      <div class="grid" style="gap:16px">
+        <div class="card tile">
+          <p class="tlabel">GP visits per year — matched vs unmatched patients</p>
+          <p class="tvalue">1.7 → 2.9</p>
+          <p class="tdelta"><span class="up">+70%</span> follow-up frequency when the doctor fits (indicative)</p>
+        </div>
+        <div class="card tile">
+          <p class="tlabel">GP capacity currently lost to empty slots and no-shows</p>
+          <p class="tvalue">560 appts/yr</p>
+          <p class="tdelta">≈ 10% of a full-time GP's book — outbound refills it</p>
+        </div>
+        <div class="card tile">
+          <p class="tlabel">Extra billings per GP FTE from refilled, re-engaged care</p>
+          <p class="tvalue">≈ +$30k/yr</p>
+          <p class="tdelta">Plus a week spent on the medicine they <b>chose</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOT THEATRE — scroll-driven story (content duplicated in the sections below) -->
+  <section class="theatre" id="story" aria-hidden="true">
+    <div class="df-stage">
+      <canvas id="df2"></canvas>
+      <div class="df-step"><p class="eyebrow">The population</p><h3>Two hundred people without a doctor of their own.</h3><p>Every figure is a patient who never found “their” GP.</p></div>
+      <div class="df-step"><p class="eyebrow">Today</p><h3>The system calls them hard to reach.</h3><p>They're not hiding. The front door doesn't fit.</p></div>
+      <div class="df-step"><p class="eyebrow">Meet one</p><h3>Start with a single patient.</h3><p>Hoa, 54. Type 2 diabetes for three years, and no regular doctor.</p></div>
+      <div class="df-step"><p class="eyebrow">What she needs</p><h3>She already knows what she needs.</h3><p>Four things, and she can name all of them. Nobody has ever asked in a way the system can store.</p></div>
+      <div class="df-step"><p class="eyebrow">And so does everyone</p><h3>So does the person beside her. And the next.</h3><p>Different lines, every time. This is not a preference — it is a requirement for showing up.</p></div>
+      <div class="df-step"><p class="eyebrow">At scale</p><h3>Two hundred people, two hundred preference sets.</h3><p>Sort them and they aren't noise. They are the segmentation.</p></div>
+      <div class="df-step"><p class="eyebrow">Today's front door</p><h3>So she opens a directory and sorts by “next available”.</h3><p>Distance, availability, maybe a star rating. Not one field for anything she actually said.</p></div>
+      <div class="df-step"><p class="eyebrow">The mismatch</p><h3>She books a stranger. None of it transfers.</h3><p>She explains her food, her language and her weight to someone new — or she doesn't, and gets advice that ignores them.</p></div>
+      <div class="df-step"><p class="eyebrow">Inside the consult</p><h3>She nods, goes home, and nothing changes.</h3><p>Advice that collides with her food, her language and her beliefs can't be followed — only endured.</p></div>
+      <div class="df-step"><p class="eyebrow">The cost</p><h3>Within a year, half have stopped coming back.</h3><p>Not lost to the system by accident. Sorted out of it by a front door that never asked.</p></div>
+      <div class="df-step"><p class="eyebrow">Rewind</p><h3>Same people. Same preferences. Ask first.</h3><p>Twenty seconds of chips, not a form: language, food, judgement, data, family.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 1 — see them</p><h3>Five care-match personas, not one “hard to reach” bucket.</h3><p>Each one is bookable — with the right match.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 2 — the doctors</p><h3>Doctors declare what they bring.</h3><p>Culture and language. Lived experience of the condition. Openness to lifestyle-first, non-drug care.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 3 — the match</p><h3>Every patient flows to the doctor wearing their colour.</h3><p>Same culture, same condition experience, same philosophy of care.</p></div>
+      <div class="df-step"><p class="eyebrow">Her match</p><h3>Now every line is answered.</h3><p>The first visit starts from recognition, not translation.</p></div>
+      <div class="df-step"><p class="eyebrow">Inside the consult, again</p><h3>Explained in her language, inside her food, around her rules.</h3><p>She finally understands the plan — and a plan understood is a plan she can follow.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 4 — the engine</p><h3>Then the follow-up finds them.</h3><p>“Dr Nguyen is free Thursday 2:40 — reply YES to book.” Outbound, on the cadence the record predicts.</p></div>
+      <div class="df-step"><p class="eyebrow">Twelve months on</p><h3>They're still here.</h3><p>The same crowd, tighter around the same doctors.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 5 — the payoff</p><h3>Disengagement collapses.</h3><p>Patients who feel understood stay: 48% → 81% still in care at twelve months.</p></div>
+      <div class="df-step"><p class="eyebrow">The result</p><h3>The family GP, rebuilt.</h3><p></p></div>
+      <div class="df-stats">
+        <div class="df-stat"><div class="v"><span data-countup="70" data-pre="+" data-suf="%">+0%</span></div><div class="l">visits per year when the doctor fits (1.7 → 2.9)</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="81" data-suf="%">0%</span></div><div class="l">matched patients still active at 12 months (vs 48%)</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="30" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">per GP FTE per year from refilled, re-engaged care</div></div>
+      </div>
+      <div class="df-hint">Scroll</div>
+    </div>
+  </section>
+
+  <!-- 01 PROBLEM -->
+  <section id="problem" class="tintband">
+    <div class="wrap reveal">
+      <p class="eyebrow">01 — The problem</p>
+      <h2>The family GP didn't die. It was defeated by friction.</h2>
+      <p class="lede">Ask patients why they don't have “their” doctor and they rarely say cost
+      first. They say: nobody there gets me. The advice doesn't fit how my family eats. I got
+      lectured once and never went back. They shrugged at my watch data. Meanwhile every clinic
+      waits, inbound-only, for patients to fight through that friction on their own — and a tenth
+      of the appointment book quietly evaporates.</p>
+
+      <div class="grid g4" style="margin-top:28px">
+        <div class="card tile"><p class="tlabel">Adults without a strong usual-GP relationship</p><p class="tvalue">≈ 40%</p><p class="tdelta">The loosely attached — this page segments them</p></div>
+        <div class="card tile"><p class="tlabel">Recommended chronic-disease follow-ups that actually happen</p><p class="tvalue">52%</p><p class="tdelta">The rest are lost to follow-up — nobody called</p></div>
+        <div class="card tile"><p class="tlabel">Appointments lost per GP FTE per year to gaps + no-shows</p><p class="tvalue">560</p><p class="tdelta">≈ $36k of capacity, unfilled and unbilled</p></div>
+        <div class="card tile"><p class="tlabel">Patients who delayed care last year fearing judgement</p><p class="tvalue">1 in 3</p><p class="tdelta">Weight, sexual health, alcohol, mental health</p></div>
+      </div>
+
+      <p class="pullquote">“Patients don't disengage because they don't care.
+      They disengage because the front door doesn't fit.”</p>
+      <p class="note">All four figures indicative — directionally consistent with published primary-care surveys; the pilot measures the real ones.</p>
+    </div>
+  </section>
+
+  <!-- 02 PERSONAS -->
+  <section id="personas">
+    <div class="wrap reveal">
+      <p class="eyebrow">02 — Segment the disengaged, don't blame them</p>
+      <h2>One “hard to reach” population. Five personas.</h2>
+      <p class="lede">Precision segmentation showed that vaccine hesitancy wasn't one problem —
+      it was five, each with its own fix. Patient disengagement is the same. Segment the loosely
+      attached by <b>what they actually need in a doctor</b>, and every one of them turns out to be
+      reachable. None of them needs persuading. They need a match.</p>
+
+      <div class="card" style="margin-top:28px">
+        <h3 style="font-size:15px;color:var(--ink-2);font-weight:600;font-family:var(--body)">The loosely attached patient population, segmented by what would bring them in the door. Hover or tap; click to meet the persona.</h3>
+        <div class="bigbar" role="group" aria-label="Loosely attached patients segmented by care-match persona">
+          <button class="seg" style="flex:18;background:var(--s1);color:var(--on-s1)" data-target="m1"
+            data-tip="<b>The Mirror Seeker — 18%</b>Wants a doctor who shares their background,<br>language or lived experience"><span>18%</span></button>
+          <button class="seg" style="flex:14;background:var(--s2);color:var(--on-s2)" data-target="m2"
+            data-tip="<b>The Table Matcher — 14%</b>Wants advice that fits their food culture<br>and dietary practice"><span>14%</span></button>
+          <button class="seg" style="flex:24;background:var(--s3);color:var(--on-s3)" data-target="m3"
+            data-tip="<b>The No-Judgement Seeker — 24%</b>Avoids care fearing the lecture —<br>weight, sexual health, alcohol, mental health"><span>24%</span></button>
+          <button class="seg" style="flex:12;background:var(--s4);color:var(--on-s4)" data-target="m4"
+            data-tip="<b>The Data Devotee — 12%</b>Wants wearable &amp; CGM data reviewed<br>seriously, not waved away"><span>12%</span></button>
+          <button class="seg" style="flex:32;background:var(--s5);color:var(--on-s5)" data-target="m5"
+            data-tip="<b>The Continuity Craver — 32%</b>Wants one doctor who knows the whole family —<br>currently bouncing between walk-ins"><span>32%</span></button>
+        </div>
+        <div class="rails" aria-hidden="true">
+          <div class="rail" style="flex:100;border-color:var(--tier-gp)"><b>All five are bookable</b> — when the front door reflects them and the follow-up finds them</div>
+        </div>
+        <div class="chips" role="list" aria-label="Persona legend">
+          <button class="chip" data-target="m1" role="listitem"><span class="dot" style="background:var(--s1)"></span>The Mirror Seeker · 18%</button>
+          <button class="chip" data-target="m2" role="listitem"><span class="dot" style="background:var(--s2)"></span>The Table Matcher · 14%</button>
+          <button class="chip" data-target="m3" role="listitem"><span class="dot" style="background:var(--s3)"></span>The No-Judgement Seeker · 24%</button>
+          <button class="chip" data-target="m4" role="listitem"><span class="dot" style="background:var(--s4)"></span>The Data Devotee · 12%</button>
+          <button class="chip" data-target="m5" role="listitem"><span class="dot" style="background:var(--s5)"></span>The Continuity Craver · 32%</button>
+        </div>
+        <details>
+          <summary>View the segmentation as a table</summary>
+          <table>
+            <thead><tr><th>Persona</th><th class="num">Share</th><th>What brings them in</th></tr></thead>
+            <tbody>
+              <tr><td>The Mirror Seeker</td><td class="num">18%</td><td>A doctor who shares their background, language or lived experience</td></tr>
+              <tr><td>The Table Matcher</td><td class="num">14%</td><td>Advice that fits their food culture and dietary practice</td></tr>
+              <tr><td>The No-Judgement Seeker</td><td class="num">24%</td><td>An explicit welcome for the consults they've been avoiding</td></tr>
+              <tr><td>The Data Devotee</td><td class="num">12%</td><td>A clinician who reviews their wearable and CGM data seriously</td></tr>
+              <tr><td>The Continuity Craver</td><td class="num">32%</td><td>One doctor for the whole family, visit after visit</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+
+      <div class="grid personas">
+        <article class="card pcard" id="m1" style="border-top-color:var(--s1)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#e6effa"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#31456e"/><path d="M27 42 a21 21 0 0 1 42 0 v12 c0 9-9.5 13-21 13 s-21-4-21-13 Z" fill="#46608f"/><circle cx="48" cy="43" r="13" fill="#c68b59"/><circle cx="43" cy="44" r="1.8" fill="#201209"/><circle cx="53" cy="44" r="1.8" fill="#201209"/><path d="M44.5 50 q3.5 3 7 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The Mirror Seeker</h3><span class="share">18% of the loosely attached</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Wants a doctor who gets where they're from — the language, the family structure,
+            the things you shouldn't have to explain from scratch at every visit.</dd>
+            <dt>What keeps them away today</dt>
+            <dd>Re-telling their story through an interpreter, or not at all. Nuance lost;
+            trust never built; attendance drifts to crisis-only.</dd>
+            <dt>What a match looks like</dt>
+            <dd>A profile that says <b>“Speaks Vietnamese · migrant health focus”</b> — found in
+            20 seconds, not by luck after five tries.</dd>
+                      <dt>In the room, that means</dt>
+            <dd>The consult runs in her first language — no child interpreter. The doctor asks
+            <b>what she believes caused it</b> — wind, heat, worry — and explains the diagnosis
+            inside that frame, not over it. Remedies she already trusts are checked and folded
+            in, not waved away. Understanding is the adherence intervention.</dd>
+          </dl>
+          <p class="money"><b>The payoff:</b> disclosure and adherence climb with concordance;
+          visits rise from ~1.5 to ~2.8/yr (indicative) — prevention finally has a customer.</p>
+        </article>
+
+        <article class="card pcard" id="m2" style="border-top-color:var(--s2)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fdeae2"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#274064"/><rect x="44" y="52" width="8" height="10" fill="#8c5a33"/><circle cx="48" cy="40" r="17" fill="#8c5a33"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#201209"/><path d="M31 40 a17 17 0 0 0 34 0 h-5 a12 12 0 0 1 -24 0 Z" fill="#201209"/><circle cx="42" cy="40" r="1.8" fill="#f5e9dc"/><circle cx="54" cy="40" r="1.8" fill="#f5e9dc"/></svg>
+            <div><h3>The Table Matcher</h3><span class="share">14% of the loosely attached</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Their health runs through their table — halal, fasting month, vegetarian thali,
+            the Sunday family feast. Food is identity, not a compliance problem.</dd>
+            <dt>What keeps them away today</dt>
+            <dd>“Just eat less rice.” Advice that asks them to abandon their cuisine gets politely
+            ignored — and so does the next appointment.</dd>
+            <dt>What a match looks like</dt>
+            <dd>A doctor who prescribes <b>within</b> the cuisine — Ramadan-aware titration,
+            Pasifika food-first metabolic care — declared on their profile at onboarding.</dd>
+                      <dt>In the room, that means</dt>
+            <dd>Advice written <b>inside the cuisine</b>: portion swaps for rice or roti, not
+            bans; dosing re-timed for Ramadan or fast days instead of "skipped"; the festival
+            feast planned for, because it is an obligation, not a lapse.</dd>
+          </dl>
+          <p class="money"><b>The payoff:</b> meal plans that survive contact with dinner;
+          metabolic follow-through instead of silent drop-out.</p>
+        </article>
+
+        <article class="card pcard" id="m3" style="border-top-color:var(--s3)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#e4f6ef"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#5d6f94"/><rect x="44" y="52" width="8" height="10" fill="#f2c9a0"/><circle cx="48" cy="40" r="17" fill="#f2c9a0"/><path d="M27 58 v-18 a21 21 0 0 1 42 0 v18 h-8 v-16 a13 13 0 0 0 -26 0 v16 Z" fill="#7a3b1e"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The No-Judgement Seeker</h3><span class="share">24% of the loosely attached</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Has something to raise — weight, sexual health, drinking, a mood that won't lift —
+            and has been bracing for the lecture for three years.</dd>
+            <dt>What keeps them away today</dt>
+            <dd>One bad consult, years ago. The shame tax on every booking since. The
+            appointment avoided is the diagnosis delayed.</dd>
+            <dt>What a match looks like</dt>
+            <dd>Doctors who <b>asked for these consults</b> at onboarding: “judgement-free weight
+            &amp; metabolic care”, “no-lecture sexual health”. The welcome is explicit, so the
+            booking finally happens.</dd>
+                      <dt>In the room, that means</dt>
+            <dd>The scale is optional, the history is taken without a flinch, and the plan starts
+            from what they're willing to do this month. Disclosure rises when the lecture is
+            off the table — and disclosure is diagnosis.</dd>
+          </dl>
+          <p class="money"><b>The payoff:</b> the consult avoided for three years happens this
+          month — earlier intervention on exactly the conditions that cost systems the most.</p>
+        </article>
+
+        <article class="card pcard" id="m4" style="border-top-color:var(--s4)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fdf3da"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#3b527d"/><rect x="44" y="52" width="8" height="10" fill="#eeb98d"/><circle cx="48" cy="40" r="17" fill="#eeb98d"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#3a2a1c"/><circle cx="42" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><circle cx="54" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><path d="M47.5 41 h1" stroke="#16244a" stroke-width="1.6"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 48.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The Data Devotee</h3><span class="share">12% of the loosely attached</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Wears the watch, runs the CGM, tracks the sleep. Arrives with a year of their own
+            physiology and a genuine question.</dd>
+            <dt>What keeps them away today</dt>
+            <dd>“Don't bring me your watch data.” Dismissal reads as disinterest — so the most
+            engaged patients in the country disengage.</dd>
+            <dt>What a match looks like</dt>
+            <dd>A <b>data-literate GP</b> whose profile says so, with consented wearable sharing
+            reviewed <b>before</b> the visit, so the consult starts at the answer.</dd>
+                      <dt>In the room, that means</dt>
+            <dd>The trends are on screen <b>before</b> they sit down; the conversation starts at
+            "your nights are the problem, not your mornings". Titration is by their own numbers —
+            which is why they actually take the tablet.</dd>
+          </dl>
+          <p class="money"><b>The payoff:</b> four-plus touchpoints a year, precise titration,
+          arrhythmias and pressure creep caught between visits — not at the ED.</p>
+        </article>
+
+        <article class="card pcard" id="m5" style="border-top-color:var(--s5)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fbe9f1"/><path d="M14 96 C14 74 26 63 42 63 C58 63 70 74 70 96 Z" fill="#4a5674"/><circle cx="42" cy="20" r="6" fill="#201209"/><circle cx="42" cy="38" r="15" fill="#c68b59"/><path d="M27 38 a15 15 0 0 1 30 0 h-5 a10 10 0 0 0 -20 0 Z" fill="#201209"/><circle cx="37" cy="39" r="1.7" fill="#201209"/><circle cx="47" cy="39" r="1.7" fill="#201209"/><path d="M38.5 45 q3.5 3 7 0" stroke="#201209" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M56 96 c0-12 7-18 16-18 s16 6 16 18 Z" fill="#5d6f94"/><circle cx="72" cy="68" r="10" fill="#d29a6b"/><path d="M62 68 a10 10 0 0 1 20 0 h-4 a6 6 0 0 0 -12 0 Z" fill="#3a2a1c"/><circle cx="69" cy="69" r="1.4" fill="#201209"/><circle cx="75" cy="69" r="1.4" fill="#201209"/><path d="M70 73 q2 1.8 4 0" stroke="#201209" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The Continuity Craver</h3><span class="share">32% of the loosely attached</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Wants what their parents had: one doctor who knows the whole family, remembers
+            last winter's chest infection, and notices what's changed.</dd>
+            <dt>What keeps them away today</dt>
+            <dd>Whoever's-free medicine. Notes scattered across five clinics. Every visit starts
+            from zero, so why bother going for anything small?</dd>
+            <dt>What a match looks like</dt>
+            <dd>A GP whose profile says <b>“building whole-family books — newborn to nana”</b>,
+            with sibling and parent bookings stacked on the same afternoon.</dd>
+                      <dt>In the room, that means</dt>
+            <dd>One doctor holds the family story — the father's heart, the daughter's asthma,
+            who cares for whom. Decisions are made <b>with the family in the room</b> where that's
+            how decisions get made, and nothing is re-explained from zero.</dd>
+          </dl>
+          <p class="money"><b>The payoff:</b> the largest segment, and the highest lifetime value
+          in primary care — the family GP model, rebuilt by an algorithm instead of nostalgia.</p>
+        </article>
+      </div>
+    
+      <h3 style="margin-top:34px">Same diagnosis, two consultations — where the value actually lives</h3>
+      <p class="lede" style="font-size:15.5px">The match doesn't change the medicine. It changes whether the
+      medicine is <b>understood</b> — and a plan that fits someone's language, beliefs, food and obligations
+      is the only kind that gets followed after they leave the room.</p>
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card">
+          <h3 style="color:#c8503f">The misaligned consult</h3>
+          <ul class="contrast">
+            <li class="no">Explains the diagnosis over the patient's own theory of illness — so the two never reconcile, and hers wins at home</li>
+            <li class="no">"Cut the rice" / "no fried food" — bans the cuisine instead of working inside it</li>
+            <li class="no">Dosing collides with fasting months, festival obligations and shift work — so doses get skipped silently</li>
+            <li class="no">Traditional remedies dismissed — so they go underground, interactions unchecked</li>
+            <li class="no">A child interprets; modesty and family decision-making rules are trampled; the lecture lands where trust should be</li>
+          </ul>
+          <p class="note" style="margin-top:10px">Outcome: polite nodding, quiet non-adherence, and a patient who doesn't rebook.</p>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--good)">The aligned consult</h3>
+          <ul class="contrast">
+            <li class="yes">Starts by asking <b>what the patient believes is wrong</b> — then explains the diagnosis inside that frame, in their first language</li>
+            <li class="yes">Prescribes <b>within</b> the food culture: swaps and portions for rice, roti or taro — never "abandon your table"</li>
+            <li class="yes">Re-times doses around Ramadan, fast days and feast obligations <b>in advance</b>, treating them as fixed points, not lapses</li>
+            <li class="yes">Reconciles the tonic, the cupping, the prayer — checks interactions and keeps what's safe in the plan</li>
+            <li class="yes">Runs the decision the way the family runs decisions — elders present, questions welcome, no shame tax</li>
+          </ul>
+          <p class="note" style="margin-top:10px">Outcome: the patient can repeat the plan back in their own words — the strongest predictor that it happens.</p>
+        </div>
+      </div>
+</div>
+  </section>
+
+  <!-- 03 MATCH ENGINE (navy band) -->
+  <section id="match" class="band">
+    <div class="wrap reveal">
+      <p class="eyebrow">03 — The match engine</p>
+      <h2>Doctors declared who they want to serve. Patients just have to ask.</h2>
+      <p class="lede">The database isn't scraped — it's built. Every clinician joins through a
+      structured onboarding interview: <i>which patients do you want more of? What care do you love
+      doing? Which languages, cultures, food traditions do you carry? What conditions have you
+      lived with yourself? How openly do you offer lifestyle-first, non-drug options? Will you
+      review wearable data?</i> Their answers become a match profile. Then the patient side takes 20 seconds.</p>
+
+      <div class="grid g4" style="margin-top:26px">
+        <div class="card phase"><p class="mo">Step 1</p><h3>Say what matters</h3><ul><li>A 20-second guided conversation — chips, not forms</li><li>Background &amp; language · food culture · judgement-free · wearables · whole family</li></ul></div>
+        <div class="card phase"><p class="mo">Step 2</p><h3>Match the profiles</h3><ul><li>Preferences scored against the clinician database</li><li>Doctors advertised what they want to treat — the algorithm just finds the overlap</li></ul></div>
+        <div class="card phase"><p class="mo">Step 3</p><h3>See real options, instantly</h3><ul><li>A shortlist with the <b>why</b> shown plainly</li><li>Full directory always one tap away — matching never gatekeeps</li></ul></div>
+        <div class="card phase"><p class="mo">Step 4</p><h3>Book — then be kept</h3><ul><li>One tap to book</li><li>The outbound engine (next section) owns the follow-up from here</li></ul></div>
+      </div>
+
+      <div class="card" style="margin-top:26px">
+        <h3>Try the 20-second match</h3>
+        <p class="note" style="margin:2px 0 0">Illustrative demo — all clinicians fictional. Pick what matters to you; the shortlist re-ranks.</p>
+        <div class="demo-chips" id="demoChips">
+          <button class="chip" data-key="mirror" aria-pressed="false"><span class="dot" style="background:var(--s1)"></span>Shares my background &amp; language</button>
+          <button class="chip" data-key="table" aria-pressed="false"><span class="dot" style="background:var(--s2)"></span>Gets my food culture</button>
+          <button class="chip" data-key="judge" aria-pressed="false"><span class="dot" style="background:var(--s3)"></span>Won't judge me</button>
+          <button class="chip" data-key="data" aria-pressed="false"><span class="dot" style="background:var(--s4)"></span>Takes my wearable data seriously</button>
+          <button class="chip" data-key="family" aria-pressed="false"><span class="dot" style="background:var(--s5)"></span>Can take my whole family</button>
+        </div>
+        <div class="grid docgrid" id="docGrid" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 OUTBOUND -->
+  <section id="outbound">
+    <div class="wrap reveal">
+      <p class="eyebrow">04 — The unfair advantage</p>
+      <h2>What outbound sales knows that clinics forgot</h2>
+      <p class="lede">Every industry that lives on retention runs outbound: it keeps a list, scores
+      who needs contact, reaches out first, and follows a cadence. Clinics — whose “churn” is
+      measured in strokes and late-stage diagnoses — wait for inbound calls. Apply the outbound
+      playbook under clinical governance and it has an older name: <b>proactive care</b>.</p>
+
+      <div class="split" style="margin-top:26px">
+        <div class="card">
+          <h3>The translation table</h3>
+          <table>
+            <thead><tr><th>Outbound sales</th><th>Proactive primary care</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td>Lead list</td><td>Recall register</td><td>Every patient with a due follow-up, visible in one queue</td></tr>
+              <tr><td>Propensity scoring</td><td>EHR-predicted need</td><td>Post-MI → GP review every 3 months for the first year</td></tr>
+              <tr><td>Outreach cadence</td><td>Reminder sequence</td><td>Nudge at due date, +1 week, +3 weeks — then a human call</td></tr>
+              <tr><td>“Book a demo” CTA</td><td>“Reply YES to book”</td><td>A held slot with their doctor, one word to confirm</td></tr>
+              <tr><td>Account manager</td><td>Named family GP</td><td>The relationship is the product</td></tr>
+              <tr><td>Churn</td><td>Lost to follow-up</td><td>52% of chronic follow-ups today — the number this engine attacks</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="phone" role="img" aria-label="Phone mock-up showing three proactive care messages">
+          <p class="ptime">9:41</p>
+          <div class="msg"><p class="from"><span class="dot"></span>MatchBook Care</p>
+            Hi Maria — Dr Nguyen has <b>Thursday 2:40pm</b> free. You're due for your 3-month heart
+            check after February's admission. <span class="reply">Reply YES to book</span></div>
+          <div class="msg"><p class="from"><span class="dot"></span>MatchBook Care</p>
+            Your watch flagged three nights of irregular rhythm. Dr Chen reviewed the trace and
+            suggests coming in earlier — <b>Monday 9:10am</b>?</div>
+          <div class="msg"><p class="from"><span class="dot"></span>MatchBook Care</p>
+            It's been 12 months since Leo's development check. Dr O'Connell keeps Saturday
+            mornings for her families. 🧸</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:22px">
+        <h3>The EHR already knows the cadence. The engine makes it happen.</h3>
+        <p class="note" style="margin:2px 0 0">Example: first year after a heart attack — guideline-recommended GP reviews</p>
+        <div class="cadence" aria-hidden="true">
+          <div class="axis"></div>
+          <div class="tick" style="left:0%"></div><span class="tlab" style="left:0%">Mo 0 · MI</span>
+          <div class="tick" style="left:25%"></div><span class="tlab" style="left:25%">Mo 3</span>
+          <div class="tick" style="left:50%"></div><span class="tlab" style="left:50%">Mo 6</span>
+          <div class="tick" style="left:75%"></div><span class="tlab" style="left:75%">Mo 9</span>
+          <div class="tick" style="left:100%"></div><span class="tlab" style="left:100%">Mo 12</span>
+          <div class="visit" style="left:25%;background:var(--pipe)"></div><span class="vlab" style="left:25%">GP review</span>
+          <div class="visit" style="left:50%;background:var(--pipe)"></div>
+          <div class="visit" style="left:75%;background:var(--pipe)"></div>
+          <div class="visit" style="left:100%;background:var(--pipe)"></div><span class="vlab" style="left:100%">Year done</span>
+        </div>
+        <div class="legend" style="margin-top:18px"><span class="key"><span class="sw" style="background:var(--today)"></span>Today — inbound only</span><span class="key"><span class="sw" style="background:var(--pipe)"></span>With the outbound engine</span></div>
+        <div class="brow"><span class="blab">Today</span><div class="btrack"><div class="bfill" style="width:43%;background:var(--today)"></div><span class="bval">1.6 of 4 reviews happen</span></div></div>
+        <div class="brow"><span class="blab">Engine</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div><span class="bval">3.7 of 4 (indicative)</span></div></div>
+        <details>
+          <summary>More conditions the cadence engine covers</summary>
+          <table>
+            <thead><tr><th>Trigger in the EHR</th><th>Cadence rule (guideline-derived)</th></tr></thead>
+            <tbody>
+              <tr><td>Discharge post-myocardial infarction</td><td>GP review every 3 months, first year</td></tr>
+              <tr><td>Type 2 diabetes</td><td>HbA1c + review every 3–6 months</td></tr>
+              <tr><td>Mental-health care plan</td><td>Review at 4–6 weeks, then every 3 months</td></tr>
+              <tr><td>New baby in the family book</td><td>6-week postnatal + scheduled development checks</td></tr>
+              <tr><td>CKD stage 3+</td><td>Kidney function + BP review every 3 months</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 MONEY -->
+  <section id="money" class="tintband">
+    <div class="wrap reveal">
+      <p class="eyebrow">05 — The money</p>
+      <h2>Full diaries, kept patients, chosen medicine</h2>
+      <p class="lede">Nothing here invents a fee. It fills the 560 appointments a year that already
+      exist and already go unbilled, keeps patients attached, and lets demand — not a rate card —
+      reward the doctors patients keep choosing.</p>
+
+      <div class="legend" role="list" aria-label="Chart legend">
+        <span class="key" role="listitem"><span class="sw" style="background:var(--today)"></span>Today</span>
+        <span class="key" role="listitem"><span class="sw" style="background:var(--pipe)"></span>Matched + outbound</span>
+      </div>
+
+      <div class="grid g3">
+        <div class="card">
+          <h3>The GP</h3>
+          <p class="note" style="margin:0 0 10px">Billings lost to empty slots + no-shows, per FTE per year</p>
+          <div class="brow"><span class="blab">Today</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--today)"></div><span class="bval">$36k lost</span></div></div>
+          <div class="brow"><span class="blab">Engine</span><div class="btrack"><div class="bfill" style="width:22%;background:var(--pipe)"></div><span class="bval">$8k lost</span></div></div>
+          <ul class="mathlist">
+            <li>560 lost slots → ~340 refilled with due follow-ups ≈ +$22k</li>
+            <li>Re-engaged chronic patients → care plans &amp; reviews ≈ +$9k</li>
+            <li>Share of the week in <b>chosen</b> scope: 25% → 55%</li>
+          </ul>
+          <p class="plus"><b>≈ +$30k per FTE per year</b> — and a diary full of the medicine they
+          told the onboarding interview they wanted.</p>
+        </div>
+
+        <div class="card">
+          <h3>The practice owner</h3>
+          <p class="note" style="margin:0 0 10px">Patients still active at 12 months</p>
+          <div class="brow"><span class="blab">Unmatched</span><div class="btrack"><div class="bfill" style="width:59%;background:var(--today)"></div><span class="bval">48%</span></div></div>
+          <div class="brow"><span class="blab">Matched</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div><span class="bval">81% (indicative)</span></div></div>
+          <ul class="mathlist">
+            <li>No-shows 8% → under 3% (“reply YES” holds a real slot)</li>
+            <li>Slot fill 92% → 98%</li>
+            <li>Retention compounds: 2.9 visits/yr × more years kept</li>
+          </ul>
+          <p class="plus"><b>The demand dividend:</b> once a GP's diary runs &gt;95% full for a
+          quarter, the practice may add a modest <b>$15–25 out-of-pocket</b> on non-concession
+          bookings — priced by demonstrated demand, tempering it while rewarding quality.</p>
+        </div>
+
+        <div class="card">
+          <h3>The system &amp; payer</h3>
+          <p class="note" style="margin:0 0 10px">Recommended chronic follow-ups completed</p>
+          <div class="brow"><span class="blab">Today</span><div class="btrack"><div class="bfill" style="width:67%;background:var(--today)"></div><span class="bval">52%</span></div></div>
+          <div class="brow"><span class="blab">Engine</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div><span class="bval">78% target</span></div></div>
+          <ul class="mathlist">
+            <li>Continuity of GP care is among the best-evidenced predictors of fewer ED visits and admissions</li>
+            <li>The avoided consult happens years earlier — cheapest point of intervention</li>
+            <li>Outbound cost per completed follow-up: dollars, not hundreds</li>
+          </ul>
+          <p class="plus"><b>+26 percentage points of follow-through</b> on the conditions that
+          drive the hospital bill.</p>
+        </div>
+      </div>
+
+      <details>
+        <summary>View all comparisons as a table</summary>
+        <table>
+          <thead><tr><th>Measure</th><th class="num">Today</th><th class="num">Matched + outbound</th><th class="num">Change</th></tr></thead>
+          <tbody>
+            <tr><td>Billings lost to unfilled capacity / GP FTE / yr</td><td class="num">$36,000</td><td class="num">$8,000</td><td class="num">−$28,000</td></tr>
+            <tr><td>Extra billings per GP FTE / yr</td><td class="num">—</td><td class="num">+$30,000</td><td class="num">+$30,000</td></tr>
+            <tr><td>Visits per patient per year (matched vs unmatched)</td><td class="num">1.7</td><td class="num">2.9</td><td class="num">+70%</td></tr>
+            <tr><td>12-month patient retention</td><td class="num">48%</td><td class="num">81%</td><td class="num">+33 pp</td></tr>
+            <tr><td>No-show rate</td><td class="num">8%</td><td class="num">&lt;3%</td><td class="num">−5 pp</td></tr>
+            <tr><td>Chronic follow-ups completed</td><td class="num">52%</td><td class="num">78%</td><td class="num">+26 pp</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+  </section>
+
+  <!-- 06 WINS -->
+  <section id="wins">
+    <div class="wrap reveal">
+      <p class="eyebrow">06 — The coalition</p>
+      <h2>Why everyone says yes</h2>
+      <div class="grid g4" style="margin-top:24px">
+        <div class="card win"><h3>The patient</h3><ul>
+          <li>A doctor who fits — found in 20 seconds, kept for years</li>
+          <li>Follow-ups that find <i>them</i>, on their clock</li>
+          <li>One family book instead of five clinics' scattered notes</li>
+        </ul></div>
+        <div class="card win"><h3>The GP</h3><ul>
+          <li>≈ +$30k/yr from capacity that was evaporating</li>
+          <li>A week weighted toward the medicine they chose at onboarding</li>
+          <li>Demand-triggered premium recognises the care patients keep choosing</li>
+        </ul></div>
+        <div class="card win"><h3>The practice owner</h3><ul>
+          <li>98% slot fill, no-shows under 3%</li>
+          <li>Retention nearly doubles — the compounding asset</li>
+          <li>A recall engine that runs itself, under clinical sign-off</li>
+        </ul></div>
+        <div class="card win"><h3>The system &amp; payer</h3><ul>
+          <li>+26 pp chronic follow-up completion</li>
+          <li>The continuity dividend: fewer ED visits and admissions</li>
+          <li>The “hard to reach” reached — with a match, not a campaign</li>
+        </ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 PILOT -->
+  <section id="pilot" class="tintband">
+    <div class="wrap reveal">
+      <p class="eyebrow">07 — The ask</p>
+      <h2>A 6-month pilot: three practices, thirty GPs, one region</h2>
+      <p class="lede">Budget <b>$380k</b>: matching &amp; outbound platform $150k · clinician
+      onboarding interviews &amp; profile build $90k · patient communications $60k · independent
+      evaluation $80k. Every assumption on this page becomes a measured number.</p>
+
+      <div class="card" style="margin-top:24px">
+        <h3>What success is measured on</h3>
+        <table>
+          <thead><tr><th>KPI</th><th class="num">Baseline</th><th class="num">6-month target</th></tr></thead>
+          <tbody>
+            <tr><td>Slot fill</td><td class="num">92%</td><td class="num">≥98%</td></tr>
+            <tr><td>No-show rate</td><td class="num">8%</td><td class="num">≤3%</td></tr>
+            <tr><td>Chronic recall completion</td><td class="num">52%</td><td class="num">≥70% (→78% at 12 mo)</td></tr>
+            <tr><td>Matched-patient retention at 6 months</td><td class="num">—</td><td class="num">≥75%</td></tr>
+            <tr><td>GP week spent in preferred scope (self-report)</td><td class="num">25%</td><td class="num">≥50%</td></tr>
+            <tr><td>Message opt-out rate</td><td class="num">—</td><td class="num">≤10%</td></tr>
+            <tr><td>Patient experience (PREM: “my doctor gets me”)</td><td class="num">—</td><td class="num">≥85%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 GUARDRAILS -->
+  <section id="guardrails">
+    <div class="wrap reveal">
+      <p class="eyebrow">08 — Non-negotiables</p>
+      <h2>Guardrails before growth</h2>
+      <div class="grid g3" style="margin-top:24px">
+        <div class="card risk"><p class="r">Matching, never gatekeeping</p><p>Profiles record who a clinician wants to serve <b>more of</b> — never who they refuse. Every doctor still sees every patient; urgent care is never routed through matching; the full directory is always one tap away.</p></div>
+        <div class="card risk"><p class="r">Message fatigue</p><p>Capped cadence, quiet hours, one-tap opt-out. Every sequence is owned by <b>clinical governance</b>, not a growth team — the KPI includes the opt-out rate for a reason.</p></div>
+        <div class="card risk"><p class="r">Consent &amp; privacy</p><p>Wearable and EHR signals are used only with <b>explicit, revocable consent</b>, privacy-law compliant, and never sold. The patient sees every rule that ever triggers a message.</p></div>
+        <div class="card risk"><p class="r">Equity</p><p>Bulk-billing is preserved for concession patients. The demand-triggered $15–25 premium is optional, capped, and applies to non-concession bookings only — a quality signal, <b>not a paywall</b>.</p></div>
+        <div class="card risk"><p class="r">Algorithmic bias</p><p>Match suggestions audited quarterly for demographic skew; clinician profiles reviewed at onboarding for anything exclusionary. Patients can always browse and choose freely.</p></div>
+        <div class="card risk"><p class="r">Clinical safety</p><p>Cadence rules are derived from published guidelines and signed off by the medical director. Red-flag symptoms route to urgent care instantly — the engine never triages emergencies.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 QUIZ -->
+  <section id="quiz" class="tintband">
+    <div class="wrap reveal">
+      <p class="eyebrow">09 — Try it on yourself</p>
+      <h2>Which care-match persona are you?</h2>
+      <p class="lede">Five quick choices — the same 20-second conversation the app opens with.
+      Illustrative only, not a clinical tool; nothing you pick is stored.</p>
+      <div class="card quizfallback" style="margin-top:24px">
+        <h3>The five personas, at a glance</h3>
+        <p style="margin:0;font-size:14.5px;color:var(--ink-2)">
+          <b style="color:var(--navy)">Mirror Seeker (18%)</b> wants a doctor who shares their background or language ·
+          <b style="color:var(--navy)">Table Matcher (14%)</b> wants advice that fits their food culture ·
+          <b style="color:var(--navy)">No-Judgement Seeker (24%)</b> wants an explicit welcome for the consult they’ve been avoiding ·
+          <b style="color:var(--navy)">Data Devotee (12%)</b> wants their wearable data taken seriously ·
+          <b style="color:var(--navy)">Continuity Craver (32%)</b> wants one doctor for the whole family.
+          Full profiles are in <a href="#personas">section 02</a> above.
+        </p>
+      </div>
+      <div class="card quizcard" id="quizCard" style="margin-top:24px">
+        <p class="qprog" id="qProg">Question 1 of 5</p>
+        <h3 class="qtext" id="qText"></h3>
+        <div class="chips qopts" id="qOpts" role="group" aria-label="Answer options"></div>
+        <div class="qresult" id="qResult" hidden aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="fbrand">CARE PERSONAS</p>
+    <p><b>Method &amp; disclaimers.</b> This is a concept explainer for discussion. All monetary values
+    are indicative AUD, rounded from published MBS schedule fees; all rates (attachment, retention,
+    no-show, follow-up completion) are illustrative modelling assumptions, stated openly so a pilot
+    can replace every one of them with a measured number. All clinicians in the demo are fictional.
+    Nothing here is health, financial or legal advice.</p>
+    <p>Format and segmentation approach inspired by Surgo Ventures' COVID-19 vaccine persona
+    explainer — the same precision-segmentation logic, applied to care delivery instead of
+    vaccine uptake. Persona colour system validated for colour-vision deficiency.</p>
+    <p><a class="xlink" href="specialist-gp-pipeline.html">Companion: Explainer 01 — The Specialist-GP Pipeline: complexity-screened shared care →</a><br>
+    <a class="xlink" href="executive-summary.html">Both concepts on one printable page — the executive summary →</a></p>
+  </div>
+</footer>
+
+<div id="tip" role="status" aria-hidden="true"></div>
+<script src="assets/site.js"></script>
+<script src="assets/dotfield.js"></script>
+<script>
+/* The one-patient story. A population, then ONE person inside it: her
+   preferences become plain-language lines on a card; pull back and everyone
+   carries different lines; today those lines are thrown away at the front
+   door and half the population disengages; rewind, ask first, and match on
+   exactly what they said. Every layout composes inside the engine's stage box
+   (see docs/rca-animation-postmortem.md, post-mortem #2). */
+(function () {
+  var COUNTS = [36, 28, 48, 24, 64];
+  var HUES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'];
+  var NAMES = ['Mirror Seeker', 'Table Matcher', 'No-Judgement', 'Data Devotee', 'Continuity'];
+  var DOCSPEC = [
+    { skin: 4, hair: 0, label: 'your culture' },
+    { skin: 2, hair: 3, label: 'lifestyle-first' },
+    { skin: 0, hair: 5, label: 'lived it too' },
+    { skin: 5, hair: 1, label: 'data-literate' },
+    { skin: 3, hair: 6, label: 'whole family' }
+  ];
+  var HOA = { g: 0, i: 0 };                 // the patient the story follows
+  function LEAVER(d) { return (d * 7 + 3) % 100 < 52; }   // deterministic 52%
+
+  function idxOf(c, g, i) {
+    var seen = 0;
+    for (var d = 0; d < c.N; d++) if (c.groups[d] === g) { if (seen === i) return d; seen++; }
+    return 0;
+  }
+  // five persona units: a 3-over-2 grid on desktop fills both axes of the box;
+  // a single column with the doctor rail on the right when narrow
+  function slots(c) {
+    return c.narrow
+      ? [[0.30, 0.10], [0.30, 0.30], [0.30, 0.50], [0.30, 0.70], [0.30, 0.90]]
+      : [[0.17, 0.26], [0.50, 0.26], [0.83, 0.26], [0.33, 0.74], [0.67, 0.74]];
+  }
+  function radiusOf(c, g, pitch) { return c.U * pitch * Math.sqrt(COUNTS[g]) * 0.62; }
+  // where this persona's crowd sits and where their doctor stands
+  function unit(c, g, pitch) {
+    var S = slots(c)[g], cx = S[0] * c.W, cy = S[1] * c.H, r = radiusOf(c, g, pitch);
+    if (c.narrow) return { px: cx, py: cy, dx: 0.84 * c.W, dy: cy, r: r };
+    var half = (r + c.U * 3.6) / 2;
+    return { px: cx, py: cy - half, dx: cx, dy: cy + half, r: r };
+  }
+  function gather(c, pitch, withDocs, labelled, extraLabels) {
+    var pos = new Array(c.N), clin = [], docs = [], L = [];
+    for (var g = 0; g < 5; g++) {
+      var un = unit(c, g, pitch);
+      var pts = c.phyllo(un.px, un.py, COUNTS[g], c.U * pitch, g * 13);
+      var gi = 0;
+      for (var d = 0; d < c.N; d++) if (c.groups[d] === g) pos[d] = pts[gi++];
+      if (withDocs) {
+        var sp = DOCSPEC[g];
+        clin.push({ x: un.dx, y: un.dy, skin: sp.skin, hair: sp.hair, label: sp.label,
+                    ring: HUES[g], dimWith: g });
+        docs.push([un.dx, un.dy]);
+      }
+      if (labelled) {
+        var off = un.r + (c.narrow ? 15 : 20);
+        L.push({ x: un.px, y: un.py + off, group: g, dy: off,
+                 text: NAMES[g] + ' · ' + Math.round(COUNTS[g] * 100 / 200) + '%' });
+      }
+    }
+    return { pos: pos, meta: { clinicians: clin, docs: docs, labels: L.concat(extraLabels || []) } };
+  }
+
+  function jitter(c, pts) {
+    var m = Math.min(c.W, c.H);
+    for (var i = 0; i < c.N; i++) {
+      pts[i] = [pts[i][0] + c.jit[i][0] * m * 0.028, pts[i][1] + c.jit[i][1] * m * 0.028];
+    }
+    return pts;
+  }
+  function crowdPos(c, pitch, seed) {
+    return jitter(c, c.phyllo(c.W * 0.5, c.H * 0.5, c.N, c.U * pitch, seed || 0));
+  }
+  var layouts = {
+    crowd: function (c) { return { pos: crowdPos(c, 2.0, 0), meta: { labels: [] } }; },
+    wide: function (c) { return { pos: crowdPos(c, 2.5, 7), meta: { labels: [] } }; },
+    // today's path: the same crowd, plus the stranger she ends up booking
+    oldmatch: function (c) {
+      var pos = crowdPos(c, 2.0, 0), h = pos[idxOf(c, 0, 0)];
+      var doc = [h[0] + c.U * (c.narrow ? 12 : 16), h[1] + c.U * (c.narrow ? 7 : 0)];
+      return { pos: pos, meta: {
+        clinicians: [{ x: doc[0], y: doc[1], skin: 1, hair: 2, label: 'next available' }],
+        link: { a: [h[0], h[1]], b: [doc[0], doc[1] - c.U * 0.8] }
+      } };
+    },
+    // the cost: just over half of every persona pushed out of the practice
+    drift: function (c) {
+      var pos = new Array(c.N);
+      for (var g = 0; g < 5; g++) {
+        var un = unit(c, g, 1.75);
+        var pts = c.phyllo(un.px, un.py, COUNTS[g], c.U * 1.75, g * 13);
+        var gi = 0;
+        for (var d = 0; d < c.N; d++) if (c.groups[d] === g) {
+          var q = pts[gi++];
+          if (LEAVER(d)) {
+            var ang = Math.atan2(q[1] - un.py, q[0] - un.px);
+            var push = c.U * 7 + Math.abs(c.jit[d][0]) * c.U * 14;
+            q = [q[0] + Math.cos(ang) * push, q[1] + Math.sin(ang) * push];
+          }
+          pos[d] = [clamp(q[0], 6, c.W - 6), clamp(q[1], 6, c.H - 6)];
+        }
+      }
+      function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+      return { pos: pos, meta: { labels: [] } };
+    },
+    personas: function (c) { return gather(c, 1.75, false, true); },
+    docrow: function (c) {
+      return gather(c, 1.75, true, true, c.narrow ? [] : [{
+        x: 0.5 * c.W, y: 1.02 * c.H,
+        text: 'the practice — each doctor declared their focus', muted: true }]);
+    },
+    matched: function (c) { return gather(c, 1.45, true, true); },
+    retained: function (c) {
+      return gather(c, 1.15, true, true, c.narrow ? [] : [{
+        x: 0.5 * c.W, y: 1.02 * c.H,
+        text: 'twelve months on — still here', muted: true }]);
+    }
+  };
+
+  var NOT_HER = function (d) { return d !== 0; };
+  var TRIO = [30, 36, 74];                  // her, and two people nothing like her
+  var NOT_TRIO = function (d) { return TRIO.indexOf(d) < 0; };
+  var HER_LINES = ['Speaks Vietnamese at home',
+                   'Cooks for four — advice has to fit the table',
+                   'Has been lectured about her weight once too often',
+                   'Checks her blood pressure on a watch'];
+
+  DotField({
+    theatre: '#story', canvas: '#df2',
+    counts: COUNTS,
+    groupColors: HUES,
+    neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
+    labels: NAMES,
+    layouts: layouts,
+    rmScene: 14,
+    scenes: [
+      { key: 'crowd' },
+      { key: 'wide' },
+      // one person, held still while the camera comes all the way in
+      { key: 'crowd', focus: HOA, fadeDot: NOT_HER, fadeTo: 0.11,
+        cam: { on: 'focus', z: 4.2 }, camNarrow: { on: 'focus', z: 4.0 } },
+      { key: 'crowd', focus: HOA, fadeDot: NOT_HER, fadeTo: 0.11,
+        cam: { on: 'focus', z: 4.2, dx: 4 }, camNarrow: { on: 'focus', z: 4.0, dx: 4 },
+        cards: [{ at: HOA, title: 'Hoa, 54', sub: 'type 2 diabetes · three years',
+                  mark: 'want', rows: HER_LINES }],
+        cardsNarrow: [{ at: HOA, small: true, title: 'Hoa, 54', mark: 'want', rows: HER_LINES }] },
+      // pull back: her neighbours want different things
+      { key: 'crowd', fadeDot: NOT_TRIO, fadeTo: 0.42,
+        cam: { z: 1.25, x: 0.5, y: 0.5 }, camNarrow: { z: 1.0, x: 0.5, y: 0.5 },
+        cards: [
+          { at: { g: 0, i: 30 }, small: true, side: 'left', mark: 'want',
+            rows: ['Wants a doctor who speaks her language'] },
+          { at: { g: 1, i: 0 }, small: true, mark: 'want',
+            rows: ['Wants food advice that survives Ramadan'] },
+          { at: { g: 2, i: 10 }, small: true, mark: 'want',
+            rows: ['Wants to be weighed without the lecture'] }
+        ],
+        cardsNarrow: [{ at: { g: 1, i: 0 }, small: true, mark: 'want',
+            rows: ['The next person wants something else entirely'] }] },
+      { key: 'crowd', colorGroups: 'all', scan: { groups: 'all', axis: 'x' } },
+      // today: the directory knows none of it
+      { key: 'crowd', colorGroups: 'all', focus: HOA, fadeDot: NOT_HER, fadeTo: 0.13,
+        cam: { on: 'focus', z: 2.4, dx: 4 }, camNarrow: { on: 'focus', z: 2.0, dx: 3 },
+        cards: [{ at: HOA, title: 'Online directory', sub: 'sorted by: next available',
+                  mark: 'dot', side: 'right',
+                  rows: [{ t: 'Dr Whitfield — Thursday 9:10 am', hi: true },
+                         { t: 'Dr Osei — next Tuesday' },
+                         { t: 'Dr Lindqvist — in two weeks' }] }] },
+      { key: 'oldmatch', colorGroups: 'all', focus: HOA, extra: 'badlink',
+        fadeDot: NOT_HER, fadeTo: 0.13,
+        cam: { on: 'focus', z: 2.4, dx: 4 }, camNarrow: { on: 'focus', z: 1.7, dx: 6, dy: 4 },
+        cards: [{ at: HOA, side: 'left', title: 'What transferred', mark: 'cross',
+                  rows: HER_LINES.map(function (t) { return { t: t, strike: true }; }) }] },
+      // inside the room: what misaligned advice actually sounds like
+      { key: 'oldmatch', colorGroups: 'all', focus: HOA,
+        fadeDot: NOT_HER, fadeTo: 0.13,
+        cam: { on: 'focus', z: 2.4, dx: 4 }, camNarrow: { on: 'focus', z: 1.7, dx: 6, dy: 4 },
+        cards: [{ at: HOA, side: 'left', title: 'What she was told', mark: 'cross',
+                  sub: 'correct medicine, unusable advice',
+                  rows: ['"Cut the rice" — rice is dinner, every night',
+                         'The weight lecture, again',
+                         'A plan in English — her daughter translates at 9 pm',
+                         'Her herbal tonic waved away, so she stops mentioning it'] }],
+        cardsNarrow: [{ at: HOA, small: true, mark: 'cross', title: 'What she was told',
+                  rows: ['"Cut the rice"', 'The weight lecture', 'A plan in English'] }] },
+      { key: 'drift', colorGroups: 'all', greyDot: LEAVER, fadeDot: LEAVER },
+      // rewind and ask first
+      { key: 'crowd', colorGroups: 'all' },
+      { key: 'personas', colorGroups: 'all', labels: true },
+      { key: 'docrow', colorGroups: 'all', labels: true },
+      { key: 'matched', colorGroups: 'all', labels: true },
+      { key: 'matched', colorGroups: 'all', focus: HOA, dim: { keep: [0], to: 0.14 },
+        cam: { on: 'focus', z: 2.0, dx: 5 }, camNarrow: { on: 'focus', z: 1.7, dx: -3 },
+        cards: [{ at: HOA, side: 'right', title: 'Dr Mai Tran', mark: 'tick',
+                  sub: 'declared: Vietnamese · migrant health · lifestyle-first',
+                  rows: HER_LINES }],
+        cardsNarrow: [{ at: HOA, small: true, mark: 'tick', title: 'Dr Mai Tran',
+                  rows: ['Every line answered'] }] },
+      // the same consult, aligned: explanation inside her own frame of reference
+      { key: 'matched', colorGroups: 'all', focus: HOA, dim: { keep: [0], to: 0.14 },
+        cam: { on: 'focus', z: 2.0, dx: 5 }, camNarrow: { on: 'focus', z: 1.7, dx: -3 },
+        cards: [{ at: HOA, side: 'right', title: 'What Dr Tran says instead', mark: 'tick',
+                  sub: 'same medicine — explained so it can be followed',
+                  rows: ['Diabetes explained through the meals she actually cooks — swaps, not bans',
+                         'Asks what she believes caused it, and builds the plan from her answer',
+                         'Her tonic checked alongside the metformin, not dismissed',
+                         'Vietnamese first — her daughter is just her daughter again'] }],
+        cardsNarrow: [{ at: HOA, small: true, mark: 'tick', title: 'Dr Tran instead',
+                  rows: ['Swaps, not bans', 'Her beliefs shape the plan', 'Vietnamese first'] }] },
+      { key: 'matched', colorGroups: 'all', extra: 'outbound' },
+      { key: 'retained', colorGroups: 'all', labels: true },
+      { key: 'retained', colorGroups: 'all', labels: true, dim: { keep: [], to: 0.30 } },
+      { key: 'retained', colorGroups: 'all', dim: { keep: [], to: 0.16 } }
+    ]
+  });
+})();
+</script>
+<script>
+/* 20-second match demo — fictional clinicians, client-side only */
+(function(){
+  var DOCS=[
+    {name:"Dr Mai Tran", focus:"Family medicine · Vietnamese & English", tags:["mirror","family"],
+     chips:{mirror:"Speaks Vietnamese",family:"Whole-family books"}, extra:"Migrant health focus", skin:"#c68b59", cloth:"#31456e", bg:"#e6effa"},
+    {name:"Dr Talia Faleolo", focus:"Metabolic health — lifestyle-first", tags:["table","judge"],
+     chips:{table:"Pasifika food culture",judge:"Judgement-free weight care"}, extra:"Group cooking clinics", skin:"#8c5a33", cloth:"#274064", bg:"#fdeae2"},
+    {name:"Dr Omar Haddad", focus:"Diabetes & heart health", tags:["table","mirror"],
+     chips:{table:"Ramadan-aware titration",mirror:"Arabic speaker"}, extra:"Halal meal planning", skin:"#a06a3f", cloth:"#3b527d", bg:"#fdf3da"},
+    {name:"Dr Priya Raman", focus:"Preventive health & data", tags:["data","table"],
+     chips:{data:"CGM & wearable clinics",table:"South-Asian vegetarian nutrition"}, extra:"Pre-visit data review", skin:"#a06a3f", cloth:"#5d6f94", bg:"#e4f6ef"},
+    {name:"Dr Jack Thomson", focus:"Sexual health & mental health", tags:["judge"],
+     chips:{judge:"No-lecture consults"}, extra:"LGBTQ+ inclusive · care plans", skin:"#f2c9a0", cloth:"#4a5674", bg:"#fbe9f1"},
+    {name:"Dr Sarah O'Connell", focus:"Whole-family GP", tags:["family","data"],
+     chips:{family:"Newborn to nana",data:"Wearable-friendly"}, extra:"Developmental checks", skin:"#eeb98d", cloth:"#46608f", bg:"#e6effa"}
+  ];
+  var grid=document.getElementById('docGrid'), chipbar=document.getElementById('demoChips');
+  if(!grid||!chipbar) return;
+  var picked={};
+
+  function avatar(d){
+    return '<svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true">'
+      +'<circle cx="48" cy="48" r="48" fill="'+d.bg+'"/>'
+      +'<path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="'+d.cloth+'"/>'
+      +'<rect x="44" y="52" width="8" height="10" fill="'+d.skin+'"/>'
+      +'<circle cx="48" cy="40" r="17" fill="'+d.skin+'"/>'
+      +'<path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#201209"/>'
+      +'<circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/>'
+      +'<path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>';
+  }
+  function render(){
+    var keys=Object.keys(picked).filter(function(k){return picked[k];});
+    var list=DOCS.map(function(d){
+      var hits=d.tags.filter(function(t){return keys.indexOf(t)>=0;});
+      return {d:d,hits:hits,score:hits.length};
+    });
+    list.sort(function(a,b){return b.score-a.score;});
+    grid.innerHTML=list.map(function(r){
+      var d=r.d;
+      var why=Object.keys(d.chips).map(function(k){
+        var hit=r.hits.indexOf(k)>=0;
+        return '<span'+(hit?' class="hit"':'')+'>'+d.chips[k]+'</span>';
+      }).join('')+'<span>'+d.extra+'</span>';
+      var score=keys.length?'<span class="score">'+(r.score?'Matches '+r.score+' of '+keys.length:'—')+'</span>':'';
+      return '<div class="card doc"><div class="dhead">'+avatar(d)
+        +'<div><h3>'+d.name+'</h3><p class="dfocus">'+d.focus+'</p></div>'+score+'</div>'
+        +'<div class="why">'+why+'</div></div>';
+    }).join('');
+  }
+  chipbar.querySelectorAll('.chip').forEach(function(ch){
+    ch.addEventListener('click',function(){
+      var k=ch.getAttribute('data-key');
+      picked[k]=!picked[k];
+      ch.setAttribute('aria-pressed',picked[k]?'true':'false');
+      render();
+    });
+  });
+  render();
+})();
+
+/* "Which care-match persona are you?" — the 20-second conversation, first person.
+   Illustrative only; entirely client-side, nothing stored. */
+(function () {
+  var progEl = document.getElementById('qProg'), textEl = document.getElementById('qText');
+  var optsEl = document.getElementById('qOpts'), resEl = document.getElementById('qResult');
+  if (!progEl) return;
+
+  var AV = {
+    mirror: '<svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#e6effa"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#31456e"/><path d="M27 42 a21 21 0 0 1 42 0 v12 c0 9-9.5 13-21 13 s-21-4-21-13 Z" fill="#46608f"/><circle cx="48" cy="43" r="13" fill="#c68b59"/><circle cx="43" cy="44" r="1.8" fill="#201209"/><circle cx="53" cy="44" r="1.8" fill="#201209"/><path d="M44.5 50 q3.5 3 7 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>',
+    table: '<svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fdeae2"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#274064"/><rect x="44" y="52" width="8" height="10" fill="#8c5a33"/><circle cx="48" cy="40" r="17" fill="#8c5a33"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#201209"/><path d="M31 40 a17 17 0 0 0 34 0 h-5 a12 12 0 0 1 -24 0 Z" fill="#201209"/><circle cx="42" cy="40" r="1.8" fill="#f5e9dc"/><circle cx="54" cy="40" r="1.8" fill="#f5e9dc"/></svg>',
+    judge: '<svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#e4f6ef"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#5d6f94"/><rect x="44" y="52" width="8" height="10" fill="#f2c9a0"/><circle cx="48" cy="40" r="17" fill="#f2c9a0"/><path d="M27 58 v-18 a21 21 0 0 1 42 0 v18 h-8 v-16 a13 13 0 0 0 -26 0 v16 Z" fill="#7a3b1e"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>',
+    data: '<svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fdf3da"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#3b527d"/><rect x="44" y="52" width="8" height="10" fill="#eeb98d"/><circle cx="48" cy="40" r="17" fill="#eeb98d"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#3a2a1c"/><circle cx="42" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><circle cx="54" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><path d="M47.5 41 h1" stroke="#16244a" stroke-width="1.6"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 48.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>',
+    family: '<svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fbe9f1"/><path d="M14 96 C14 74 26 63 42 63 C58 63 70 74 70 96 Z" fill="#4a5674"/><circle cx="42" cy="20" r="6" fill="#201209"/><circle cx="42" cy="38" r="15" fill="#c68b59"/><path d="M27 38 a15 15 0 0 1 30 0 h-5 a10 10 0 0 0 -20 0 Z" fill="#201209"/><circle cx="37" cy="39" r="1.7" fill="#201209"/><circle cx="47" cy="39" r="1.7" fill="#201209"/><path d="M38.5 45 q3.5 3 7 0" stroke="#201209" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M56 96 c0-12 7-18 16-18 s16 6 16 18 Z" fill="#5d6f94"/><circle cx="72" cy="68" r="10" fill="#d29a6b"/><path d="M62 68 a10 10 0 0 1 20 0 h-4 a6 6 0 0 0 -12 0 Z" fill="#3a2a1c"/><circle cx="69" cy="69" r="1.4" fill="#201209"/><circle cx="75" cy="69" r="1.4" fill="#201209"/><path d="M70 73 q2 1.8 4 0" stroke="#201209" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>'
+  };
+  var P = {
+    mirror: { name: 'The Mirror Seeker', share: '18% of the loosely attached', color: 'var(--s1)', card: 'm1',
+      blurb: 'You want a doctor who gets where you’re from — the language, the family, the things you shouldn’t have to explain twice. The engine looks for concordance first: a profile that says “speaks your language, migrant health focus”.' },
+    table: { name: 'The Table Matcher', share: '14% of the loosely attached', color: 'var(--s2)', card: 'm2',
+      blurb: 'Your health runs through your table. You need a doctor who prescribes within your cuisine — Ramadan-aware titration, food-first metabolic care — not one who tells you to abandon it.' },
+    judge: { name: 'The No-Judgement Seeker', share: '24% of the loosely attached', color: 'var(--s3)', card: 'm3',
+      blurb: 'There’s a conversation you’ve been putting off. You get matched to clinicians who explicitly asked for it — “judgement-free weight care”, “no-lecture sexual health” — so the booking finally happens.' },
+    data: { name: 'The Data Devotee', share: '12% of the loosely attached', color: 'var(--s4)', card: 'm4',
+      blurb: 'You arrive with a year of your own physiology and a real question. You get a data-literate GP whose profile says so, with your consented wearable data reviewed before the visit.' },
+    family: { name: 'The Continuity Craver', share: '32% of the loosely attached', color: 'var(--s5)', card: 'm5',
+      blurb: 'You want what your parents had: one doctor who knows the whole family and notices what’s changed. You get matched to a GP building whole-family books — and the follow-ups come to you.' }
+  };
+  var Q = [
+    { q: 'A new clinic opens near you. What makes you actually book?', a: [
+      ['Someone who shares my background or language', 'mirror'],
+      ['Someone who won’t make me feel judged', 'judge'],
+      ['Someone who can see my whole family', 'family'],
+      ['Someone who takes my health data seriously', 'data']] },
+    { q: 'Your doctor gives you dietary advice. What goes wrong today?', a: [
+      ['It ignores how my family actually eats', 'table'],
+      ['It comes with a lecture I didn’t ask for', 'judge'],
+      ['It ignores the numbers I’ve been tracking', 'data'],
+      ['Nothing — I just never see the same doctor twice', 'family']] },
+    { q: 'When did you last see a GP?', a: [
+      ['Only when something was already wrong', 'judge'],
+      ['A while ago — nobody there really knew me', 'family'],
+      ['Recently, but I had to explain everything from scratch', 'mirror'],
+      ['I’d go more often if they engaged with my tracking', 'data']] },
+    { q: 'What would make a check-up feel worth the trip?', a: [
+      ['Advice that fits my food and my culture', 'table'],
+      ['Talking about something I’ve avoided for years', 'judge'],
+      ['Reviewing my watch or CGM data properly', 'data'],
+      ['A doctor who remembers last winter', 'family']] },
+    { q: 'A reminder lands on your phone. What makes you reply YES?', a: [
+      ['It’s the doctor who already knows my family', 'family'],
+      ['It’s from someone I know won’t judge me', 'judge'],
+      ['It mentions something my data flagged', 'data'],
+      ['It’s a doctor who speaks my first language', 'mirror']] }
+  ];
+
+  var i = 0, tally = { mirror: 0, table: 0, judge: 0, data: 0, family: 0 };
+  var ORDER = ['family', 'judge', 'mirror', 'table', 'data']; // tie-break by population share
+
+  function step() {
+    progEl.textContent = 'Question ' + (i + 1) + ' of ' + Q.length;
+    textEl.textContent = Q[i].q;
+    optsEl.innerHTML = Q[i].a.map(function (o, n) {
+      return '<button class="chip" type="button" data-k="' + o[1] + '" data-n="' + n + '">' + o[0] + '</button>';
+    }).join('');
+    optsEl.querySelectorAll('.chip').forEach(function (b) {
+      b.addEventListener('click', function () {
+        tally[b.getAttribute('data-k')]++;
+        i++;
+        if (i < Q.length) { step(); optsEl.querySelector('.chip').focus(); }
+        else finish();
+      });
+    });
+  }
+
+  function finish() {
+    var best = ORDER.slice().sort(function (a, b) { return tally[b] - tally[a]; })[0];
+    var p = P[best];
+    progEl.textContent = 'Your closest match';
+    textEl.textContent = '';
+    optsEl.innerHTML = '';
+    resEl.hidden = false;
+    resEl.innerHTML = AV[best] +
+      '<div class="rbody">' +
+        '<p class="rname">' + p.name + '</p>' +
+        '<p class="rshare">' + p.share + '</p>' +
+        '<p class="rblurb">' + p.blurb + '</p>' +
+        '<div class="ractions">' +
+          '<a class="pill" href="#' + p.card + '">Read this persona →</a>' +
+          '<button class="mreset" type="button" id="qAgain">Start over</button>' +
+        '</div>' +
+      '</div>';
+    resEl.querySelector('.avatar').style.boxShadow = '0 0 0 4px ' + p.color;
+    document.getElementById('qAgain').addEventListener('click', function () {
+      i = 0; Object.keys(tally).forEach(function (k) { tally[k] = 0; });
+      resEl.hidden = true; resEl.innerHTML = '';
+      step(); optsEl.querySelector('.chip').focus();
+    });
+  }
+
+  step();
+})();
+</script>
+</body>
+</html>

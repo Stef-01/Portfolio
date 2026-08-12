@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Explainer 01 — The Specialist-GP Pipeline. Five caseload personas, one complexity screen: pay GPs more, concentrate specialists on top-of-licence work, collapse the waitlist. Indicative economics for health-system leaders.">
+<title>The Specialist-GP Pipeline · Care Personas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <a class="logo" href="index.html" aria-label="Care Personas home">
+    <svg width="36" height="22" viewBox="0 0 40 24" aria-hidden="true">
+      <circle cx="6" cy="12" r="5.5" fill="#2a78d6" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="13" cy="12" r="5.5" fill="#eb6834" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="20" cy="12" r="5.5" fill="#1baf7a" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="27" cy="12" r="5.5" fill="#eda100" stroke="#fff" stroke-width="1.4"/>
+      <circle cx="34" cy="12" r="5.5" fill="#e87ba4" stroke="#fff" stroke-width="1.4"/>
+    </svg>
+    <span class="word">CARE PERSONAS</span>
+  </a>
+  <nav class="topnav" aria-label="Sections">
+    <a href="#problem">Problem</a>
+    <a href="#personas">Personas</a>
+    <a href="#pipeline">Mechanism</a>
+    <a href="#money">Money</a>
+    <a href="#trial">Trial</a>
+    <a href="#risks">Risks</a>
+    <a href="#scale">Scale</a>
+    <a class="pill" href="matched-family-gp.html">Explainer 02 →</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section id="top" class="wrap" style="padding-top:72px">
+    <div class="avarow" aria-hidden="true">
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#e6effa"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#31456e"/><rect x="44" y="52" width="8" height="10" fill="#eeb98d"/><circle cx="48" cy="40" r="17" fill="#eeb98d"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#b9c0cf"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#fdeae2"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#5d6f94"/><rect x="44" y="52" width="8" height="10" fill="#a06a3f"/><circle cx="48" cy="40" r="17" fill="#a06a3f"/><path d="M28 54 v-14 a20 20 0 0 1 40 0 v14 h-7 v-12 a13 13 0 0 0 -26 0 v12 Z" fill="#3a2a1c"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#e4f6ef"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#274064"/><rect x="44" y="52" width="8" height="10" fill="#c68b59"/><circle cx="48" cy="40" r="17" fill="#c68b59"/><circle cx="35" cy="27" r="8" fill="#e6e9f0"/><circle cx="48" cy="23" r="9" fill="#e6e9f0"/><circle cx="61" cy="27" r="8" fill="#e6e9f0"/><circle cx="42" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><circle cx="54" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><path d="M47.5 41 h1" stroke="#16244a" stroke-width="1.6"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 48.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#fdf3da"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#3b527d"/><rect x="44" y="52" width="8" height="10" fill="#8c5a33"/><circle cx="48" cy="40" r="17" fill="#8c5a33"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#201209"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      <svg class="avatar av" viewBox="0 0 96 96"><circle cx="48" cy="48" r="48" fill="#fbe9f1"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#4a5674"/><rect x="44" y="52" width="8" height="10" fill="#f2c9a0"/><circle cx="48" cy="40" r="17" fill="#f2c9a0"/><rect x="29" y="34" width="6" height="10" rx="3" fill="#b9c0cf"/><rect x="61" y="34" width="6" height="10" rx="3" fill="#b9c0cf"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+    </div>
+    <p class="eyebrow">Care Personas · Explainer 01 · For hospital networks &amp; the Chief Medical Officer</p>
+    <h1>Meet the five personas inside every specialist's waiting room</h1>
+    <p class="standfirst">Screen every referral for complexity. Move the <span class="hl">bottom fifth</span> of the
+    specialist caseload to accredited GPs with a 72-hour eConsult backstop. Pay both workforces
+    more — and collapse the waitlist without hiring a single new specialist.</p>
+    <p class="note">Modelled for cardiology; the mechanism generalises to any physician specialty.
+    All dollars are indicative AUD, rounded from published MBS schedule fees.</p>
+
+    <div class="grid g2" style="margin-top:40px;align-items:stretch">
+      <div class="card">
+        <p class="tlabel note" style="margin:0 0 2px">Share of a specialist's appointment book that sits in the
+        <b>bottom quintile of complexity</b> — manageable in accredited primary care</p>
+        <p class="hero-fig">20<small>%</small></p>
+        <div class="bigbar" aria-hidden="true" style="height:16px;margin-top:14px">
+          <div style="flex:12;background:var(--s1);border-radius:4px 0 0 4px"></div>
+          <div style="flex:8;background:var(--s2)"></div>
+          <div style="flex:35;background:var(--s3);opacity:.3"></div>
+          <div style="flex:20;background:var(--s4);opacity:.3"></div>
+          <div style="flex:25;background:var(--s5);opacity:.3;border-radius:0 4px 4px 0"></div>
+        </div>
+        <p class="note" style="margin-top:10px">400 of 2,000 annual appointments per specialist FTE.</p>
+      </div>
+      <div class="grid" style="gap:16px">
+        <div class="card tile">
+          <p class="tlabel">Specialist billings on the freed clinic slots, per FTE per year</p>
+          <p class="tvalue">$36.8k → $71.8k</p>
+          <p class="tdelta"><span class="up">+$35k</span> on the same clinic hours (+95% on those slots)</p>
+        </div>
+        <div class="card tile">
+          <p class="tlabel">Extra Medicare billings per participating GP, per year</p>
+          <p class="tvalue">+$15–18k</p>
+          <p class="tdelta"><span class="up">+$449</span> per pipeline patient per year</p>
+        </div>
+        <div class="card tile">
+          <p class="tlabel">Median wait for a new specialist referral</p>
+          <p class="tvalue">127 → 55 days</p>
+          <p class="tdelta"><span class="up">−57%</span> modelled at steady state</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOT THEATRE — scroll-driven story (content duplicated in the sections below) -->
+  <section class="theatre" id="story" aria-hidden="true">
+    <div class="df-stage">
+      <canvas id="df1"></canvas>
+      <div class="df-step"><p class="eyebrow">Two pools</p><h3>Two clinicians. Two patient pools.</h3><p>A GP's book of everyday medicine. A cardiologist's referred pool. Each figure is about fifteen patients.</p></div>
+      <div class="df-step"><p class="eyebrow">Inside the book</p><h3>Three in ten of the GP's book is heart failure or hypertension.</h3><p>One condition family, thirty-six figures — the single biggest block of chronic work in general practice.</p></div>
+      <div class="df-step"><p class="eyebrow">Split one — already theirs</p><h3>Half of them the GP already manages, comfortably.</h3><p>Stable hypertension, stable heart failure on settled therapy. Never referred, never questioned.</p></div>
+      <div class="df-step"><p class="eyebrow">Split two — referred out</p><h3>The other half get sent to the specialist.</h3><p>Eighteen figures leave the book. Ask what is actually in that group and it splits again — cleanly, in half.</p></div>
+      <div class="df-step"><p class="eyebrow">The half that didn't need to go</p><h3>Nine of them a GP could manage — with backup.</h3><p>A titration protocol already says the next dose. What's missing is a fast answer and condition-specific upskilling.</p></div>
+      <div class="df-step"><p class="eyebrow">The half that did</p><h3>Nine of them genuinely need the specialist.</h3><p>New cardiomyopathy. Resistant hypertension with a suspected secondary cause. Valve disease heading for intervention. Whole-of-training work.</p></div>
+      <div class="df-step"><p class="eyebrow">Today</p><h3>All eighteen go to the same queue.</h3><p>There is one referral pathway, so the protocol case and the puzzle case are sent to the same clinic on the same form.</p></div>
+      <div class="df-step"><p class="eyebrow">The clog</p><h3>So the clinic fills with work a GP could have done.</h3><p>Half of every new-patient list is medication optimisation — the most expensive titration service in the health system.</p></div>
+      <div class="df-step"><p class="eyebrow">The harm</p><h3>And the people who genuinely needed it wait behind them.</h3><p>127 days to a first appointment. Some are lost to follow-up; others deteriorate while they queue.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 1 — rank</p><h3>So rank the queue by complexity instead.</h3><p>The complexity screen scores every referral, 0–100. The nine from this book rise straight to the top.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 2 — separate</p><h3>The bottom 20% are stable.</h3><p>They need medication optimisation, not a specialist — a protocol already says the next dose.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 3 — look closer</p><h3>These patients can be GP-managed.</h3><p>Followed up with eConsults: any question back inside 72 hours, and the specialist stays in the loop.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 4 — the move</p><h3>Twenty move back to the GP.</h3><p>The nine who never needed to go, plus the stable end of the specialist's own pool. Capped panels, named specialist of record.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 5 — the backfill</p><h3>The queue moves up.</h3><p>Twenty complex patients, waiting in general practice, take the freed slots. Nobody routine is ahead of them any more.</p></div>
+      <div class="df-step"><p class="eyebrow">The loop closes</p><h3>The complex nine are seen in 55 days, not 127.</h3><p>With the routine end gone to the GP, the front of the queue moves at specialist speed.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 6 — the incentive</p><h3>The GP is paid properly for the borderline cases.</h3><p>Longer consults plus care plans — about $449 more per patient per year — with eConsult backup.</p></div>
+      <div class="df-step"><p class="eyebrow">Step 7 — the payoff</p><h3>The specialist pool is now fully complex.</h3><p>Whole-of-training work all day — and the waitlist just moved.</p></div>
+      <div class="df-step"><p class="eyebrow">The result</p><h3>Everyone bills better.</h3><p></p></div>
+      <div class="df-stats">
+        <div class="df-stat"><div class="v"><span data-countup="15" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">per participating GP, per year ($449 × a 33-patient panel)</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="57" data-pre="−" data-suf="%">−0%</span></div><div class="l">median wait for a new specialist referral</div></div>
+        <div class="df-stat"><div class="v"><span data-countup="35" data-pre="+$" data-suf="k">+$0k</span></div><div class="l">per specialist FTE, per year, on the same clinic hours</div></div>
+      </div>
+      <div class="df-hint">Scroll</div>
+    </div>
+  </section>
+
+  <!-- 01 PROBLEM -->
+  <section id="problem" class="tintband">
+    <div class="wrap reveal">
+      <p class="eyebrow">01 — The problem</p>
+      <h2>Two workforces, both mispriced</h2>
+      <p class="lede">Every outpatient clinic runs the same quiet inefficiency. The specialist —
+      the most expensive, longest-trained clinician in the building — spends a fifth of the week
+      on stable reviews a protocol could run. Meanwhile the GP, the clinician actually built for
+      continuity, is priced into six-minute medicine by a fee schedule that rewards throughput
+      over depth. Both are capable of more. Neither is paid for it.</p>
+
+      <div class="grid g4" style="margin-top:28px">
+        <div class="card tile"><p class="tlabel">Appointments per specialist FTE per year</p><p class="tvalue">2,000</p><p class="tdelta">400 of them are bottom-quintile reviews</p></div>
+        <div class="card tile"><p class="tlabel">What a stable 15-minute review bills — whoever performs it</p><p class="tvalue">$92</p><p class="tdelta">Specialist review item, indicative</p></div>
+        <div class="card tile"><p class="tlabel">Median wait for the new, genuinely complex referral queued behind them</p><p class="tvalue">127 days</p><p class="tdelta">Indicative metro baseline</p></div>
+        <div class="card tile"><p class="tlabel">The GP consult fee that keeps general practice at six minutes</p><p class="tvalue">$43</p><p class="tdelta">Level B, indicative</p></div>
+      </div>
+
+      <p class="pullquote">“The most expensive clinician in the building is doing the least complex
+      work in the building — while the clinician built for continuity is priced out of doing more.”</p>
+    </div>
+  </section>
+
+  <!-- 02 PERSONAS -->
+  <section id="personas">
+    <div class="wrap reveal">
+      <p class="eyebrow">02 — Segment the caseload, not the clinicians</p>
+      <h2>One appointment book. Five personas.</h2>
+      <p class="lede">Precision public health showed that one population is really five or six,
+      each needing a different intervention. The same is true of a specialist's appointment book.
+      Score every referral and every follow-up with a short <b>Complexity Screen</b> — diagnosis
+      stability, device or procedure dependency, comorbidity count, admission history, titration
+      status, red flags — and five personas appear. Two of them don't need a specialist most
+      years. They need a well-supported GP.</p>
+
+      <div class="card" style="margin-top:28px">
+        <h3 style="font-size:15px;color:var(--ink-2);font-weight:600;font-family:var(--body)">One cardiologist FTE = 2,000 appointments a year. Hover or tap a segment; click to meet the persona.</h3>
+        <div class="bigbar" role="group" aria-label="Caseload segmented by persona">
+          <button class="seg" style="flex:12;background:var(--s1);color:var(--on-s1)" data-target="p1"
+            data-tip="<b>The Steady State — 12%</b>240 appts/yr · ~80 patients<br>→ Specialist-GP pipeline"><span>12%</span></button>
+          <button class="seg" style="flex:8;background:var(--s2);color:var(--on-s2)" data-target="p2"
+            data-tip="<b>The Protocol Titration — 8%</b>160 appts/yr · ~50 patients<br>→ Specialist-GP pipeline"><span>8%</span></button>
+          <button class="seg" style="flex:35;background:var(--s3);color:var(--on-s3)" data-target="p3"
+            data-tip="<b>The Multimorbid Juggler — 35%</b>700 appts/yr<br>Specialist core, GP shared care"><span>35%</span></button>
+          <button class="seg" style="flex:20;background:var(--s4);color:var(--on-s4)" data-target="p4"
+            data-tip="<b>The Diagnostic Puzzle — 20%</b>400 appts/yr<br>Specialist core"><span>20%</span></button>
+          <button class="seg" style="flex:25;background:var(--s5);color:var(--on-s5)" data-target="p5"
+            data-tip="<b>The High-Stakes — 25%</b>500 appts/yr<br>Specialist core, procedural"><span>25%</span></button>
+        </div>
+        <div class="rails" aria-hidden="true">
+          <div class="rail" style="flex:20;border-color:var(--tier-gp)"><b>Bottom 20%</b> → Specialist-GP pipeline, eConsult backstop</div>
+          <div class="rail" style="flex:80;border-color:var(--tier-sp)"><b>Top 80%</b> → specialist core: complex, diagnostic &amp; procedural work</div>
+        </div>
+        <div class="chips" role="list" aria-label="Persona legend">
+          <button class="chip" data-target="p1" role="listitem"><span class="dot" style="background:var(--s1)"></span>The Steady State · 12%</button>
+          <button class="chip" data-target="p2" role="listitem"><span class="dot" style="background:var(--s2)"></span>The Protocol Titration · 8%</button>
+          <button class="chip" data-target="p3" role="listitem"><span class="dot" style="background:var(--s3)"></span>The Multimorbid Juggler · 35%</button>
+          <button class="chip" data-target="p4" role="listitem"><span class="dot" style="background:var(--s4)"></span>The Diagnostic Puzzle · 20%</button>
+          <button class="chip" data-target="p5" role="listitem"><span class="dot" style="background:var(--s5)"></span>The High-Stakes · 25%</button>
+        </div>
+        <details>
+          <summary>View the segmentation as a table</summary>
+          <table>
+            <thead><tr><th>Persona</th><th class="num">Share</th><th class="num">Appts / yr</th><th class="num">~Patients</th><th>Track</th></tr></thead>
+            <tbody>
+              <tr><td>The Steady State</td><td class="num">12%</td><td class="num">240</td><td class="num">~80</td><td>Specialist-GP pipeline</td></tr>
+              <tr><td>The Protocol Titration</td><td class="num">8%</td><td class="num">160</td><td class="num">~50</td><td>Specialist-GP pipeline</td></tr>
+              <tr><td>The Multimorbid Juggler</td><td class="num">35%</td><td class="num">700</td><td class="num">—</td><td>Specialist core</td></tr>
+              <tr><td>The Diagnostic Puzzle</td><td class="num">20%</td><td class="num">400</td><td class="num">—</td><td>Specialist core</td></tr>
+              <tr><td>The High-Stakes</td><td class="num">25%</td><td class="num">500</td><td class="num">—</td><td>Specialist core</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+
+      <div class="grid personas">
+        <article class="card pcard" id="p1" style="border-top-color:var(--s1)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#e6effa"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#31456e"/><rect x="44" y="52" width="8" height="10" fill="#eeb98d"/><circle cx="48" cy="40" r="17" fill="#eeb98d"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#b9c0cf"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The Steady State</h3><span class="share">12% of the book · 240 appts/yr</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Controlled AF on a DOAC, stable three years running. Blood pressure at target,
+            echo unchanged. Comes in once or twice a year to be told they're fine.</dd>
+            <dt>What they need</dt>
+            <dd>A protocolised annual review, medicines continuity, risk-factor coaching, and a
+            crisp list of triggers that mean “call the specialist”.</dd>
+            <dt>Who manages them</dt>
+            <dd>Today: specialist review every 6–12 months. <b>Pipeline:</b> accredited GP runs the
+            annual cycle; eConsult if anything drifts.<br><span class="track-tag tag-gp">→ Specialist-GP pipeline</span></dd>
+          </dl>
+          <p class="money"><b>The dollars:</b> a $92 specialist review becomes a $535/yr structured
+          GP care relationship — and frees a clinic slot for a new complex patient.</p>
+        </article>
+
+        <article class="card pcard" id="p2" style="border-top-color:var(--s2)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fdeae2"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#5d6f94"/><rect x="44" y="52" width="8" height="10" fill="#a06a3f"/><circle cx="48" cy="40" r="17" fill="#a06a3f"/><path d="M28 54 v-14 a20 20 0 0 1 40 0 v14 h-7 v-12 a13 13 0 0 0 -26 0 v12 Z" fill="#3a2a1c"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The Protocol Titration</h3><span class="share">8% of the book · 160 appts/yr</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Heart failure on guideline therapy that still needs stepping up. Post-ACS lipids at
+            eighteen months. The plan is already written — it just needs executing, dose by dose.</dd>
+            <dt>What they need</dt>
+            <dd>Frequent, low-acuity touchpoints against a published algorithm, with pathology
+            monitoring between visits.</dd>
+            <dt>Who manages them</dt>
+            <dd>Today: a specialist visit every three months for a dose change the protocol already
+            specifies. <b>Pipeline:</b> GP titrates to protocol; eConsult at the decision points
+            (~2 per year).<br><span class="track-tag tag-gp">→ Specialist-GP pipeline</span></dd>
+          </dl>
+          <p class="money"><b>The dollars:</b> more frequent GP care (Level C/D + care plan) bills
+          ~$535/yr; the specialist is paid $65 per eConsult for the judgement calls only.</p>
+        </article>
+
+        <article class="card pcard" id="p3" style="border-top-color:var(--s3)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#e4f6ef"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#274064"/><rect x="44" y="52" width="8" height="10" fill="#c68b59"/><circle cx="48" cy="40" r="17" fill="#c68b59"/><circle cx="35" cy="27" r="8" fill="#e6e9f0"/><circle cx="48" cy="23" r="9" fill="#e6e9f0"/><circle cx="61" cy="27" r="8" fill="#e6e9f0"/><circle cx="42" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><circle cx="54" cy="41" r="5.5" fill="none" stroke="#16244a" stroke-width="1.6"/><path d="M47.5 41 h1" stroke="#16244a" stroke-width="1.6"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 48.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The Multimorbid Juggler</h3><span class="share">35% of the book · 700 appts/yr</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Heart failure plus stage-4 kidney disease plus diabetes plus frailty. Every
+            adjustment to one system trades off another.</dd>
+            <dt>What they need</dt>
+            <dd>A specialist weighing genuine trade-offs, in structured shared care with a GP who
+            holds the whole picture.</dd>
+            <dt>Who manages them</dt>
+            <dd>Specialist-led, before and after. <b>Pipeline effect:</b> with the book decongested,
+            the specialist finally has the minutes these patients actually need.<br><span class="track-tag tag-sp">Specialist core</span></dd>
+          </dl>
+          <p class="money"><b>The dollars:</b> unchanged items, better used — longer, higher-value
+          consultations instead of a corridor-speed clinic.</p>
+        </article>
+
+        <article class="card pcard" id="p4" style="border-top-color:var(--s4)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fdf3da"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#3b527d"/><rect x="44" y="52" width="8" height="10" fill="#8c5a33"/><circle cx="48" cy="40" r="17" fill="#8c5a33"/><path d="M31 40 a17 17 0 0 1 34 0 h-6 a11 11 0 0 0 -22 0 Z" fill="#201209"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The Diagnostic Puzzle</h3><span class="share">20% of the book · 400 appts/yr</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>Syncope, cause unknown. Exertional breathlessness with a clean first-line workup.
+            Something is wrong and nobody knows what yet.</dd>
+            <dt>What they need</dt>
+            <dd>The full diagnostic skillset — and to be seen in weeks, not months, while the
+            window for a good outcome is open.</dd>
+            <dt>Who manages them</dt>
+            <dd>Specialist, unambiguously. <b>Pipeline effect:</b> these are the patients the freed
+            slots are for — 240 more of them seen per FTE, per year.<br><span class="track-tag tag-sp">Specialist core</span></dd>
+          </dl>
+          <p class="money"><b>The dollars:</b> each new complex assessment bills $170 and cascades
+          the diagnostics — echo, Holter, stress testing — the department runs on.</p>
+        </article>
+
+        <article class="card pcard" id="p5" style="border-top-color:var(--s5)">
+          <div class="phead">
+            <svg class="avatar av" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="48" fill="#fbe9f1"/><path d="M18 96 C18 72 31 61 48 61 C65 61 78 72 78 96 Z" fill="#4a5674"/><rect x="44" y="52" width="8" height="10" fill="#f2c9a0"/><circle cx="48" cy="40" r="17" fill="#f2c9a0"/><rect x="29" y="34" width="6" height="10" rx="3" fill="#b9c0cf"/><rect x="61" y="34" width="6" height="10" rx="3" fill="#b9c0cf"/><circle cx="42" cy="41" r="1.8" fill="#201209"/><circle cx="54" cy="41" r="1.8" fill="#201209"/><path d="M43.5 47.5 q4.5 3.5 9 0" stroke="#201209" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            <div><h3>The High-Stakes</h3><span class="share">25% of the book · 500 appts/yr</span></div>
+          </div>
+          <dl>
+            <dt>Who they are</dt>
+            <dd>TAVI workup. A device patient. Decompensating heart failure a fortnight out of
+            hospital. The reason cardiologists trained for a decade.</dd>
+            <dt>What they need</dt>
+            <dd>Whole-of-skillset procedural and acute care, with no queue in front of it.</dd>
+            <dt>Who manages them</dt>
+            <dd>Specialist, always. <b>Pipeline effect:</b> faster access into the procedural stream
+            that funds the service.<br><span class="track-tag tag-sp">Specialist core</span></dd>
+          </dl>
+          <p class="money"><b>The dollars:</b> the highest-margin work in the department — reached
+          sooner because the bottom quintile no longer queues in front of it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 MECHANISM (navy band) -->
+  <section id="pipeline" class="band">
+    <div class="wrap reveal">
+      <p class="eyebrow">03 — The mechanism</p>
+      <h2>One screen, two tracks, a backstop</h2>
+      <p class="lede">Every new referral and every existing follow-up passes through the same
+      Complexity Screen. The bottom quintile flows to accredited Specialist-GPs; everything else
+      concentrates in the specialist core. An asynchronous eConsult channel means the GP is never
+      more than 72 hours from specialist judgement — and every patient keeps a named specialist of
+      record. Patients are re-screened annually and move in both directions.</p>
+
+      <div class="card scrollwrap">
+        <svg class="diagram" viewBox="0 0 980 560" role="img" aria-label="Flow diagram: referrals and the existing follow-up book pass through a complexity screen; the top 80% goes to the specialist core clinic and its procedures; the bottom 20% goes to the accredited Specialist-GP track with an eConsult backstop, up to 15% yearly escalation back to the specialist, and annual re-screening in both directions.">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#8a93a8"/>
+            </marker>
+            <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#eb6834"/>
+            </marker>
+          </defs>
+
+          <rect x="30" y="70" width="210" height="66" rx="12" fill="#ffffff" stroke="#e3e7f0"/>
+          <text x="135" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#16244a">New referrals</text>
+          <text x="135" y="118" text-anchor="middle" font-size="12" fill="#4a5674">≈1,100 / yr per FTE</text>
+
+          <rect x="30" y="190" width="210" height="66" rx="12" fill="#ffffff" stroke="#e3e7f0"/>
+          <text x="135" y="218" text-anchor="middle" font-size="14" font-weight="700" fill="#16244a">Existing follow-up book</text>
+          <text x="135" y="238" text-anchor="middle" font-size="12" fill="#4a5674">2,000 appts / yr</text>
+
+          <path d="M240,103 C290,103 290,140 330,152" fill="none" stroke="#8a93a8" stroke-width="2" marker-end="url(#arr)"/>
+          <path d="M240,223 C290,223 290,190 330,178" fill="none" stroke="#8a93a8" stroke-width="2" marker-end="url(#arr)"/>
+
+          <rect x="335" y="115" width="230" height="102" rx="14" fill="#ffffff" stroke="#eb6834" stroke-width="2.5"/>
+          <text x="450" y="145" text-anchor="middle" font-size="15" font-weight="800" fill="#16244a">THE COMPLEXITY SCREEN</text>
+          <text x="450" y="166" text-anchor="middle" font-size="12" fill="#4a5674">stability · devices · comorbidity ·</text>
+          <text x="450" y="183" text-anchor="middle" font-size="12" fill="#4a5674">admissions · titration · red flags</text>
+          <text x="450" y="203" text-anchor="middle" font-size="12" font-weight="700" fill="#4a5674">→ score 0–100</text>
+
+          <path d="M565,140 C620,120 630,105 680,100" fill="none" stroke="#8a93a8" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="622" y="94" text-anchor="middle" font-size="12.5" font-weight="700" fill="#c9d2e6">top 80%</text>
+
+          <rect x="685" y="60" width="265" height="84" rx="14" fill="#1c5cab"/>
+          <text x="817" y="94" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">SPECIALIST CORE CLINIC</text>
+          <text x="817" y="116" text-anchor="middle" font-size="12" fill="#dbe7f6">complex · diagnostic · unstable</text>
+
+          <path d="M817,144 L817,182" fill="none" stroke="#8a93a8" stroke-width="2" marker-end="url(#arr)"/>
+          <rect x="685" y="188" width="265" height="58" rx="14" fill="#ffffff" stroke="#e3e7f0"/>
+          <text x="817" y="212" text-anchor="middle" font-size="13.5" font-weight="700" fill="#16244a">Procedures &amp; diagnostics</text>
+          <text x="817" y="231" text-anchor="middle" font-size="12" fill="#4a5674">echo · angiography · devices · +$200k/FTE downstream</text>
+
+          <path d="M565,195 C625,215 635,290 680,330" fill="none" stroke="#8a93a8" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="610" y="268" text-anchor="middle" font-size="12.5" font-weight="700" fill="#c9d2e6">bottom 20%</text>
+
+          <rect x="685" y="316" width="265" height="96" rx="14" fill="#86b6ef"/>
+          <text x="817" y="349" text-anchor="middle" font-size="15" font-weight="800" fill="#0b1a33">SPECIALIST-GP TRACK</text>
+          <text x="817" y="371" text-anchor="middle" font-size="12" fill="#0b1a33">accredited GPs · ≤40 pipeline patients each</text>
+          <text x="817" y="390" text-anchor="middle" font-size="12" fill="#0b1a33">named specialist of record retained</text>
+
+          <rect x="685" y="462" width="265" height="68" rx="34" fill="#ffffff" stroke="#eb6834" stroke-width="2.5"/>
+          <text x="817" y="490" text-anchor="middle" font-size="13.5" font-weight="800" fill="#16244a">eCONSULT BACKSTOP</text>
+          <text x="817" y="509" text-anchor="middle" font-size="12" fill="#4a5674">async advice · ≤72h (24h urgent) · $65/episode</text>
+          <path d="M790,462 L790,412" fill="none" stroke="#eb6834" stroke-width="2" marker-end="url(#arrA)"/>
+          <path d="M845,412 L845,462" fill="none" stroke="#eb6834" stroke-width="2" marker-end="url(#arrA)"/>
+          <text x="963" y="442" text-anchor="middle" font-size="11.5" fill="#c9d2e6" transform="rotate(90 963 442)">85–90% resolved</text>
+
+          <path d="M685,340 C630,330 630,170 683,130" fill="none" stroke="#8a93a8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <text x="641" y="230" text-anchor="middle" font-size="11.5" fill="#c9d2e6" transform="rotate(-88 641 230)">≤15%/yr escalate</text>
+
+          <path d="M685,395 C470,470 400,330 420,222" fill="none" stroke="#8a93a8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <text x="470" y="420" text-anchor="middle" font-size="11.5" fill="#c9d2e6">annual re-screen — patients move both ways</text>
+        </svg>
+      </div>
+
+      <div class="grid g3" style="margin-top:18px">
+        <div class="card tile"><p class="tlabel">of eConsults resolved without a clinic transfer</p><p class="tvalue">85–90%</p><p class="tdelta">Consistent with published eConsult programs</p></div>
+        <div class="card tile"><p class="tlabel">Escalation ceiling back to the specialist clinic</p><p class="tvalue">≤15%/yr</p><p class="tdelta">A safety valve, not a failure mode</p></div>
+        <div class="card tile"><p class="tlabel">Specialist advice turnaround, urgent</p><p class="tvalue">24 h</p><p class="tdelta">72 h routine — versus a 127-day queue today</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 MONEY -->
+  <section id="money">
+    <div class="wrap reveal">
+      <p class="eyebrow">04 — The money</p>
+      <h2>Everyone bills better. Here is the arithmetic.</h2>
+      <p class="lede">Same Medicare schedule, same items, used at top of licence. Indicative,
+      rounded figures — built to be argued with, and to survive the argument.</p>
+
+      <div class="legend" role="list" aria-label="Chart legend">
+        <span class="key" role="listitem"><span class="sw" style="background:var(--today)"></span>Today</span>
+        <span class="key" role="listitem"><span class="sw" style="background:var(--pipe)"></span>Under the pipeline</span>
+      </div>
+
+      <div class="grid g3">
+        <div class="card">
+          <h3>The participating GP</h3>
+          <p class="note" style="margin:0 0 10px">Annual Medicare billings per pipeline patient</p>
+          <div class="brow"><span class="blab">Today</span><div class="btrack"><div class="bfill" style="width:16%;background:var(--today)"></div><span class="bval">$86</span></div></div>
+          <div class="brow"><span class="blab">Pipeline</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div></div></div>
+          <div class="brow" style="margin-top:-4px"><span class="blab"></span><span class="bval">$535 / patient / yr</span></div>
+          <ul class="mathlist">
+            <li>2 × Level C review — <b>MBS 36</b> ($83) = $166</li>
+            <li>1 × Level D long consult — <b>MBS 44</b> ($122)</li>
+            <li>GP Management Plan — <b>MBS 721</b> ($165) + review — <b>MBS 732</b> ($82)</li>
+            <li>vs today: 2 × Level B visit — <b>MBS 23</b> ($43)</li>
+          </ul>
+          <div class="mchips" aria-label="MBS items used — tap for the full maths">
+          <button class="mchip" data-maths="gp"><b>MBS 36</b> · $83</button>
+          <button class="mchip" data-maths="gp"><b>MBS 44</b> · $122</button>
+          <button class="mchip" data-maths="gp"><b>MBS 721</b> · $165</button>
+          <button class="mchip" data-maths="gp"><b>MBS 732</b> · $82</button>
+          <button class="mchip" data-maths="gp">full maths →</button>
+        </div>
+        <p class="plus"><b>+$449 per patient per year.</b> A GP carrying 30–40 pipeline patients
+          adds <b>$13k–18k/yr</b> — for complexity they were already managing informally.</p>
+        </div>
+
+        <div class="card">
+          <h3>The specialist</h3>
+          <p class="note" style="margin:0 0 10px">Billings on the 400 freed clinic slots, per FTE per year</p>
+          <div class="brow"><span class="blab">Today</span><div class="btrack"><div class="bfill" style="width:51%;background:var(--today)"></div><span class="bval">$36.8k</span></div></div>
+          <div class="brow"><span class="blab">Pipeline</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div></div></div>
+          <div class="brow" style="margin-top:-4px"><span class="blab"></span><span class="bval">$71.8k / FTE / yr</span></div>
+          <ul class="mathlist">
+            <li>240 initial assessments — <b>MBS 110</b> ($170) = $40.8k</li>
+            <li>160 reviews — <b>MBS 116</b> ($92) = $14.7k</li>
+            <li>~250 eConsults — <b>proposed item</b> ($65) = $16.3k</li>
+            <li>vs today: 400 reviews — <b>MBS 116</b> ($92) = $36.8k</li>
+          </ul>
+          <div class="mchips" aria-label="MBS items used — tap for the full maths">
+          <button class="mchip" data-maths="spec"><b>MBS 110</b> · $170</button>
+          <button class="mchip" data-maths="spec"><b>MBS 116</b> · $92</button>
+          <button class="mchip" data-maths="spec"><b>eConsult*</b> · $65</button>
+          <button class="mchip" data-maths="spec">full maths →</button>
+        </div>
+        <p class="plus"><b>+$35k on the same clinic hours</b> (≈ +9% of consulting billings) —
+          plus 240 extra new complex patients cascading <b>≈ $200k/yr</b> of echo, angiography and
+          device work into the department.</p>
+        </div>
+
+        <div class="card">
+          <h3>The network &amp; payer</h3>
+          <p class="note" style="margin:0 0 10px">Full cost per low-complexity episode of care</p>
+          <div class="brow"><span class="blab">Today</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--today)"></div></div></div>
+          <div class="brow" style="margin-top:-4px"><span class="blab"></span><span class="bval">$290 — hospital outpatient visit</span></div>
+          <div class="brow"><span class="blab">Pipeline</span><div class="btrack"><div class="bfill" style="width:45%;background:var(--pipe)"></div><span class="bval">$130 — Specialist-GP visit</span></div></div>
+          <ul class="mathlist">
+            <li>2,400 visits/yr shift setting (6-FTE dept) → <b>$384k saved</b></li>
+            <li>~120 avoided ED presentations + ~30 avoided admissions → <b>$312k</b></li>
+            <li>Median wait 127 → 55 days, no new hires</li>
+          </ul>
+          <div class="mchips" aria-label="Tap for the full maths">
+          <button class="mchip" data-maths="net">full maths →</button>
+        </div>
+        <p class="plus"><b>−55% unit cost</b> on a fifth of the outpatient book, and the queue
+          finally moves.</p>
+        </div>
+      </div>
+
+      <details>
+        <summary>View all money comparisons as a table</summary>
+        <table>
+          <thead><tr><th>Measure</th><th class="num">Today</th><th class="num">Under the pipeline</th><th class="num">Change</th></tr></thead>
+          <tbody>
+            <tr><td>GP billings per pipeline patient / yr</td><td class="num">$86</td><td class="num">$535</td><td class="num">+$449</td></tr>
+            <tr><td>Specialist billings on freed slots / FTE / yr</td><td class="num">$36,800</td><td class="num">$71,800</td><td class="num">+$35,000</td></tr>
+            <tr><td>Cost per low-complexity episode</td><td class="num">$290</td><td class="num">$130</td><td class="num">−55%</td></tr>
+            <tr><td>New complex patients seen / FTE / yr</td><td class="num">—</td><td class="num">+240</td><td class="num">+240</td></tr>
+            <tr><td>Median wait, new referral</td><td class="num">127 days</td><td class="num">55 days</td><td class="num">−57%</td></tr>
+          </tbody>
+        </table>
+      </details>
+
+      <div class="card" style="margin-top:28px">
+        <h3>The honest ledger — a 6-FTE cardiology department, per year</h3>
+        <p class="note">This is a throughput play, not a cuts play. Two ledgers, stated plainly:</p>
+        <table class="ledger">
+          <thead><tr><th>Ledger</th><th>What goes out</th><th>What comes back</th><th>Net position</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Hospital network</td>
+              <td>$460k one-off trial cost</td>
+              <td>$384k/yr setting-shift savings + $312k/yr avoided ED &amp; admissions = <b>$696k/yr</b></td>
+              <td><b>Payback ≈ 8 months</b>, then $696k/yr recurring</td>
+            </tr>
+            <tr>
+              <td>Medicare (Commonwealth)</td>
+              <td>≈ $560k/yr additional MBS outlay (GP items, eConsults, higher-value specialist items)</td>
+              <td>1,440 additional complex assessments/yr · 2,400 episodes moved to a setting 55% cheaper · waitlist −57%</td>
+              <td><b>More care per dollar</b> — the outlay buys throughput, not fee inflation</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:10px">All figures indicative and rounded; the trial exists precisely to replace them with measured ones.</p>
+      </div>
+
+      <div class="card" id="model" style="margin-top:28px">
+        <h3>Stress-test the model yourself</h3>
+        <p class="note" style="margin:2px 0 0">Drag the assumptions — the whole ledger recomputes. Defaults reproduce the figures above. Everything stays indicative; the trial replaces it with measurement.</p>
+        <div class="msplit">
+          <div>
+            <div class="mrow">
+              <div class="mtop"><label for="mShare">Pipeline share of the specialist book</label><output id="oShare">20%</output></div>
+              <input type="range" id="mShare" min="10" max="30" step="1" value="20">
+            </div>
+            <div class="mrow">
+              <div class="mtop"><label for="mAppts">Appointments per specialist FTE / yr</label><output id="oAppts">2,000</output></div>
+              <input type="range" id="mAppts" min="1600" max="2400" step="50" value="2000">
+            </div>
+            <div class="mrow">
+              <div class="mtop"><label for="mFee">eConsult fee paid to the specialist</label><output id="oFee">$65</output></div>
+              <input type="range" id="mFee" min="40" max="100" step="5" value="65">
+            </div>
+            <div class="mrow">
+              <div class="mtop"><label for="mFte">Specialist FTEs in the department</label><output id="oFte">6</output></div>
+              <input type="range" id="mFte" min="4" max="10" step="1" value="6">
+            </div>
+            <button class="mreset" id="mReset" type="button">Reset to defaults</button>
+          </div>
+          <div class="mouts" aria-live="polite">
+            <div class="tile"><p class="tlabel">Specialist consulting uplift, per FTE per year</p><p class="tvalue" id="rSpec">+$35k</p></div>
+            <div class="tile"><p class="tlabel">Per participating GP per year (<span id="rGpN">23</span> GPs across the catchment)</p><p class="tvalue" id="rGp">+$15k</p></div>
+            <div class="tile"><p class="tlabel">Network benefit per year (setting shift + avoided acute care)</p><p class="tvalue" id="rNet">$696k</p></div>
+            <div class="tile"><p class="tlabel">Payback on the $460k trial</p><p class="tvalue" id="rPay">≈ 8 months</p></div>
+            <div class="tile"><p class="tlabel">New Medicare outlay per year — stated, not hidden</p><p class="tvalue" id="rMbs">$556k</p></div>
+            <div class="tile"><p class="tlabel">Median wait for a new referral</p><p class="tvalue" id="rWait">127 → 55 days</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 WINS -->
+  <section id="wins" class="tintband">
+    <div class="wrap reveal">
+      <p class="eyebrow">05 — The coalition</p>
+      <h2>Why every seat at the table says yes</h2>
+      <div class="grid g3" style="margin-top:24px">
+        <div class="card win"><h3>The GP</h3><ul>
+          <li>Bills for complexity already managed informally: +$449 per patient, per year</li>
+          <li>Accreditation that grows real scope, not paperwork</li>
+          <li>Specialist judgement in 72 hours, not four months</li>
+        </ul></div>
+        <div class="card win"><h3>The specialist</h3><ul>
+          <li>+$35k/yr consulting on the same clinic hours</li>
+          <li>A book that finally uses the whole decade of training</li>
+          <li>Paid ($65/episode) for advice previously given free by phone</li>
+        </ul></div>
+        <div class="card win"><h3>The network CEO</h3><ul>
+          <li>$696k/yr benefit per 6-FTE department; payback ≈ 8 months</li>
+          <li>Waitlist −57% with zero new specialist hires</li>
+          <li>Clinic capacity redeployed into the procedures that fund the service</li>
+        </ul></div>
+        <div class="card win"><h3>The CMO &amp; payer</h3><ul>
+          <li>Unit cost of low-complexity care −55%</li>
+          <li>1,440 more complex patients assessed per department, per year</li>
+          <li>Scales nationally on existing MBS items — no new colleges, no new schedule</li>
+        </ul></div>
+        <div class="card win"><h3>The patient</h3><ul>
+          <li>Seen in weeks, not months, at the right tier of care</li>
+          <li>Managed close to home by a GP who actually knows them</li>
+          <li>A named specialist still formally in their corner</li>
+        </ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 TRIAL -->
+  <section id="trial">
+    <div class="wrap reveal">
+      <p class="eyebrow">06 — The ask</p>
+      <h2>A 12-month trial: one department, one screen, hard numbers</h2>
+      <p class="lede">One cardiology department (6 FTE), its referral catchment, and ~24 accredited
+      GPs. Budget <b>$460k</b>: program management &amp; clinical governance $150k · GP accreditation
+      and backfill $120k · eConsult platform $110k · independent evaluation $80k.</p>
+
+      <div class="grid g3" style="margin-top:24px">
+        <div class="card phase"><p class="mo">Months 0–3 · Set up</p><h3>Build the screen, credential the GPs</h3><ul>
+          <li>Complexity Screen calibrated on 12 months of de-identified clinic data</li>
+          <li>GP accreditation module, specialist-led; escalation SLAs signed</li>
+          <li>eConsult platform live; shared-care agreement executed</li>
+        </ul></div>
+        <div class="card phase"><p class="mo">Months 3–9 · Run</p><h3>Screen, shift, backstop</h3><ul>
+          <li>All referrals + existing book screened; bottom quintile offered the pipeline</li>
+          <li>Weekly MDT; live safety dashboard (escalations, ED representation)</li>
+          <li>Revenue dashboards visible to GPs and specialists alike</li>
+        </ul></div>
+        <div class="card phase"><p class="mo">Months 9–12 · Prove</p><h3>Independent evaluation</h3><ul>
+          <li>Outcomes vs matched control clinic</li>
+          <li>Economics audited against both ledgers</li>
+          <li>Go / no-go scale decision: next 3 specialties, next 3 networks</li>
+        </ul></div>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h3>What success is measured on</h3>
+        <table>
+          <thead><tr><th>KPI</th><th class="num">Baseline</th><th class="num">12-month target</th></tr></thead>
+          <tbody>
+            <tr><td>Median wait, new referral</td><td class="num">127 days</td><td class="num">≤75 days</td></tr>
+            <tr><td>Specialist clinic share spent on bottom-quintile reviews</td><td class="num">20%</td><td class="num">≤8%</td></tr>
+            <tr><td>eConsults resolved without clinic transfer</td><td class="num">—</td><td class="num">≥85%</td></tr>
+            <tr><td>Pipeline escalations back to specialist</td><td class="num">—</td><td class="num">≤15%/yr</td></tr>
+            <tr><td>90-day unplanned ED representation, pipeline cohort</td><td class="num">matched control</td><td class="num">no increase</td></tr>
+            <tr><td>Participating GP Medicare billings</td><td class="num">baseline</td><td class="num">+8%</td></tr>
+            <tr><td>Specialist clinic-session billings</td><td class="num">baseline</td><td class="num">+9%</td></tr>
+            <tr><td>Patient confidence in shared care (PREM)</td><td class="num">—</td><td class="num">≥85%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h3>Trial cost vs modelled annual network benefit</h3>
+        <div class="legend"><span class="key"><span class="sw" style="background:var(--today)"></span>One-off trial cost</span><span class="key"><span class="sw" style="background:var(--pipe)"></span>Recurring network benefit / yr</span></div>
+        <div class="brow"><span class="blab">Cost</span><div class="btrack"><div class="bfill" style="width:66%;background:var(--today)"></div><span class="bval">$460k one-off</span></div></div>
+        <div class="brow"><span class="blab">Benefit</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--pipe)"></div><span class="bval">$696k / yr</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 RISKS -->
+  <section id="risks" class="tintband">
+    <div class="wrap reveal">
+      <p class="eyebrow">07 — Eyes open</p>
+      <h2>The risks, and what holds them</h2>
+      <div class="grid g3" style="margin-top:24px">
+        <div class="card risk"><p class="r">Clinical safety</p><p><b>Risk:</b> a complex patient mis-scored into the pipeline.
+          <b>Safeguard:</b> conservative screen with red-flag auto-exclusions, 24-hour urgent eConsult, and a named specialist of record for every pipeline patient.</p></div>
+        <div class="card risk"><p class="r">Scope drift</p><p><b>Risk:</b> “quintile creep” — the pipeline quietly absorbing more complexity than designed.
+          <b>Safeguard:</b> fixed percentile threshold, quarterly score-vs-outcome audits, annual recalibration.</p></div>
+        <div class="card risk"><p class="r">GP capacity</p><p><b>Risk:</b> enthusiasm outrunning bandwidth.
+          <b>Safeguard:</b> cap of 40 pipeline patients per GP, accreditation before allocation, backfill funding inside the trial budget.</p></div>
+        <div class="card risk"><p class="r">Specialist buy-in</p><p><b>Risk:</b> “you're taking my patients.”
+          <b>Safeguard:</b> the screen removes only bottom-quintile follow-ups — never new or complex work — and the revenue dashboard shows the +$35k, live.</p></div>
+        <div class="card risk"><p class="r">Medico-legal</p><p><b>Risk:</b> ambiguity over who holds responsibility.
+          <b>Safeguard:</b> formal shared-care agreement, documented escalation SLAs, indemnity confirmed for the accredited scope before go-live.</p></div>
+        <div class="card risk"><p class="r">Patient trust</p><p><b>Risk:</b> “I'm being downgraded.”
+          <b>Safeguard:</b> co-signed handover letter — <i>your cardiologist stays in the loop</i> — one-call return path, PREMs tracked from day one.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 GENERALISES -->
+  <section id="scale">
+    <div class="wrap reveal">
+      <p class="eyebrow">08 — Does it generalise?</p>
+      <h2>Every physician specialty has a bottom quintile</h2>
+      <p class="lede">Cardiology is the worked example, not the mechanism. Any specialty whose book
+      contains stable, protocol-governed follow-ups has the same mispricing — only the clinical
+      detail changes. Pick a specialty; the screen and the arithmetic stay identical.</p>
+
+      <div class="card" id="specSwitch" style="margin-top:24px">
+        <div class="chips" role="group" aria-label="Choose a specialty">
+          <button class="chip" data-spec="cardiology" aria-pressed="true">Cardiology</button>
+          <button class="chip" data-spec="endocrinology" aria-pressed="false">Endocrinology</button>
+          <button class="chip" data-spec="respiratory" aria-pressed="false">Respiratory</button>
+          <button class="chip" data-spec="gastroenterology" aria-pressed="false">Gastroenterology</button>
+          <button class="chip" data-spec="rheumatology" aria-pressed="false">Rheumatology</button>
+        </div>
+        <div class="msplit" style="margin-top:18px">
+          <div>
+            <h3 id="sName">Cardiology</h3>
+            <p class="note" style="margin:0 0 8px">Who sits in the bottom quintile</p>
+            <ul class="mathlist" id="sExamples" style="margin-top:0"></ul>
+            <p class="note" id="sEscalate" style="margin-top:12px"></p>
+          </div>
+          <div class="mouts" aria-live="polite">
+            <div class="tile"><p class="tlabel">Bottom-quintile share of the book</p><p class="tvalue" id="sShare">20%</p></div>
+            <div class="tile"><p class="tlabel">Clinic slots freed per FTE per year</p><p class="tvalue" id="sFreed">400</p></div>
+            <div class="tile"><p class="tlabel">Specialist consulting uplift per FTE</p><p class="tvalue" id="sUplift">+$35k</p></div>
+            <div class="tile"><p class="tlabel">Median wait, modelled</p><p class="tvalue" id="sWait">127 → 55 days</p></div>
+          </div>
+        </div>
+        <details>
+          <summary>View all five specialties as a table</summary>
+          <table>
+            <thead><tr><th>Specialty</th><th class="num">Bottom-quintile share</th><th class="num">Appts / FTE / yr</th><th class="num">Slots freed / FTE</th><th class="num">Uplift / FTE</th><th class="num">Wait (modelled)</th></tr></thead>
+            <tbody>
+              <tr><td>Cardiology</td><td class="num">20%</td><td class="num">2,000</td><td class="num">400</td><td class="num">+$35k</td><td class="num">127 → 55 days</td></tr>
+              <tr><td>Endocrinology</td><td class="num">24%</td><td class="num">2,100</td><td class="num">504</td><td class="num">+$44k</td><td class="num">148 → 62 days</td></tr>
+              <tr><td>Respiratory</td><td class="num">22%</td><td class="num">1,900</td><td class="num">418</td><td class="num">+$36k</td><td class="num">119 → 52 days</td></tr>
+              <tr><td>Gastroenterology</td><td class="num">18%</td><td class="num">2,200</td><td class="num">396</td><td class="num">+$34k</td><td class="num">156 → 68 days</td></tr>
+              <tr><td>Rheumatology</td><td class="num">21%</td><td class="num">1,800</td><td class="num">378</td><td class="num">+$33k</td><td class="num">172 → 74 days</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h3>What it's worth at national scale — stated per 1,000 specialist FTE</h3>
+        <p class="note" style="margin:2px 0 12px">No national headcount is assumed here. These are
+        per-1,000-FTE figures at the cardiology parameters above — multiply by whatever the real
+        workforce is in the specialties a jurisdiction chooses to start with.</p>
+        <div class="grid g4">
+          <div class="card tile"><p class="tlabel">Clinic appointments redirected out of hospital outpatients, per year</p><p class="tvalue">400,000</p></div>
+          <div class="card tile"><p class="tlabel">Additional new complex assessments, per year</p><p class="tvalue">240,000</p></div>
+          <div class="card tile"><p class="tlabel">Patients moved into structured GP-led care</p><p class="tvalue">130,000</p></div>
+          <div class="card tile"><p class="tlabel">Network-side benefit, per year</p><p class="tvalue">$116M</p><p class="tdelta">at $116k per FTE (the 6-FTE department figure, per head)</p></div>
+        </div>
+        <p class="note" style="margin-top:12px">The corresponding new Medicare outlay scales the
+        same way — roughly <b>$93M per 1,000 FTE per year</b>, buying the throughput above. This is
+        a throughput trade, and it should be argued as one.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="fbrand">CARE PERSONAS</p>
+    <p><b>Method &amp; disclaimers.</b> This is a concept explainer for discussion. All monetary values
+    are indicative AUD, rounded from published MBS schedule fees, and all activity figures
+    (appointment volumes, wait times, escalation and resolution rates) are illustrative modelling
+    assumptions — stated openly so a trial can replace every one of them with a measured number.
+    Nothing here is health, financial or legal advice.</p>
+    <p>Format and segmentation approach inspired by Surgo Ventures' COVID-19 vaccine persona
+    explainer — the same precision-segmentation logic, applied to care delivery instead of
+    vaccine uptake. Persona colour system validated for colour-vision deficiency.</p>
+    <p><a class="xlink" href="matched-family-gp.html">Next: Explainer 02 — The Matched Family GP: preference-matched care with an outbound booking engine →</a><br>
+    <a class="xlink" href="executive-summary.html">Both concepts on one printable page — the executive summary →</a></p>
+  </div>
+</footer>
+
+<dialog class="maths" id="mathsDialog" aria-labelledby="mathsTitle">
+  <div class="maths-in" id="mathsBody"></div>
+</dialog>
+
+<div id="tip" role="status" aria-hidden="true"></div>
+<script src="assets/site.js"></script>
+<script src="assets/dotfield.js"></script>
+<script>
+/* The cohort story, then the queue story. Inside one GP's book, 30% of the
+   patients are heart failure or hypertension (groups 7/8/9 below). The GP
+   already manages half of them; of the half that get referred, half again are
+   protocol work a GP could hold with fast specialist backup, and half genuinely
+   need whole-of-training care. Today both halves are sent down one pathway, so
+   the clinic fills with titration while the puzzle cases wait. Then the ranked
+   queue, the move, the backfill and the eConsult loop. Every layout composes
+   inside the engine's stage box. Each figure is about fifteen patients. */
+(function () {
+  // 0-4 specialist-pool personas · 5 the rest of the GP's book · 6 complex
+  // patients waiting in general practice · 7/8/9 the HF-hypertension cohort
+  var COUNTS = [11, 6, 28, 16, 20, 84, 20, 18, 9, 9];
+  var GP_COMF = 7, GP_ABLE = 8, SPEC_REAL = 9;
+  var HUES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4',
+              null, '#1c5cab', '#1baf7a', '#eb6834', '#1c5cab'];
+  var BOOK = [5, 7, 8, 9];                  // everyone in the GP's book
+  var COHORT = [7, 8, 9];                   // the HF / hypertension cohort
+  var POOL = [0, 1, 2, 3, 4];               // the cardiologist's existing pool
+
+  function POOLDOT(d, g) { return g <= 4; }   // hidden while we are inside the book
+  function ONLY_COHORT(d, g) { return g < 7; }  // the two halves, alone on stage
+  function members(c, want) {
+    var out = [];
+    for (var d = 0; d < c.N; d++) if (want.indexOf(c.groups[d]) >= 0) out.push(d);
+    return out;
+  }
+  function packInto(c, pos, centre, list, seed, pitch) {
+    var pts = c.phyllo(centre[0], centre[1], list.length, c.U * (pitch || 1.55), seed);
+    for (var i = 0; i < list.length; i++) pos[list[i]] = pts[i];
+    return pts.radius;
+  }
+  function geo(c) {
+    if (c.narrow) return {
+      gp: [0.30 * c.W, 0.30 * c.H], sp: [0.62 * c.W, 0.72 * c.H],
+      qx: 0.62 * c.W, y0: 0.06 * c.H, y1: 0.98 * c.H, rows: 50
+    };
+    return {
+      gp: [0.21 * c.W, 0.50 * c.H], sp: [0.74 * c.W, 0.50 * c.H],
+      qx: 0.62 * c.W, y0: 0.02 * c.H, y1: 0.98 * c.H, rows: 50
+    };
+  }
+  function gpClin(c, g, rGp) { return { x: g.gp[0] - rGp - c.U * 3.0, y: g.gp[1] - c.U, skin: 3, hair: 1, label: 'the GP' }; }
+  function gpZone(c, g, rGp) { return { x: g.gp[0], y: g.gp[1], r: rGp + c.U * 2.4, color: '#86b6ef', alpha: 0.10 }; }
+  // a faint track behind the queue — the queue's counterpart to the pools'
+  // soft discs, so every crowd stands on the same kind of ground
+  function queueZone(c, g) {
+    return { rx: g.qx - c.U * 2.6, ry: g.y0 + 20, rw: c.U * 5.2, rh: g.y1 - g.y0 - 8,
+             rad: c.U * 2.6, color: '#1c5cab', alpha: 0.055 };
+  }
+  function gpTitle(g, rGp, text, sub) {
+    var L = [{ x: g.gp[0], y: g.gp[1] - rGp - 30, group: 5, dy: -(rGp + 30), text: text, big: true }];
+    if (sub) L.push({ x: g.gp[0], y: g.gp[1] - rGp - 12, group: 5, dy: -(rGp + 12), text: sub, muted: true });
+    return L;
+  }
+  function cardClin(c, g) {
+    return c.narrow
+      ? { x: 0.90 * c.W, y: g.y0 + c.U * 2, skin: 1, hair: 6, label: 'cardiologist' }
+      : { x: g.qx - 0.17 * c.W, y: g.y0 + c.U * 3, skin: 1, hair: 6, label: 'the cardiologist' };
+  }
+  function queueChrome(c, g, extra, sub) {
+    return [{ x: g.qx, y: g.y0 - 6, text: 'THE SPECIALIST QUEUE', big: true },
+            { x: g.qx, y: g.y0 + 12, text: sub || 'most complex first', muted: true }].concat(extra || []);
+  }
+  // one vertical queue, two abreast, so the bottom of it is literally the bottom
+  function queueXY(c, g, rank, dx) {
+    var pitch = (g.y1 - (g.y0 + 26)) / g.rows;
+    var row = Math.floor(rank / 2), col = rank % 2;
+    return [g.qx + (col === 0 ? -c.U * 0.85 : c.U * 0.85) + (dx || 0), g.y0 + 26 + pitch * (row + 0.5)];
+  }
+  function specRanks(c, order) {
+    var ranks = {}, r = 0;
+    order.forEach(function (gg) {
+      for (var d = 0; d < c.N; d++) if (c.groups[d] === gg) ranks[d] = r++;
+    });
+    return ranks;
+  }
+  var ORDER = [9, 4, 3, 2, 1, 0, 8];        // most complex first, palmed-off last
+  var BOTTOM = [0, 8];                      // the bottom 20 of 99 — score, not label
+
+  // ---- the cohort scenes: the GP's book, opened up -------------------------
+  // the book as one pool; the cohort optionally lifted into its own block
+  function bookLayout(c, mode) {
+    var g = geo(c), pos = new Array(c.N);
+    var rSp = packInto(c, pos, g.sp, members(c, POOL), 5);
+    var rGp;
+    if (mode === 'whole') {
+      rGp = packInto(c, pos, g.gp, members(c, BOOK).concat(members(c, [6])), 0);
+    } else {
+      rGp = packInto(c, pos, g.gp, members(c, [5]).concat(members(c, [6])), 0);
+      var bx = c.narrow ? 0.68 * c.W : 0.62 * c.W;
+      var lx = c.narrow ? 0.32 * c.W : 0.30 * c.W, rx = c.narrow ? 0.86 * c.W : 0.85 * c.W;
+      if (mode === 'cohort') {
+        packInto(c, pos, [bx, 0.5 * c.H], members(c, COHORT), 3, 1.7);
+      } else if (mode === 'split') {
+        packInto(c, pos, [bx, 0.22 * c.H], members(c, [GP_COMF]), 3, 1.7);
+        packInto(c, pos, [bx, 0.74 * c.H], members(c, [GP_ABLE, SPEC_REAL]), 4, 1.7);
+      } else {                                   // 'three' — all three named
+        packInto(c, pos, [c.narrow ? 0.62 * c.W : 0.57 * c.W, 0.20 * c.H], members(c, [GP_COMF]), 3, 2.3);
+        packInto(c, pos, [lx, 0.68 * c.H], members(c, [GP_ABLE]), 4, 2.3);
+        packInto(c, pos, [rx, 0.68 * c.H], members(c, [SPEC_REAL]), 6, 2.3);
+      }
+    }
+    return { pos: pos, g: g, rGp: rGp, rSp: rSp };
+  }
+  function poolMeta(c, g, rSp) {
+    return { x: g.sp[0] + rSp + c.U * 3.0, y: g.sp[1] - c.U, skin: 1, hair: 6, label: 'the cardiologist' };
+  }
+
+  var layouts = {
+    pools: function (c) {
+      var b = bookLayout(c, 'whole'), g = b.g;
+      return { pos: b.pos, meta: {
+        labels: gpTitle(g, b.rGp, "ONE GP'S BOOK", 'mostly everyday medicine').concat([
+          { x: g.sp[0], y: g.sp[1] - b.rSp - 30, text: "ONE CARDIOLOGIST'S POOL", big: true },
+          { x: g.sp[0], y: g.sp[1] - b.rSp - 12, text: 'referred for complexity', muted: true }]),
+        clinicians: [gpClin(c, g, b.rGp), poolMeta(c, g, b.rSp)],
+        zones: [gpZone(c, g, b.rGp), { x: g.sp[0], y: g.sp[1], r: b.rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }]
+      } };
+    },
+    cohort: function (c) {
+      var b = bookLayout(c, 'cohort'), g = b.g, bx = c.narrow ? 0.68 * c.W : 0.60 * c.W;
+      return { pos: b.pos, meta: {
+        labels: gpTitle(g, b.rGp, "ONE GP'S BOOK", '120 patients').concat([
+          { x: c.narrow ? 0.5 * c.W : bx, y: 0.5 * c.H, group: GP_COMF, dy: -c.U * 8.5,
+            text: c.narrow ? 'HF & HYPERTENSION — 30%' : 'HEART FAILURE & HYPERTENSION — 30%', big: true },
+          { x: bx, y: 0.5 * c.H, group: GP_COMF, dy: c.U * 9.5, text: '36 figures · one condition family', muted: true }]),
+        clinicians: [gpClin(c, g, b.rGp), poolMeta(c, g, b.rSp)],
+        zones: [gpZone(c, g, b.rGp)]
+      } };
+    },
+    split: function (c) {
+      var b = bookLayout(c, 'split'), g = b.g, bx = c.narrow ? 0.68 * c.W : 0.60 * c.W;
+      return { pos: b.pos, meta: {
+        labels: gpTitle(g, b.rGp, "ONE GP'S BOOK").concat([
+          { x: bx, y: 0.22 * c.H, group: GP_COMF, dy: c.U * 8, text: 'the GP already manages these 18', muted: true },
+          { x: bx, y: 0.74 * c.H, group: GP_ABLE, dy: c.U * 9, text: 'these 18 are referred out', muted: true }]),
+        clinicians: [gpClin(c, g, b.rGp), poolMeta(c, g, b.rSp)],
+        zones: [gpZone(c, g, b.rGp)]
+      } };
+    },
+    three: function (c) {
+      var b = bookLayout(c, 'three');
+      var lx = c.narrow ? 0.32 * c.W : 0.30 * c.W, rx = c.narrow ? 0.86 * c.W : 0.85 * c.W;
+      return { pos: b.pos, meta: {
+        labels: [
+          { x: c.narrow ? 0.62 * c.W : 0.57 * c.W, y: 0.20 * c.H, group: GP_COMF, dy: c.U * 9, text: 'GP manages · 18', muted: true },
+          { x: lx, y: 0.68 * c.H, group: GP_ABLE, dy: c.U * 8, text: 'could be GP-managed · 9', muted: true },
+          { x: rx, y: 0.68 * c.H, group: SPEC_REAL, dy: c.U * 8, text: 'genuinely specialist · 9', muted: true }],
+        clinicians: [], zones: []
+      } };
+    },
+    // today: both halves are posted into the same queue
+    sendall: function (c) {
+      var g = geo(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF]).concat(members(c, [6])), 0);
+      // today there is no sort: the eighteen simply arrive at the back, so a
+      // protocol case and a puzzle case end up side by side behind everyone
+      var ranks = specRanks(c, [4, 3, 2, 1, 0, 8, 9]);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
+      return { pos: pos, meta: {
+        labels: gpTitle(g, rGp, "THE GP'S BOOK", 'minus the eighteen')
+          .concat(queueChrome(c, g, [], 'unsorted — in the order they were referred')),
+        clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
+      } };
+    },
+    line: function (c) {
+      var g = geo(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF]).concat(members(c, [6])), 0);
+      var ranks = specRanks(c, ORDER);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
+      return { pos: pos, meta: {
+        labels: gpTitle(g, rGp, "THE GP'S BOOK").concat(queueChrome(c, g, [
+          { x: g.qx, y: g.y1 + c.U * 1.9, text: 'least complex — stable', muted: true }])),
+        clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
+      } };
+    },
+    linesep: function (c) {
+      var g = geo(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF]).concat(members(c, [6])), 0);
+      var ranks = specRanks(c, ORDER), dx = c.U * 5;
+      for (var d in ranks) {
+        pos[d] = queueXY(c, g, ranks[d], BOTTOM.indexOf(c.groups[d]) >= 0 ? dx : 0);
+      }
+      return { pos: pos, meta: {
+        labels: gpTitle(g, rGp, "THE GP'S BOOK").concat(queueChrome(c, g, [
+          { x: g.qx + (c.narrow ? -0.30 : 0.20) * c.W, y: g.y0 + (g.y1 - g.y0) * 0.90,
+            text: c.narrow ? 'bottom 20% — stable' : 'the bottom 20% — stable, protocol-driven', muted: true }])),
+        clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
+        zones: [queueZone(c, g)]
+      } };
+    },
+    moved1: function (c) {
+      var g = geo(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF, 6, 0, GP_ABLE]), 0);
+      var ranks = specRanks(c, [SPEC_REAL, 4, 3, 2, 1]);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d], 0);
+      return { pos: pos, meta: {
+        labels: gpTitle(g, rGp, "THE GP'S BOOK +20", 'billed properly, eConsult-backed').concat(queueChrome(c, g, [
+          { x: g.qx, y: g.y0 + (g.y1 - g.y0) * 0.88, text: 'slots freed', muted: true }])),
+        clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
+      } };
+    },
+    backfill: function (c) {
+      var g = geo(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF, 0, GP_ABLE]), 0);
+      // the nine keep the front of the queue; the twenty off the waitlist
+      // slot in behind them, and everyone routine is gone
+      var nine = members(c, [SPEC_REAL]);
+      for (var n9 = 0; n9 < nine.length; n9++) pos[nine[n9]] = queueXY(c, g, n9, 0);
+      var w = members(c, [6]);
+      for (var i = 0; i < w.length; i++) pos[w[i]] = queueXY(c, g, 9 + i, 0);
+      var ranks = specRanks(c, [4, 3, 2, 1]);
+      for (var d in ranks) pos[d] = queueXY(c, g, ranks[d] + 29, 0);
+      return { pos: pos, meta: {
+        labels: gpTitle(g, rGp, "THE GP'S BOOK", 'grown by twenty, better paid').concat(queueChrome(c, g, c.narrow ? [] : [
+          { x: g.qx + 0.20 * c.W, y: g.y0 + (g.y1 - g.y0) * 0.22,
+            text: 'twenty new complex patients', muted: true },
+          { x: g.qx + 0.20 * c.W, y: g.y0 + (g.y1 - g.y0) * 0.22 + 18,
+            text: 'straight off the waitlist', muted: true }])),
+        clinicians: [gpClin(c, g, rGp), cardClin(c, g)],
+        zones: [gpZone(c, g, rGp), queueZone(c, g)]
+      } };
+    },
+    exchange: function (c) {
+      var g = geo(c), pos = new Array(c.N);
+      var rGp = packInto(c, pos, g.gp, members(c, [5, GP_COMF, 0, GP_ABLE]), 0);
+      var rSp = packInto(c, pos, g.sp, members(c, [4, 3, 2, 1, 6, SPEC_REAL]), 5);
+      var gc = gpClin(c, g, rGp), sc = poolMeta(c, g, rSp);
+      return { pos: pos, meta: {
+        labels: gpTitle(g, rGp, "THE GP'S BOOK — GROWN", '+20 pipeline patients, billed properly').concat([
+          { x: g.sp[0], y: g.sp[1] - rSp - 30, text: c.narrow ? 'THE SPECIALIST POOL' : "THE SPECIALIST'S POOL — CONCENTRATED", big: true },
+          { x: g.sp[0], y: g.sp[1] - rSp - 12, text: 'fully complex — same size, better sorted', muted: true }]),
+        clinicians: [gc, sc],
+        zones: [gpZone(c, g, rGp), { x: g.sp[0], y: g.sp[1], r: rSp + c.U * 2.4, color: '#1c5cab', alpha: 0.08 }],
+        link: { a: [gc.x, gc.y - c.U * 1.2], b: [sc.x, sc.y - c.U * 1.2] }
+      } };
+    }
+  };
+
+  var ALL5 = [0, 1, 2, 3, 4];
+  // the cohort keeps its colours to the last frame — the thread the story hangs on
+  var TRACK = ALL5.concat([GP_COMF, GP_ABLE, SPEC_REAL]);
+  var COHORT_ON = [GP_COMF, GP_ABLE, SPEC_REAL];
+  // the nine who wait longest in today's queue
+  function WAITING(d, g) { return g === SPEC_REAL; }
+
+  DotField({
+    theatre: '#story', canvas: '#df1',
+    counts: COUNTS,
+    groupColors: HUES,
+    neutral: '#b6c0cf', ink: '#1b2846', ink2: '#4a5674', accent: '#eb6834',
+    labels: ['Steady State', 'Titration', 'Juggler', 'Puzzle', 'High-Stakes', '', 'Waiting complex',
+             'GP manages', 'Could be GP-managed', 'Genuinely specialist'],
+    layouts: layouts,
+    rmScene: 10,
+    scenes: [
+      { key: 'pools', labels: true },
+      { key: 'cohort', labels: true, colorGroups: COHORT_ON, fadeDot: POOLDOT, fadeTo: 0,
+        scan: { groups: COHORT_ON, axis: 'y' } },
+      { key: 'split', labels: true, colorGroups: [GP_COMF], fadeDot: POOLDOT, fadeTo: 0,
+        dim: { keep: [GP_COMF], to: 0.45 } },
+      { key: 'split', labels: true, colorGroups: COHORT_ON, fadeDot: POOLDOT, fadeTo: 0,
+        dim: { keep: COHORT_ON, to: 0.4 } },
+      // the two halves of the referred group, one at a time
+      { key: 'three', labels: true, colorGroups: COHORT_ON, fadeDot: ONLY_COHORT, fadeTo: 0,
+        dim: { keep: [GP_ABLE], to: 0.32 },
+        cam: { z: 1.1, x: 0.57, y: 0.48 }, camNarrow: { z: 1.0, x: 0.58, y: 0.48 },
+        cards: [{ at: { g: GP_ABLE, i: 4 }, title: 'Could be GP-managed', mark: 'want',
+                  sub: 'with fast specialist backup',
+                  rows: ['Mild fluid overload in known heart failure',
+                         'Hypertension needing a third agent',
+                         'Post-discharge titration against a written protocol'] }] },
+      { key: 'three', labels: true, colorGroups: COHORT_ON, fadeDot: ONLY_COHORT, fadeTo: 0,
+        dim: { keep: [SPEC_REAL], to: 0.32 },
+        cam: { z: 1.1, x: 0.57, y: 0.48 }, camNarrow: { z: 1.0, x: 0.58, y: 0.48 },
+        cards: [{ at: { g: SPEC_REAL, i: 4 }, side: 'left', title: 'Genuinely specialist', mark: 'tick',
+                  sub: 'whole-of-training work',
+                  rows: ['New cardiomyopathy of unclear cause',
+                         'Resistant hypertension, secondary cause suspected',
+                         'Valve disease heading for intervention'] }] },
+      { key: 'sendall', labels: true, colorGroups: COHORT_ON.concat(ALL5) },
+      { key: 'sendall', labels: true, colorGroups: COHORT_ON.concat(ALL5),
+        dim: { keep: [GP_ABLE, 0], to: 0.28 },
+        cards: [{ at: { g: GP_ABLE, i: 4 }, title: 'What fills the clinic', mark: 'cross',
+                  sub: 'done by the most expensive clinician',
+                  rows: ['Adjusting a diuretic dose',
+                         'Adding a third antihypertensive',
+                         'Repeating an echo that has not changed'] }] },
+      { key: 'sendall', labels: true, colorGroups: COHORT_ON.concat(ALL5),
+        dim: { keep: [SPEC_REAL], to: 0.30 },
+        cards: [{ at: { g: SPEC_REAL, i: 4 }, title: 'What the wait costs them', mark: 'cross',
+                  sub: '127 days to a first appointment',
+                  rows: ['Some are lost to follow-up entirely',
+                         'Others arrive with a condition that moved while they queued',
+                         'A few arrive through the emergency department instead'] }] },
+      { key: 'line', labels: true, colorGroups: TRACK, scan: { groups: ALL5, axis: 'y' } },
+      { key: 'linesep', labels: true, colorGroups: TRACK, dim: { keep: BOTTOM, to: 0.35 } },
+      { key: 'linesep', colorGroups: TRACK, dim: { keep: BOTTOM, to: 0.10 },
+        cam: { z: 2.2, x: 0.62, y: 0.88 }, camNarrow: { z: 1.6, x: 0.66, y: 0.90 } },
+      { key: 'moved1', labels: true, colorGroups: TRACK, dim: { keep: BOTTOM, to: 0.5 } },
+      { key: 'backfill', labels: true, colorGroups: TRACK.concat([6]), dim: { keep: [6], to: 0.45 } },
+      // THE LOOP CLOSES: same nine from the breakdown, now at the front —
+      // same layout as the last scene, so only the camera and focus move
+      { key: 'backfill', colorGroups: TRACK.concat([6]),
+        dim: { keep: [SPEC_REAL], to: 0.18 },
+        cam: { z: 1.9, x: 0.57, y: 0.11 }, camNarrow: { z: 1.5, x: 0.66, y: 0.10 },
+        cards: [{ at: { g: SPEC_REAL, i: 5 }, title: 'The nine from this book', mark: 'tick',
+                  sub: 'front of the queue at last',
+                  rows: ['New cardiomyopathy — echo in week three',
+                         'Resistant hypertension — work-up under way',
+                         'Valve disease — surgical opinion booked'] }],
+        cardsNarrow: [{ at: { g: SPEC_REAL, i: 5 }, small: true, mark: 'tick',
+                  rows: ['Straight to the cardiologist'] }] },
+      { key: 'exchange', labels: true, colorGroups: TRACK.concat([6]), extra: 'link',
+        linkLabel: 'eConsult · answered in 72 h' },
+      { key: 'exchange', labels: true, colorGroups: TRACK.concat([6]), dim: { keep: [2, 3, 4, 6, SPEC_REAL], to: 0.30 } },
+      { key: 'exchange', colorGroups: [0, GP_ABLE, SPEC_REAL, 6], dim: { keep: [], to: 0.15 } }
+    ]
+  });
+})();
+
+/* Live scenario model — same arithmetic as the cards above, in the reader's hands.
+   Constants (indicative, MBS-rounded): specialist review $92, new complex $170;
+   freed slots refill 60% new complex / 40% complex review; 3.1 visits per
+   pipeline patient/yr; 1.9 eConsults per pipeline patient/yr; GP incremental
+   $449/patient/yr; ~33 pipeline patients per participating GP; episode cost
+   $290 hospital vs $130 GP; avoided acute care $312k at the 2,400-visit
+   baseline; trial cost $460k; baseline wait 127 days at −57% for 240 extra
+   new-complex patients per FTE. */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var ins = { share: $('mShare'), appts: $('mAppts'), fee: $('mFee'), fte: $('mFte') };
+  if (!ins.share) return;
+  var defaults = { share: 20, appts: 2000, fee: 65, fte: 6 };
+  function money(v) {
+    if (Math.abs(v) >= 995000) return '$' + (v / 1e6).toFixed(2).replace(/0$/, '') + 'M';
+    return '$' + Math.round(v / 1000) + 'k';
+  }
+  function recompute() {
+    var s = +ins.share.value / 100, A = +ins.appts.value, f = +ins.fee.value, n = +ins.fte.value;
+    var F = s * A;                       // freed slots per FTE
+    var P = F / 3.1;                     // pipeline patients per FTE
+    var E = 1.9 * P;                     // eConsults per FTE
+    var before = F * 92;
+    var after = 0.6 * F * 170 + 0.4 * F * 92 + E * f;
+    var uplift = after - before;
+    var gpTotalPts = P * n;
+    var gpN = Math.max(1, Math.round(gpTotalPts / 33));
+    var perGp = (gpTotalPts / gpN) * 449;
+    var shift = F * n * (290 - 130);
+    var acute = 312000 * (F * n) / 2400;
+    var net = shift + acute;
+    var payback = 460000 / (net / 12);
+    var mbs = gpTotalPts * 449 + uplift * n;
+    var drop = Math.min(70, 57 * (0.6 * F) / 240);
+    var wait = Math.round(127 * (1 - drop / 100));
+
+    $('oShare').textContent = Math.round(s * 100) + '%';
+    $('oAppts').textContent = A.toLocaleString('en-AU');
+    $('oFee').textContent = '$' + f;
+    $('oFte').textContent = n;
+    $('rSpec').textContent = '+' + money(uplift);
+    $('rGp').textContent = '+' + money(perGp);
+    $('rGpN').textContent = gpN;
+    $('rNet').textContent = money(net);
+    $('rPay').textContent = payback <= 24 ? '≈ ' + Math.round(payback) + ' months' : '≈ ' + (payback / 12).toFixed(1) + ' years';
+    $('rMbs').textContent = money(mbs);
+    $('rWait').textContent = '127 → ' + wait + ' days';
+  }
+  Object.keys(ins).forEach(function (k) { ins[k].addEventListener('input', recompute); });
+  ins.share.setAttribute('aria-describedby', 'rSpec');
+  $('mReset').addEventListener('click', function () {
+    ins.share.value = defaults.share; ins.appts.value = defaults.appts;
+    ins.fee.value = defaults.fee; ins.fte.value = defaults.fte;
+    recompute();
+  });
+  recompute();
+})();
+
+/* Pop-out maths — itemised MBS derivations behind every headline number.
+   Fees are indicative, rounded from the published schedule; the eConsult
+   line is a PROPOSED item (no current MBS asynchronous-advice item),
+   modelled at $65 and flagged as such wherever it appears. */
+(function () {
+  var dlg = document.getElementById('mathsDialog'), body = document.getElementById('mathsBody');
+  if (!dlg || !body) return;
+  // older Safari ships <dialog> without showModal — fall back to a plain
+  // overlay driven by the [open] attribute and the same close paths
+  var modal = typeof dlg.showModal === 'function';
+  function show() {
+    if (modal) { dlg.showModal(); return; }
+    dlg.setAttribute('open', '');
+    dlg.classList.add('maths-fallback');
+  }
+  function hide() {
+    if (modal) { dlg.close(); return; }
+    dlg.removeAttribute('open');
+    dlg.classList.remove('maths-fallback');
+  }
+  if (!modal) {
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dlg.hasAttribute('open')) hide();
+    });
+  }
+  function row(cells, cls) {
+    return '<tr' + (cls ? ' class="' + cls + '"' : '') + '>' + cells.map(function (c, i) {
+      return '<td' + (i > 0 ? ' class="num"' : '') + '>' + c + '</td>';
+    }).join('') + '</tr>';
+  }
+  var HEAD = '<thead><tr><th>Item</th><th class="num">Fee</th><th class="num">Volume / yr</th><th class="num">Subtotal</th></tr></thead>';
+  var MATHS = {
+    gp: {
+      title: 'The participating GP — per pipeline patient, per year',
+      note: 'Indicative schedule fees, rounded. One patient, one year of structured care.',
+      rows: [
+        row(['<b>MBS 36</b> — Level C consult (20–40 min)', '$83', '2', '$166']),
+        row(['<b>MBS 44</b> — Level D consult (40+ min)', '$122', '1', '$122']),
+        row(['<b>MBS 721</b> — GP Management Plan', '$165', '1', '$165']),
+        row(['<b>MBS 732</b> — plan review', '$82', '1', '$82']),
+        row(['Under the pipeline', '', '', '<b>$535</b>'], 'total'),
+        row(['Today: <b>MBS 23</b> — Level B visit (<20 min)', '$43', '2', '$86'], 'was'),
+        row(['<b>Net gain per patient</b>', '', '', '<b>+$449</b>'], 'total')
+      ],
+      foot: 'A participating GP carrying a 33-patient panel: 33 × $449 ≈ <b>+$14.8k/yr</b> (headline +$15k; 30–40 patients spans +$13k–18k).'
+    },
+    spec: {
+      title: 'The specialist — the 400 freed clinic slots, per FTE per year',
+      note: 'Same clinic hours, refilled with top-of-licence work. eConsult* is a proposed item — there is no current MBS asynchronous-advice item — modelled at $65.',
+      rows: [
+        row(['<b>MBS 110</b> — initial specialist attendance', '$170', '240', '$40,800']),
+        row(['<b>MBS 116</b> — subsequent attendance', '$92', '160', '$14,720']),
+        row(['eConsult* — asynchronous advice (proposed)', '$65', '~250', '$16,250']),
+        row(['Under the pipeline', '', '', '<b>$71,770</b>'], 'total'),
+        row(['Today: <b>MBS 116</b> — routine reviews', '$92', '400', '$36,800'], 'was'),
+        row(['<b>Net gain per FTE</b>', '', '', '<b>+$34,970</b>'], 'total')
+      ],
+      foot: 'Displayed as +$35k. Plus ≈ $200k/yr of downstream diagnostics and procedures per FTE flowing to the department from the 240 extra new complex patients.'
+    },
+    net: {
+      title: 'The network & payer — a 6-FTE department, per year',
+      note: 'Full-cost comparison per low-complexity episode, plus avoided acute care.',
+      rows: [
+        row(['Hospital outpatient visit — full cost', '$290', '2,400', '$696,000'], 'was'),
+        row(['Specialist-GP visit — full cost', '$130', '2,400', '$312,000'], 'was'),
+        row(['Setting-shift saving', '$160', '2,400', '<b>$384,000</b>'], 'total'),
+        row(['Avoided ED presentations', '$1,050', '~120', '$126,000']),
+        row(['Avoided admissions', '$6,200', '~30', '$186,000']),
+        row(['<b>Network benefit per year</b>', '', '', '<b>$696,000</b>'], 'total')
+      ],
+      foot: 'Against a $460k one-off trial cost: payback ≈ 8 months. The corresponding new Medicare outlay (≈$560k/yr) is stated in the honest ledger above.'
+    }
+  };
+  function open(key) {
+    var m = MATHS[key];
+    if (!m) return;
+    body.innerHTML = '<button class="maths-close" aria-label="Close">×</button>' +
+      '<h3 id="mathsTitle">' + m.title + '</h3><p class="note">' + m.note + '</p>' +
+      '<table>' + HEAD + '<tbody>' + m.rows.join('') + '</tbody></table>' +
+      '<p class="note" style="margin-top:12px">' + m.foot + '</p>';
+    body.querySelector('.maths-close').addEventListener('click', hide);
+    show();
+  }
+  document.querySelectorAll('.mchip').forEach(function (ch) {
+    ch.addEventListener('click', function () { open(ch.getAttribute('data-maths')); });
+  });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) hide(); });
+})();
+
+/* Specialty switcher — the mechanism is specialty-agnostic; only the clinical
+   detail and the indicative parameters change. Figures match the table below it. */
+(function () {
+  var SPECS = {
+    cardiology: { name: 'Cardiology', share: '20%', freed: '400', uplift: '+$35k', wait: '127 → 55 days',
+      ex: ['Controlled AF on a DOAC, stable three years, echo unchanged',
+           'Post-ACS secondary prevention at eighteen months, lipids to target',
+           'Heart failure on settled guideline therapy, needing protocol titration only'],
+      esc: 'Escalation triggers: new arrhythmia, rising NT-proBNP, any admission, device concern.' },
+    endocrinology: { name: 'Endocrinology', share: '24%', freed: '504', uplift: '+$44k', wait: '148 → 62 days',
+      ex: ['Type 2 diabetes at target on a fixed regimen, no complications progressing',
+           'Treated hypothyroidism, stable TSH on unchanged replacement',
+           'Osteoporosis on established antiresorptive therapy, routine review'],
+      esc: 'Escalation triggers: hypoglycaemia, rapid HbA1c drift, new nephropathy or foot disease, pregnancy.' },
+    respiratory: { name: 'Respiratory', share: '22%', freed: '418', uplift: '+$36k', wait: '119 → 52 days',
+      ex: ['Well-controlled asthma on stable inhaled therapy, no recent oral steroids',
+           'Stable COPD on triple therapy, exacerbation-free for a year',
+           'Treated OSA, established on CPAP with good adherence data'],
+      esc: 'Escalation triggers: exacerbation needing steroids, falling spirometry, new hypoxia, haemoptysis.' },
+    gastroenterology: { name: 'Gastroenterology', share: '18%', freed: '396', uplift: '+$34k', wait: '156 → 68 days',
+      ex: ['Coeliac disease in remission on a gluten-free diet, routine serology',
+           'IBS on a settled management plan, no alarm features',
+           'Stable chronic liver disease on surveillance, no decompensation'],
+      esc: 'Escalation triggers: bleeding, weight loss, new anaemia, deranged LFTs, any alarm feature.' },
+    rheumatology: { name: 'Rheumatology', share: '21%', freed: '378', uplift: '+$33k', wait: '172 → 74 days',
+      ex: ['Rheumatoid arthritis in sustained remission on an unchanged DMARD',
+           'Gout on stable urate-lowering therapy, at target',
+           'Long-standing osteoarthritis on a settled non-surgical plan'],
+      esc: 'Escalation triggers: flare, new joint involvement, biologic decisions, drug-monitoring abnormality.' }
+  };
+  var box = document.getElementById('specSwitch');
+  if (!box) return;
+  var $ = function (id) { return document.getElementById(id); };
+  function show(key) {
+    var s = SPECS[key];
+    $('sName').textContent = s.name;
+    $('sShare').textContent = s.share;
+    $('sFreed').textContent = s.freed;
+    $('sUplift').textContent = s.uplift;
+    $('sWait').textContent = s.wait;
+    $('sExamples').innerHTML = s.ex.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+    $('sEscalate').textContent = s.esc;
+    box.querySelectorAll('.chip').forEach(function (c) {
+      c.setAttribute('aria-pressed', c.getAttribute('data-spec') === key ? 'true' : 'false');
+    });
+  }
+  box.querySelectorAll('.chip').forEach(function (c) {
+    c.addEventListener('click', function () { show(c.getAttribute('data-spec')); });
+  });
+  show('cardiology');
+})();
+</script>
+</body>
+</html>
